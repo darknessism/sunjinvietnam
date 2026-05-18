@@ -21,14 +21,17 @@ router.post('/projects', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `INSERT INTO projects (id, title, category, location, year, award, architects, cover_image, status, cols, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `INSERT INTO projects (id, title, category, location, year, award, architects, cover_image, status, cols, scale, investor, construction_status, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON DUPLICATE KEY UPDATE
                title=VALUES(title), category=VALUES(category), location=VALUES(location),
                year=VALUES(year), award=VALUES(award), architects=VALUES(architects),
-               cover_image=VALUES(cover_image), status=VALUES(status)`,
+               cover_image=VALUES(cover_image), status=VALUES(status),
+               scale=VALUES(scale), investor=VALUES(investor),
+               construction_status=VALUES(construction_status)`,
             [p.id, p.title, p.category, p.location, p.year, p.award, p.architects,
              p.coverImage, p.status || 'draft', p.cols ?? 12,
+             p.scale || null, p.investor || null, p.constructionStatus || null,
              p.createdAt || new Date().toISOString().slice(0, 10)]
         );
         const [[row]] = await pool.query('SELECT * FROM projects WHERE id = ?', [p.id]);
@@ -41,9 +44,10 @@ router.put('/projects/:id', async (req, res, next) => {
         const p = req.body;
         await pool.query(
             `UPDATE projects SET title=?, category=?, location=?, year=?, award=?, architects=?,
-             cover_image=?, status=? WHERE id=?`,
+             cover_image=?, status=?, scale=?, investor=?, construction_status=? WHERE id=?`,
             [p.title, p.category, p.location, p.year, p.award, p.architects,
-             p.coverImage, p.status, req.params.id]
+             p.coverImage, p.status, p.scale || null, p.investor || null,
+             p.constructionStatus || null, req.params.id]
         );
         const [[row]] = await pool.query('SELECT * FROM projects WHERE id = ?', [req.params.id]);
         res.json(toProject(row));
@@ -77,20 +81,22 @@ router.put('/projects/:id/detail', async (req, res, next) => {
                 `UPDATE projects SET title=COALESCE(?,title), category=COALESCE(?,category),
                  location=COALESCE(?,location), year=COALESCE(?,year), award=COALESCE(?,award),
                  architects=COALESCE(?,architects), cover_image=COALESCE(?,cover_image),
-                 status=COALESCE(?,status) WHERE id=?`,
+                 status=COALESCE(?,status), scale=COALESCE(?,scale),
+                 investor=COALESCE(?,investor),
+                 construction_status=COALESCE(?,construction_status) WHERE id=?`,
                 [ov.title, ov.category, ov.location, ov.year, ov.award,
-                 ov.architects, ov.coverImage, ov.status, req.params.id]
+                 ov.architects, ov.coverImage, ov.status,
+                 ov.scale || null, ov.investor || null, ov.constructionStatus || null,
+                 req.params.id]
             );
         }
 
-        const next_ = d.next || {};
         await pool.query(
             `INSERT INTO project_details
                (project_id, title_plain, title_display, category_label, year_loc, award,
                 images, \`lead\`, photo1_alt, photo1_cap, photo2_alt, photo2_cap, photo3_alt, photo3_cap,
-                narrative1, narrative2, highlights, specs, credits, awards_list,
-                next_id, next_title, next_type, next_img)
-             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?)
+                narrative1, narrative2, highlights, specs, credits, awards_list)
+             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
                title_plain=VALUES(title_plain), title_display=VALUES(title_display),
                category_label=VALUES(category_label), year_loc=VALUES(year_loc), award=VALUES(award),
@@ -100,14 +106,11 @@ router.put('/projects/:id/detail', async (req, res, next) => {
                photo3_alt=VALUES(photo3_alt), photo3_cap=VALUES(photo3_cap),
                narrative1=VALUES(narrative1), narrative2=VALUES(narrative2),
                highlights=VALUES(highlights), specs=VALUES(specs), credits=VALUES(credits),
-               awards_list=VALUES(awards_list),
-               next_id=VALUES(next_id), next_title=VALUES(next_title),
-               next_type=VALUES(next_type), next_img=VALUES(next_img)`,
+               awards_list=VALUES(awards_list)`,
             [req.params.id, d.titlePlain, d.title, d.category, d.yearLoc, d.award,
              j(d.images), d.lead, d.photo1alt, d.photo1cap, d.photo2alt, d.photo2cap,
              d.photo3alt, d.photo3cap, j(d.narrative1), j(d.narrative2),
-             j(d.highlights), j(d.specs), j(d.credits), j(d.awards),
-             next_.id || null, next_.title || null, next_.ty || null, next_.img || null]
+             j(d.highlights), j(d.specs), j(d.credits), j(d.awards)]
         );
         res.json({ ok: true });
     } catch (e) { next(e); }
@@ -255,17 +258,20 @@ router.delete('/careers/:id', async (req, res, next) => {
 
 function toProject(r) {
     return {
-        id:         r.id,
-        title:      r.title,
-        category:   r.category,
-        location:   r.location,
-        year:       r.year,
-        award:      r.award,
-        architects: r.architects,
-        coverImage: r.cover_image,
-        status:     r.status,
-        cols:       r.cols,
-        createdAt:  r.created_at,
+        id:                 r.id,
+        title:              r.title,
+        category:           r.category,
+        location:           r.location,
+        year:               r.year,
+        award:              r.award,
+        architects:         r.architects,
+        coverImage:         r.cover_image,
+        status:             r.status,
+        cols:               r.cols,
+        scale:              r.scale,
+        investor:           r.investor,
+        constructionStatus: r.construction_status,
+        createdAt:          r.created_at,
     };
 }
 
@@ -288,7 +294,6 @@ function toDetail(r) {
         specs:       parse(r.specs) || [],
         credits:     parse(r.credits) || [],
         awards:      parse(r.awards_list) || [],
-        next: r.next_id ? { id: r.next_id, title: r.next_title, ty: r.next_type, img: r.next_img } : null,
     };
 }
 

@@ -3,17 +3,20 @@ const mysql = require('mysql2/promise');
 
 const tables = [
     `CREATE TABLE IF NOT EXISTS projects (
-        id          VARCHAR(120) PRIMARY KEY,
-        title       VARCHAR(255) NOT NULL,
-        category    VARCHAR(60),
-        location    VARCHAR(255),
-        year        INT,
-        award       TEXT,
-        architects  TEXT,
-        cover_image TEXT,
-        status      ENUM('published','draft') DEFAULT 'draft',
-        cols        INT DEFAULT 12,
-        created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+        id                   VARCHAR(120) PRIMARY KEY,
+        title                VARCHAR(255) NOT NULL,
+        category             VARCHAR(60),
+        location             VARCHAR(255),
+        year                 INT,
+        award                TEXT,
+        architects           TEXT,
+        cover_image          TEXT,
+        status               ENUM('published','draft') DEFAULT 'draft',
+        cols                 INT DEFAULT 12,
+        scale                VARCHAR(120),
+        investor             VARCHAR(255),
+        construction_status  VARCHAR(120),
+        created_at           DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS project_details (
@@ -37,10 +40,6 @@ const tables = [
         specs          JSON,
         credits        JSON,
         awards_list    JSON,
-        next_id        VARCHAR(120),
-        next_title     VARCHAR(255),
-        next_type      VARCHAR(120),
-        next_img       TEXT,
         FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
     )`,
     `CREATE TABLE IF NOT EXISTS blog_posts (

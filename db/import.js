@@ -11,6 +11,8 @@
  *   specs        — key=value pipe-separated:   Area=1 200 m²|Year=2024
  *   credits      — role=name pipe-separated:   Lead Architect=KTS Tran|Team=Nguyen Van A
  *   awards       — pipe-separated strings:     Award One|Award Two
+ *
+ * Note: next_id / next_title / next_type / next_img columns have been removed.
  */
 
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
@@ -131,16 +133,20 @@ async function main() {
             await conn.query(
                 `INSERT INTO projects
                     (id, title, category, location, year, award, architects,
-                     cover_image, status, cols, created_at)
-                 VALUES (?,?,?,?,?,?,?,?,?,?,?)
+                     cover_image, status, cols, scale, investor, construction_status, created_at)
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                  ON DUPLICATE KEY UPDATE
                     title=VALUES(title), category=VALUES(category),
                     location=VALUES(location), year=VALUES(year),
                     award=VALUES(award), architects=VALUES(architects),
-                    cover_image=VALUES(cover_image), status=VALUES(status)`,
+                    cover_image=VALUES(cover_image), status=VALUES(status),
+                    scale=VALUES(scale), investor=VALUES(investor),
+                    construction_status=VALUES(construction_status)`,
                 [id, r.title, r.category || 'planning', r.location || '',
                  year, r.award || '', r.architects || '',
-                 r.cover_image || '', status, cols, createdAt]
+                 r.cover_image || '', status, cols,
+                 r.scale || null, r.investor || null, r.construction_status || null,
+                 createdAt]
             );
 
             // ── project_details row ─────────────────────────────────────────
@@ -161,9 +167,8 @@ async function main() {
                          photo1_alt, photo1_cap, photo2_alt, photo2_cap,
                          photo3_alt, photo3_cap,
                          narrative1, narrative2, highlights, specs,
-                         credits, awards_list,
-                         next_id, next_title, next_type, next_img)
-                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                         credits, awards_list)
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                      ON DUPLICATE KEY UPDATE
                         title_plain=VALUES(title_plain),
                         title_display=VALUES(title_display),
@@ -175,9 +180,7 @@ async function main() {
                         photo3_alt=VALUES(photo3_alt), photo3_cap=VALUES(photo3_cap),
                         narrative1=VALUES(narrative1), narrative2=VALUES(narrative2),
                         highlights=VALUES(highlights), specs=VALUES(specs),
-                        credits=VALUES(credits), awards_list=VALUES(awards_list),
-                        next_id=VALUES(next_id), next_title=VALUES(next_title),
-                        next_type=VALUES(next_type), next_img=VALUES(next_img)`,
+                        credits=VALUES(credits), awards_list=VALUES(awards_list)`,
                     [id,
                      r.title_plain || r.title,
                      r.title_display || r.title,
@@ -189,9 +192,7 @@ async function main() {
                      r.photo2_alt || '', r.photo2_cap || '',
                      r.photo3_alt || '', r.photo3_cap || '',
                      narrative1, narrative2, highlights, specs,
-                     credits, awards,
-                     r.next_id || null, r.next_title || null,
-                     r.next_type || null, r.next_img || null]
+                     credits, awards]
                 );
             }
 

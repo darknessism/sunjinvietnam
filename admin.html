@@ -953,7 +953,6 @@ function blankDetail(title) {
         specs: [{ k: '', v: '' }],
         credits: [{ r: '', n: '' }],
         awards: [{ a: '', d: '' }],
-        next: { id: '', title: '', ty: '', img: '' }
     };
 }
 
@@ -1142,20 +1141,7 @@ function buildDetailHTML(d) {
         <button onclick="addItem('awards')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Award</button>
     `);
 
-    // NEXT PROJECT
-    const nxt = d.next || {};
-    const nextProj = card('Next Project card', `
-        ${row2(
-            fld('Project ID (URL slug)', inp('d-nxt-id', nxt.id, 'e.g. dichvonghau')),
-            fld('Title', inp('d-nxt-title', nxt.title, 'e.g. Dich Vong Hau Kindergarten'))
-        )}
-        ${row2(
-            fld('Typology string', inp('d-nxt-ty', nxt.ty, 'e.g. Education · 2024')),
-            fld('Cover Image URL', inp('d-nxt-img', nxt.img, 'https://...'))
-        )}
-    `);
-
-    return identity + gallery + leadSec + narrative + highlights + specs + credits + awards + nextProj;
+    return identity + gallery + leadSec + narrative + highlights + specs + credits + awards;
 }
 
 // ─── COLLECT VALUES ───────────────────────────────────
@@ -1192,7 +1178,6 @@ function collectDetail() {
     _dd.specs    = (_dd.specs||[]).map((_, i) => { const k = document.getElementById('d-sk-' + i), v = document.getElementById('d-sv-' + i); return { k: k?k.value:'', v: v?v.value:'' }; });
     _dd.credits  = (_dd.credits||[]).map((_, i) => { const r = document.getElementById('d-cr-' + i), n = document.getElementById('d-cn-' + i); return { r: r?r.value:'', n: n?n.value:'' }; });
     _dd.awards   = (_dd.awards||[]).map((_, i) => { const a = document.getElementById('d-aa-' + i), d = document.getElementById('d-ad-' + i); return { a: a?a.value:'', d: d?d.value:'' }; });
-    _dd.next = { id: g('d-nxt-id'), title: g('d-nxt-title'), ty: g('d-nxt-ty'), img: g('d-nxt-img') };
 }
 
 // ─── DYNAMIC LISTS ────────────────────────────────────
