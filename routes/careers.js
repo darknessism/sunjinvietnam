@@ -35,7 +35,7 @@ function toCareer(r) {
         level:        r.level,
         type:         r.type,
         salary:       r.salary,
-        deadline:     r.deadline ? String(r.deadline).slice(0, 10) : null,
+        deadline:     r.deadline ? new Date(r.deadline).toISOString().slice(0, 10) : null,
         coverImage:   r.cover_image,
         description:  r.description,
         requirements: r.requirements,

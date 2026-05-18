@@ -87,14 +87,14 @@ router.put('/projects/:id/detail', async (req, res, next) => {
         await pool.query(
             `INSERT INTO project_details
                (project_id, title_plain, title_display, category_label, year_loc, award,
-                images, lead, photo1_alt, photo1_cap, photo2_alt, photo2_cap, photo3_alt, photo3_cap,
+                images, \`lead\`, photo1_alt, photo1_cap, photo2_alt, photo2_cap, photo3_alt, photo3_cap,
                 narrative1, narrative2, highlights, specs, credits, awards_list,
                 next_id, next_title, next_type, next_img)
              VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?)
              ON DUPLICATE KEY UPDATE
                title_plain=VALUES(title_plain), title_display=VALUES(title_display),
                category_label=VALUES(category_label), year_loc=VALUES(year_loc), award=VALUES(award),
-               images=VALUES(images), lead=VALUES(lead),
+               images=VALUES(images), \`lead\`=VALUES(\`lead\`),
                photo1_alt=VALUES(photo1_alt), photo1_cap=VALUES(photo1_cap),
                photo2_alt=VALUES(photo2_alt), photo2_cap=VALUES(photo2_cap),
                photo3_alt=VALUES(photo3_alt), photo3_cap=VALUES(photo3_cap),
@@ -178,11 +178,11 @@ router.put('/blog/:id/content', async (req, res, next) => {
         const j = JSON.stringify.bind(JSON);
         await pool.query(
             `INSERT INTO blog_content
-               (post_id, lead, body, pull_quote, pull_quote_cite, figure_image,
+               (post_id, \`lead\`, body, pull_quote, pull_quote_cite, figure_image,
                 figure_caption, body_after_figure, tags, related_posts)
              VALUES (?,?,?,?,?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
-               lead=VALUES(lead), body=VALUES(body),
+               \`lead\`=VALUES(\`lead\`), body=VALUES(body),
                pull_quote=VALUES(pull_quote), pull_quote_cite=VALUES(pull_quote_cite),
                figure_image=VALUES(figure_image), figure_caption=VALUES(figure_caption),
                body_after_figure=VALUES(body_after_figure), tags=VALUES(tags),
@@ -279,7 +279,7 @@ router.post('/seed', async (req, res, next) => {
                 await pool.query(
                     `INSERT IGNORE INTO project_details
                        (project_id,title_plain,title_display,category_label,year_loc,award,
-                        images,lead,photo1_alt,photo1_cap,photo2_alt,photo2_cap,photo3_alt,photo3_cap,
+                        images,\`lead\`,photo1_alt,photo1_cap,photo2_alt,photo2_cap,photo3_alt,photo3_cap,
                         narrative1,narrative2,highlights,specs,credits,awards_list,
                         next_id,next_title,next_type,next_img)
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
@@ -309,7 +309,7 @@ router.post('/seed', async (req, res, next) => {
                 const j = JSON.stringify.bind(JSON);
                 await pool.query(
                     `INSERT IGNORE INTO blog_content
-                       (post_id,lead,body,pull_quote,pull_quote_cite,figure_image,
+                       (post_id,\`lead\`,body,pull_quote,pull_quote_cite,figure_image,
                         figure_caption,body_after_figure,tags,related_posts)
                      VALUES (?,?,?,?,?,?,?,?,?,?)`,
                     [bid, c.lead, j(c.body), c.pullQuote, c.pullQuoteCite,
@@ -417,7 +417,7 @@ function toCareer(r) {
         level:        r.level,
         type:         r.type,
         salary:       r.salary,
-        deadline:     r.deadline ? String(r.deadline).slice(0, 10) : null,
+        deadline:     r.deadline ? new Date(r.deadline).toISOString().slice(0, 10) : null,
         coverImage:   r.cover_image,
         description:  r.description,
         requirements: r.requirements,
