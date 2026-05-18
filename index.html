@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNJIN VIETNAM | Architecture & Design</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Jost', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0a0a',
+                        light: '#f5f5f5',
+                        accent: '#888888'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Animations */
+        body {
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+            cursor: none; /* Custom cursor */
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        @keyframes spin360 {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .spin-icon {
+            animation: spin360 8s linear infinite;
+            display: inline-block;
+        }
+        #proj-window {
+            width: min(525px, 43.5vw);
+        }
+        @media (hover: none), (pointer: coarse) {
+            .cursor-dot, .cursor-outline {
+                display: none !important;
+            }
+        }
+        @media (max-width: 768px) {
+            #proj-window {
+                width: 82vw;
+            }
+        }
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid white;
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+        .cursor-hover .cursor-dot {
+            width: 0;
+            height: 0;
+        }
+        .cursor-hover .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-fade {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .reveal-fade.active {
+            opacity: 1;
+        }
+
+        /* Hero Text Rotation */
+        .word-cycler {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            vertical-align: bottom;
+            height: 1.2em;
+        }
+        .word-cycler span {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            transition: top 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            opacity: 0;
+        }
+        .word-cycler span.active {
+            top: 0;
+            opacity: 1;
+        }
+        .word-cycler span.prev {
+            top: -100%;
+            opacity: 0;
+        }
+
+        /* Image Parallax slightly */
+        .img-wrapper {
+            overflow: hidden;
+        }
+        .img-wrapper img {
+            transition: transform 0.7s ease;
+        }
+        .img-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Project Accordion */
+        .project-row {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .project-row:hover {
+            background-color: rgba(255,255,255,0.03);
+        }
+        .project-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0, 1, 0, 1);
+        }
+        .project-row.active .project-content {
+            max-height: 2500px; /* Increased to completely prevent text cropping */
+            transition: max-height 0.8s ease-in-out;
+        }
+        .project-row.active .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        /* Fullscreen Menu */
+        #menu-overlay {
+            clip-path: circle(0% at 100% 0);
+            transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        #menu-overlay.open {
+            clip-path: circle(150% at 100% 0);
+        }
+        
+        /* Links Hover Effect */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Culture Box Active State */
+        .culture-box.active {
+            background-color: white;
+            color: #0a0a0a;
+        }
+        .culture-box.active .box-number {
+            color: #0a0a0a;
+        }
+        .culture-box.active .box-link {
+            opacity: 1;
+        }
+
+        /* Nav hide/show on scroll */
+        nav {
+            transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.4s ease;
+        }
+        nav.nav-hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-dark">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
+        <a href="#"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+        
+        <div class="flex items-center gap-6">
+            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()">
+                Let's Discuss
+            </button>
+            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Menu</button>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Menu -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
+        <div class="flex justify-between items-center mix-blend-normal">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Close</button>
+        </div>
+        <div class="flex-1 flex items-center justify-center">
+            <ul class="text-center space-y-2 md:space-y-6">
+                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Home</a></li>
+                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">About</a></li>
+                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Projects</a></li>
+                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Blogs</a></li>
+                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Careers</a></li>
+            </ul>
+        </div>
+        <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
+            <div><a href="#" class="hover:text-white interactive">LinkedIn</a></div>
+            <div class="text-right">
+                <p>TRUYENTHONG@SUNJINVIETNAM.VN</p>
+                <p>2ND FLOOR-3A, N07-B2, CAU GIAY</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal (Hidden by default) -->
+    <div id="contact-modal" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+        <div class="bg-[#111] border border-white/10 w-full max-w-2xl p-8 md:p-12 relative rounded-xl transform translate-y-10 transition-transform duration-500" id="contact-content">
+            <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <h2 class="font-display text-3xl md:text-5xl mb-8">Message us.</h2>
+            <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="tel" placeholder="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <div class="relative w-full" id="custom-select-wrapper">
+                        <input type="hidden" name="interest" id="interest-value" required>
+                        <button type="button" id="interest-btn"
+                            class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center focus:outline-none focus:border-white transition-colors bg-transparent"
+                            onclick="toggleInterestDropdown()">
+                            <span id="interest-label">Your Interest</span>
+                            <svg class="w-4 h-4 text-white/40 transition-transform duration-200" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <ul id="interest-dropdown"
+                            class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Partnership</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Media</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">General</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <textarea placeholder="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">
+                    Submit now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mega Section (Hero + Methodology) -->
+    <section id="mega-section" class="relative bg-white text-dark w-full" style="height: 1000vh;">
+        <div class="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+            
+            <!-- Horizontal Track -->
+            <div id="horizontal-track" class="flex w-[300vw] h-full will-change-transform">
+                
+                <!-- Slide 1 (Includes Hero Transition) -->
+                <div class="relative w-[100vw] h-full shrink-0 flex items-center justify-center">
+                    
+                    <!-- HERO MEDIA (Background that shrinks via Clip Path) -->
+                    <div id="hero-media" class="absolute z-0 overflow-hidden will-change-[clip-path] inset-0" style="clip-path: inset(0px 0px 0px 0px round 0px);">
+                        <div class="absolute inset-0 bg-dark z-[-1]"></div>
+                        <!-- Videos -->
+                        <video class="hero-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100" src="https://videos.pexels.com/video-files/19798518/19798518-hd_1920_1080_30fps.mp4" autoplay loop muted playsinline></video>
+                        <video class="hero-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" src="https://videos.pexels.com/video-files/6890371/6890371-hd_1920_1080_30fps.mp4" autoplay loop muted playsinline></video>
+                        <video class="hero-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" src="https://videos.pexels.com/video-files/12248558/12248558-uhd_2560_1440_25fps.mp4" autoplay loop muted playsinline></video>
+                        <div id="hero-gradient" class="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent transition-opacity duration-500"></div>
+                    </div>
+
+                    <!-- HERO TEXT (Fades Out on scroll) -->
+                    <div id="hero-text-content" class="absolute inset-0 z-10 flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-16 md:pb-28 w-full h-full">
+                        <h1 class="font-display text-3xl md:text-7xl lg:text-[70px] font-normal leading-[1.1] tracking-tight reveal-up text-white">
+                            Architecture<br/>
+                            <div id="hero-words" class="word-cycler w-full h-[2.6em] md:h-[1.2em] relative align-bottom">
+                                <span class="active text-white text-base md:text-[inherit] lg:text-[40px]">
+                                    is not about space but about time. — Vito Acconci
+                                    <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <span class="text-white text-base md:text-[inherit] lg:text-[40px]">
+                                    is the will of an epoch translated into space. — Ludwig Mies
+                                    <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <span class="text-white text-base md:text-[inherit] lg:text-[40px]">
+                                    is a visual art, and the buildings speak for themselves. — Julia Morgan
+                                    <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </h1>
+                        
+                        <!-- Progress Line -->
+                        <div class="w-full h-[1px] bg-white/30 relative mt-4 md:mt-16 mb-3 md:mb-8 reveal-fade" style="transition-delay: 0.6s">
+                            <div id="hero-progress" class="absolute top-[-1px] left-0 h-[3px] bg-white w-0 origin-left will-change-[width]"></div>
+                        </div>
+                        
+                        <!-- Bottom Grid -->
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 text-sm md:text-base font-light text-white reveal-up" style="transition-delay: 0.8s">
+                            <div id="hero-counter" class="w-full md:w-1/6 font-display">
+                                01 / 03
+                            </div>
+                            <div class="w-full md:w-4/6">
+                                <p class="max-w-2xl text-left text-white/90 leading-relaxed md:pl-8">
+                                    Every land has its own story to tell. Architecture does not impose beauty upon a place; it discovers the masterpiece that the site already contains.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/6 text-left md:text-right uppercase tracking-widest text-xs md:text-sm">
+                                Scroll to explore
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 1 TEXT CONTENT (Fades In on scroll) -->
+                    <div id="slide1-content" class="absolute inset-0 z-20 w-full h-full flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 opacity-0 pointer-events-none">
+                        <div class="w-full max-w-4xl text-center mb-4">
+                            <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
+                                Tradition Guiding The Foundation Of Design
+                            </h2>
+                            <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
+                                SUNJIN VIETNAM begins by listening to the story of each place. Within every landscape live memories, emotions, and the traces of those who came before. By listening closely, the design is gently carved from the land itself, sculpted by the stories it wishes to tell and shaped into spaces that carry Vietnam's identity forward.
+                            </p>
+                        </div>
+
+                        <!-- Media Placeholder -->
+                        <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
+                            <div id="media-placeholder" class="w-full max-w-2xl aspect-[16/9] md:aspect-[21/9] rounded-[32px] overflow-hidden relative group">
+                                <img src="https://images.unsplash.com/photo-1615406020658-6c4b805f1f30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Traditionally" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-14 right-6 md:right-16 font-display text-[56px] md:text-[80px] font-light leading-none flex items-start text-gray-800">
+                            01
+                            <svg class="w-6 h-6 md:w-10 md:h-10 ml-2 mt-2 md:mt-4 text-black spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="w-[100vw] h-full relative flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 shrink-0 bg-white">
+                    <div class="w-full max-w-4xl text-center mb-4">
+                        <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
+                            Translating Heritage Into Living Contemporary Design
+                        </h2>
+                        <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
+                            SUNJIN VIETNAM's designs live within the rhythm of its time. Social change, evolving ways of life, technology, and environmental responsibility shape each project. Though built in concrete or steel, the spaces remain alive. Their meaning continues to grow as the world around them changes.
+                        </p>
+                    </div>
+                    <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
+                        <div class="w-full max-w-2xl aspect-[16/9] md:aspect-[21/9] rounded-[32px] overflow-hidden relative group">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Skyscraper" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="absolute bottom-14 right-6 md:right-16 font-display text-[56px] md:text-[80px] font-light leading-none flex items-start text-gray-800">
+                        02
+                        <svg class="w-6 h-6 md:w-10 md:h-10 ml-2 mt-2 md:mt-4 text-black spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="w-[100vw] h-full relative flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 shrink-0 bg-white">
+                    <div class="w-full max-w-4xl text-center mb-4">
+                        <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
+                            Celebrating Singular Vision Through Creative Design
+                        </h2>
+                        <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
+                            Creativity is the design force behind SUNJIN VIETNAM's methodology. Each project begins with a powerful idea that guides the entire vision. We explore new possibilities in space, form, and material. From this process emerges architecture that reflects identity and resonates with context, time, and emotion.
+                        </p>
+                    </div>
+                    <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
+                        <div class="w-full max-w-2xl aspect-[16/9] md:aspect-[21/9] rounded-[32px] overflow-hidden relative group">
+                            <img src="https://plus.unsplash.com/premium_photo-1661883964999-c1bcb57a7357?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Creative Building" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer">
+                                <span class="text-white uppercase tracking-widest text-sm">[Explore SUNJIN VIETNAM]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-14 right-6 md:right-16 font-display text-[56px] md:text-[80px] font-light leading-none flex items-start text-gray-800">
+                        03
+                        <svg class="w-6 h-6 md:w-10 md:h-10 ml-2 mt-2 md:mt-4 text-black spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Fixed Bottom Nav Indicator -->
+            <div id="methodology-nav" class="absolute bottom-4 left-0 right-0 z-30 px-6 md:px-12 lg:px-16 w-full max-w-6xl mx-auto opacity-0 pointer-events-none transition-opacity duration-500">
+                <div class="relative w-full border-t border-gray-200">
+                    <!-- Scroll progress line -->
+                    <div id="nav-progress-line" class="absolute top-[4px] left-0 h-[2px] bg-black w-0 will-change-[width]"></div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="methodology-nav-item border-t-2 border-black text-black pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 -mt-[1px]">TRADITIONALLY</div>
+                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-center -mt-[1px]">CONTEMPORARILY</div>
+                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-right -mt-[1px]">CREATIVELY</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Projects Scroll Section -->
+    <section id="projects-section" class="relative" style="height: 700vh;">
+        <div class="sticky top-0 h-screen overflow-hidden bg-black">
+
+            <!-- Full-screen Backgrounds (crossfade) -->
+            <div class="absolute inset-0 z-0">
+                <div class="proj-bg absolute inset-0" style="opacity:1;">
+                    <img src="https://sunjin-vietnam.vercel.app/images/sipaphin.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
+                </div>
+                <div class="proj-bg absolute inset-0" style="opacity:0;">
+                    <img src="https://plus.unsplash.com/premium_photo-1697730007755-86770b6cd276?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
+                </div>
+                <div class="proj-bg absolute inset-0" style="opacity:0;">
+                    <img src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
+                </div>
+                <div class="proj-bg absolute inset-0" style="opacity:0;">
+                    <img src="https://images.unsplash.com/photo-1554793000-245d3a3c2a51?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
+                </div>
+                <div class="proj-bg absolute inset-0" style="opacity:0;">
+                    <img src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
+                </div>
+            </div>
+
+            <!-- Top: Section label + Counter -->
+            <div class="absolute top-8 md:top-10 left-8 md:left-16 z-30">
+                <span class="text-xs tracking-[0.2em] uppercase text-white/40">Selected Works</span>
+            </div>
+            <div class="absolute top-8 md:top-10 right-8 md:right-16 z-30">
+                <span id="proj-counter" class="font-display text-sm text-white/40 tabular-nums">01 / 05</span>
+            </div>
+
+            <!-- Center: Masked image window -->
+            <div id="proj-window"
+                 class="absolute z-10 overflow-hidden rounded-[20px] md:rounded-[28px] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-white/10"
+                 style="aspect-ratio: 16/9; top: 46%; left: 50%; transform: translate(-50%, -50%);">
+                <!-- Stacked images: crossfade via opacity -->
+                <div id="proj-img-strip" class="absolute inset-0 w-full h-full">
+                    <img src="https://sunjin-vietnam.vercel.app/images/sipaphin.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:1;" />
+                    <img src="https://plus.unsplash.com/premium_photo-1697730007755-86770b6cd276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img src="https://images.unsplash.com/photo-1554793000-245d3a3c2a51?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                </div>
+            </div>
+
+            <!-- Bottom: Project info (left) + Year (right) -->
+            <div class="absolute bottom-0 left-0 right-0 z-20 px-8 md:px-16 pb-10 md:pb-14 flex justify-between items-end">
+
+                <!-- Left: number + name + description -->
+                <div class="relative flex-1 min-w-0 mr-6" style="height: 150px;">
+                    <div class="proj-info-item absolute bottom-0 left-0 w-full will-change-transform">
+                        <span class="block text-xs text-white/40 uppercase tracking-[0.2em] font-mono mb-2">Trường Liên cấp Tiểu học & THCS</span>
+                        <h3 class="font-display text-3xl md:text-4xl text-white leading-tight mb-2">Si Pa Phìn</h3>
+                        <p class="text-sm text-white/55 leading-relaxed max-w-[300px]">Sự kết hợp hài hòa giữa kiến trúc bản địa và tư duy thiết kế đương đại, tạo nên không gian học tập hiện đại, an toàn và giàu tính nhân văn cho vùng cao biên giới.</p>
+                    </div>
+                    <div class="proj-info-item absolute bottom-0 left-0 w-full will-change-transform" style="opacity:0;">
+                        <span class="block text-xs text-white/40 uppercase tracking-[0.2em] font-mono mb-2">Tổ hợp khách sạn 5 sao</span>
+                        <h3 class="font-display text-3xl md:text-4xl text-white leading-tight mb-2">Lanexang Avani</h3>
+                        <p class="text-sm text-white/55 leading-relaxed max-w-[300px]">Khách sạn Lanexang nằm tại trung tâm thủ đô Vientiane, nơi văn hóa hội tụ thì kiến trúc mái nhiều tầng ngay tại mái hiên của khách sạn tạo nên vẻ đẹp độc đáo và mang đậm bản sắc văn hóa Lào.</p>
+                    </div>
+                    <div class="proj-info-item absolute bottom-0 left-0 w-full will-change-transform" style="opacity:0;">
+                        <span class="block text-xs text-white/40 uppercase tracking-[0.2em] font-mono mb-2">Khu Đô thị mới Đại Kim</span>
+                        <h3 class="font-display text-3xl md:text-4xl text-white leading-tight mb-2">CT3 Tower</h3>
+                        <p class="text-sm text-white/55 leading-relaxed max-w-[300px]">Tổ hợp đô thị hiện đại với ngôn ngữ kiến trúc mạnh mẽ, kết hợp hài hòa giữa không gian sống, cảnh quan xanh và tiện ích cộng đồng, giàu tính kết nối giữa lòng đô thị năng động.</p>
+                    </div>
+                    <div class="proj-info-item absolute bottom-0 left-0 w-full will-change-transform" style="opacity:0;">
+                        <span class="block text-xs text-white/40 uppercase tracking-[0.2em] font-mono mb-2">Entertainment Venue</span>
+                        <h3 class="font-display text-3xl md:text-4xl text-white leading-tight mb-2">S2 Arena</h3>
+                        <p class="text-sm text-white/55 leading-relaxed max-w-[300px]">Enveloped in a dragon-scale façade inspired by the Vietnamese legend of the Dragon and Fairy, transforming a sacred origin story into a contemporary expression of national identity.</p>
+                    </div>
+                    <div class="proj-info-item absolute bottom-0 left-0 w-full will-change-transform" style="opacity:0;">
+                        <span class="block text-xs text-white/40 uppercase tracking-[0.2em] font-mono mb-2">Residential Tower</span>
+                        <h3 class="font-display text-3xl md:text-4xl text-white leading-tight mb-2">Aurora Tower</h3>
+                        <p class="text-sm text-white/55 leading-relaxed max-w-[300px]">Rising 69 storeys high, Aurora flirts with the sun, becoming a meeting point between humanity and the natural world.</p>
+                    </div>
+                </div>
+
+                <!-- Right: Year -->
+                <div class="relative flex-shrink-0">
+                    <div class="proj-year-item absolute bottom-0 right-0 text-right will-change-transform"><p class="font-display text-4xl md:text-7xl text-white leading-none">2025</p></div>
+                    <div class="proj-year-item absolute bottom-0 right-0 text-right will-change-transform" style="opacity:0;"><p class="font-display text-4xl md:text-7xl text-white leading-none">2023</p></div>
+                    <div class="proj-year-item absolute bottom-0 right-0 text-right will-change-transform" style="opacity:0;"><p class="font-display text-4xl md:text-7xl text-white leading-none">2022</p></div>
+                    <div class="proj-year-item absolute bottom-0 right-0 text-right will-change-transform" style="opacity:0;"><p class="font-display text-4xl md:text-7xl text-white leading-none">2027</p></div>
+                    <div class="proj-year-item absolute bottom-0 right-0 text-right will-change-transform" style="opacity:0;"><p class="font-display text-4xl md:text-7xl text-white leading-none">2028</p></div>
+                    <!-- Spacer so the container has a measured height -->
+                    <p class="font-display text-4xl md:text-7xl text-white leading-none invisible select-none">2027</p>
+                </div>
+            </div>
+
+            <!-- Progress dots -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-1.5 items-center">
+                <div class="proj-dot h-[3px] rounded-full bg-white transition-all duration-300" style="width:24px;"></div>
+                <div class="proj-dot h-[3px] rounded-full transition-all duration-300" style="width:8px; background:rgba(255,255,255,0.3);"></div>
+                <div class="proj-dot h-[3px] rounded-full transition-all duration-300" style="width:8px; background:rgba(255,255,255,0.3);"></div>
+                <div class="proj-dot h-[3px] rounded-full transition-all duration-300" style="width:8px; background:rgba(255,255,255,0.3);"></div>
+                <div class="proj-dot h-[3px] rounded-full transition-all duration-300" style="width:8px; background:rgba(255,255,255,0.3);"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <div style="display:none;" id="projects-accordion">
+            <!-- Project 1 -->
+            <div class="project-row group interactive cursor-pointer py-8 md:py-10 reveal-up" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center w-full px-6 md:px-16 lg:px-24">
+                    <div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                        <span class="text-gray-600 text-sm md:text-base font-light">1</span>
+                        <h3 class="font-display text-3xl md:text-6xl font-medium tracking-tight group-hover:italic transition-all duration-300 text-white/90 group-hover:text-white">TRƯỜNG LIÊN CẤP TIỂU HỌC & THCS</h3>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <span class="text-xs uppercase tracking-widest text-gray-500 hidden md:block">[Click to show]</span>
+                        <div class="toggle-icon transition-transform duration-300 w-4 h-4 relative">
+                            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-white transform -translate-y-1/2"></span>
+                            <span class="absolute top-0 left-1/2 w-[1px] h-full bg-white transform -translate-x-1/2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
+                        <!-- Atmospheric Full-Screen Background -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        </div>
+                        
+                        <!-- Central Thumbnail -->
+                        <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Isola Della Musica">
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="relative z-20 flex flex-col md:flex-row justify-between items-end px-6 md:px-16 lg:px-24 pb-16 md:pb-24 gap-8 w-full">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="font-display text-5xl md:text-[90px] lg:text-[110px] font-normal tracking-tight text-white flex items-start gap-4 mb-4 leading-none">
+                                    SI PA PHÌN
+                                    <svg class="w-8 h-8 md:w-12 md:h-12 mt-2 md:mt-4 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="8" height="8" />
+                                        <rect x="14" y="2" width="8" height="8" />
+                                        <rect x="2" y="14" width="8" height="8" />
+                                        <rect x="14" y="14" width="8" height="8" />
+                                    </svg>
+                                </h4>
+                                <p class="text-white/90 text-sm md:text-lg font-light max-w-xl leading-relaxed">
+                                    Sự kết hợp hài hòa giữa kiến trúc bản địa và tư duy thiết kế đương đại, tạo nên không gian học tập hiện đại, an toàn và giàu tính nhân văn cho vùng cao biên giới.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/3 flex flex-col items-start md:items-end pb-1">
+                                <p class="font-display text-7xl md:text-[120px] lg:text-[140px] text-white font-normal leading-none tracking-tight mb-2 md:mb-4">2025</p>
+                                <p class="text-xs uppercase tracking-[0.2em] text-white/90 font-medium">Completed year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-row group interactive cursor-pointer py-8 md:py-10 reveal-up" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center w-full px-6 md:px-16 lg:px-24">
+                    <div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                        <span class="text-gray-600 text-sm md:text-base font-light">2</span>
+                        <h3 class="font-display text-3xl md:text-6xl font-medium tracking-tight group-hover:italic transition-all duration-300 text-white/90 group-hover:text-white">TỔ HỢP KHÁCH SẠN 5 SAO</h3>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <span class="text-xs uppercase tracking-widest text-gray-500 hidden md:block">[Click to show]</span>
+                        <div class="toggle-icon transition-transform duration-300 w-4 h-4 relative">
+                            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-white transform -translate-y-1/2"></span>
+                            <span class="absolute top-0 left-1/2 w-[1px] h-full bg-white transform -translate-x-1/2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
+                        <!-- Atmospheric Full-Screen Background -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        </div>
+                        
+                        <!-- Central Thumbnail -->
+                        <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Lanexang Avani Plus">
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="relative z-20 flex flex-col md:flex-row justify-between items-end px-6 md:px-16 lg:px-24 pb-16 md:pb-24 gap-8 w-full">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="font-display text-5xl md:text-[90px] lg:text-[110px] font-normal tracking-tight text-white flex items-start gap-4 mb-4 leading-none">
+                                    LANEXANG AVANI
+                                    <svg class="w-8 h-8 md:w-12 md:h-12 mt-2 md:mt-4 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="8" height="8" />
+                                        <rect x="14" y="2" width="8" height="8" />
+                                        <rect x="2" y="14" width="8" height="8" />
+                                        <rect x="14" y="14" width="8" height="8" />
+                                    </svg>
+                                </h4>
+                                <p class="text-white/90 text-sm md:text-lg font-light max-w-xl leading-relaxed">
+                                    Khách sạn Lanexang nằm tại trung tâm thủ đô Vientiane, nơi văn hóa hội tụ thì kiến trúc mái nhiều tầng ngay tại mái hiên của khách sạn tạo nên vẻ đẹp độc đáo và mang đậm bản sắc văn hóa Lào.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/3 flex flex-col items-start md:items-end pb-1">
+                                <p class="font-display text-7xl md:text-[120px] lg:text-[140px] text-white font-normal leading-none tracking-tight mb-2 md:mb-4">2023</p>
+                                <p class="text-xs uppercase tracking-[0.2em] text-white/90 font-medium">Completed year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-row group interactive cursor-pointer py-8 md:py-10 reveal-up" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center w-full px-6 md:px-16 lg:px-24">
+                    <div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                        <span class="text-gray-600 text-sm md:text-base font-light">3</span>
+                        <h3 class="font-display text-3xl md:text-6xl font-medium tracking-tight group-hover:italic transition-all duration-300 text-white/90 group-hover:text-white">KHU ĐÔ THỊ MỚI ĐẠI KIM</h3>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <span class="text-xs uppercase tracking-widest text-gray-500 hidden md:block">[Click to show]</span>
+                        <div class="toggle-icon transition-transform duration-300 w-4 h-4 relative">
+                            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-white transform -translate-y-1/2"></span>
+                            <span class="absolute top-0 left-1/2 w-[1px] h-full bg-white transform -translate-x-1/2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
+                        <!-- Atmospheric Full-Screen Background -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        </div>
+                        
+                        <!-- Central Thumbnail -->
+                        <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Aspira Tower">
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="relative z-20 flex flex-col md:flex-row justify-between items-end px-6 md:px-16 lg:px-24 pb-16 md:pb-24 gap-8 w-full">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="font-display text-5xl md:text-[90px] lg:text-[110px] font-normal tracking-tight text-white flex items-start gap-4 mb-4 leading-none">
+                                    CT3
+                                    <svg class="w-8 h-8 md:w-12 md:h-12 mt-2 md:mt-4 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="8" height="8" />
+                                        <rect x="14" y="2" width="8" height="8" />
+                                        <rect x="2" y="14" width="8" height="8" />
+                                        <rect x="14" y="14" width="8" height="8" />
+                                    </svg>
+                                </h4>
+                                <p class="text-white/90 text-sm md:text-lg font-light max-w-xl leading-relaxed">
+                                    Tổ hợp đô thị hiện đại với ngôn ngữ kiến trúc mạnh mẽ, kết hợp hài hòa giữa không gian sống, cảnh quan xanh và tiện ích cộng đồng, giàu tính kết nối giữa lòng đô thị năng động.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/3 flex flex-col items-start md:items-end pb-1">
+                                <p class="font-display text-7xl md:text-[120px] lg:text-[140px] text-white font-normal leading-none tracking-tight mb-2 md:mb-4">2022</p>
+                                <p class="text-xs uppercase tracking-[0.2em] text-white/90 font-medium">Completed year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project 4 -->
+            <div class="project-row group interactive cursor-pointer py-8 md:py-10 reveal-up" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center w-full px-6 md:px-16 lg:px-24">
+                    <div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                        <span class="text-gray-600 text-sm md:text-base font-light">4</span>
+                        <h3 class="font-display text-3xl md:text-6xl font-medium tracking-tight group-hover:italic transition-all duration-300 text-white/90 group-hover:text-white">S2 Arena</h3>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <span class="text-xs uppercase tracking-widest text-gray-500 hidden md:block">[Click to show]</span>
+                        <div class="toggle-icon transition-transform duration-300 w-4 h-4 relative">
+                            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-white transform -translate-y-1/2"></span>
+                            <span class="absolute top-0 left-1/2 w-[1px] h-full bg-white transform -translate-x-1/2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
+                        <!-- Atmospheric Full-Screen Background -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        </div>
+                        
+                        <!-- Central Thumbnail -->
+                        <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="S2 Arena">
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="relative z-20 flex flex-col md:flex-row justify-between items-end px-6 md:px-16 lg:px-24 pb-16 md:pb-24 gap-8 w-full">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="font-display text-5xl md:text-[90px] lg:text-[110px] font-normal tracking-tight text-white flex items-start gap-4 mb-4 leading-none">
+                                    S2 Arena
+                                    <svg class="w-8 h-8 md:w-12 md:h-12 mt-2 md:mt-4 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="8" height="8" />
+                                        <rect x="14" y="2" width="8" height="8" />
+                                        <rect x="2" y="14" width="8" height="8" />
+                                        <rect x="14" y="14" width="8" height="8" />
+                                    </svg>
+                                </h4>
+                                <p class="text-white/90 text-sm md:text-lg font-light max-w-xl leading-relaxed">
+                                    Enveloped in a dragon-scale façade inspired by the Vietnamese legend of the Dragon and Fairy, S2 transforms a sacred origin story into a contemporary expression of national identity.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/3 flex flex-col items-start md:items-end pb-1">
+                                <p class="font-display text-7xl md:text-[120px] lg:text-[140px] text-white font-normal leading-none tracking-tight mb-2 md:mb-4">2027</p>
+                                <p class="text-xs uppercase tracking-[0.2em] text-white/90 font-medium">Completed year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-row group interactive cursor-pointer py-8 md:py-10 reveal-up border-b border-white/10" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center w-full px-6 md:px-16 lg:px-24">
+                    <div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                        <span class="text-gray-600 text-sm md:text-base font-light">5</span>
+                        <h3 class="font-display text-3xl md:text-6xl font-medium tracking-tight group-hover:italic transition-all duration-300 text-white/90 group-hover:text-white">Aurora Tower</h3>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <span class="text-xs uppercase tracking-widest text-gray-500 hidden md:block">[Click to show]</span>
+                        <div class="toggle-icon transition-transform duration-300 w-4 h-4 relative">
+                            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-white transform -translate-y-1/2"></span>
+                            <span class="absolute top-0 left-1/2 w-[1px] h-full bg-white transform -translate-x-1/2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
+                        <!-- Atmospheric Full-Screen Background -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        </div>
+                        
+                        <!-- Central Thumbnail -->
+                        <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Aurora Tower">
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="relative z-20 flex flex-col md:flex-row justify-between items-end px-6 md:px-16 lg:px-24 pb-16 md:pb-24 gap-8 w-full">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="font-display text-5xl md:text-[90px] lg:text-[110px] font-normal tracking-tight text-white flex items-start gap-4 mb-4 leading-none">
+                                    Aurora Tower
+                                    <svg class="w-8 h-8 md:w-12 md:h-12 mt-2 md:mt-4 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="8" height="8" />
+                                        <rect x="14" y="2" width="8" height="8" />
+                                        <rect x="2" y="14" width="8" height="8" />
+                                        <rect x="14" y="14" width="8" height="8" />
+                                    </svg>
+                                </h4>
+                                <p class="text-white/90 text-sm md:text-lg font-light max-w-xl leading-relaxed">
+                                    Rising 69 storeys high, Aurora flirts with the sun, becoming a meeting point between humanity and the natural world.
+                                </p>
+                            </div>
+                            <div class="w-full md:w-1/3 flex flex-col items-start md:items-end pb-1">
+                                <p class="font-display text-7xl md:text-[120px] lg:text-[140px] text-white font-normal leading-none tracking-tight mb-2 md:mb-4">2027</p>
+                                <p class="text-xs uppercase tracking-[0.2em] text-white/90 font-medium">Completed year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Culture Section -->
+    <section class="py-24 md:py-40 relative overflow-hidden">
+        <div class="px-6 md:px-16 lg:px-24 max-w-4xl mb-12 reveal-up">
+            <h2 class="font-display text-3xl md:text-5xl font-medium mb-6">A Curious, Evolving and Connected Culture</h2>
+            <p class="text-lg text-gray-400 font-light leading-relaxed">
+                At SUNJIN VIETNAM, leadership guides each individual beyond the familiar. Shared ambition builds trust, allowing teams to navigate challenges together and design with purpose.
+            </p>
+        </div>
+
+        <!-- Dynamic Culture Video Banner -->
+        <div class="px-6 md:px-16 lg:px-24 mb-12 reveal-up">
+            <div class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-[24px] md:rounded-[32px] overflow-hidden bg-dark border border-white/10 shadow-2xl">
+                <!-- Video 1 (Distinctive - Architecture Focus) -->
+                <video class="culture-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100" src="https://videos.pexels.com/video-files/3121459/3121459-uhd_2560_1440_24fps.mp4" autoplay loop muted playsinline></video>
+                <!-- Video 2 (Supportive - People/Team Focus) -->
+                <video class="culture-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" src="https://videos.pexels.com/video-files/3255275/3255275-uhd_2560_1440_25fps.mp4" autoplay loop muted playsinline></video>
+                <!-- Video 3 (Professional - Detail Focus) -->
+                <video class="culture-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" src="https://videos.pexels.com/video-files/8189164/8189164-uhd_2560_1440_25fps.mp4" autoplay loop muted playsinline></video>
+                
+                <!-- Overlay to ensure high-end feel -->
+                <div class="absolute inset-0 bg-black/20 mix-blend-multiply"></div>
+            </div>
+        </div>
+
+        <!-- Linked Culture Boxes -->
+        <div class="px-6 md:px-16 lg:px-24 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 text-center md:text-left reveal-up" id="culture-boxes-container">
+            <a href="careers.html" class="culture-box active border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
+
+                <h3 class="font-display text-3xl mb-8">Distinctive </h3> <h6></h6> We champion original perspectives, diverse backgrounds, and bold creative risks. In our studio, your unique design voice is the catalyst for our next breakthrough project.<br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br>Discover Jobs →</span>
+            </a>
+            <a href="careers.html" class="culture-box border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
+
+                <h3 class="font-display text-3xl mb-8">Supportive</h3> <h6></h6> We foster a collaborative, ego-free studio culture rooted in continuous mentorship, well-being, and the collective resources you need to bring your biggest ideas to life.<br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br>Discover Jobs →</span>
+            </a>
+            <a href="careers.html" class="culture-box border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
+
+                <h3 class="font-display text-3xl mb-8">Professional</h3> <h6></h6> We hold ourselves to the highest standards of technical excellence, commercial acumen, and client trust, ensuring our visionary concepts are executed with flawless precision.<br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br>Discover Jobs →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white text-dark">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-8 reveal-up">
+            <h2 class="font-display text-6xl md:text-8xl lg:text-[110px] font-normal leading-none tracking-tight">Blog</h2>
+            <div class="flex flex-col items-start md:items-end gap-6">
+                <p class="text-base md:text-lg lg:text-xl text-gray-600 font-light leading-relaxed max-w-lg md:max-w-xl pb-2 md:pb-4">
+                    Visionary updates, design research, and project stories that advance Vietnam's architectural future through global standards and cultural insight.
+                </p>
+                <a href="blog.html" class="inline-flex items-center gap-3 font-sans text-sm uppercase tracking-[0.2em] text-dark border-b border-dark pb-1 hover:opacity-60 transition-opacity interactive">
+                    See All Articles
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-x-6 lg:gap-x-10 gap-y-16">
+
+            <!-- 01 — Tropical Climate (7 cols, large) -->
+            <div class="md:col-span-7 reveal-up">
+                <a href="blog-detail.html?id=tropical-climate" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[16/9] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1600&q=80" alt="Tropical Climate" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Ideas]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">Designing for Tropical Climate: Principles from Southeast Asia</h4>
+                        <p class="text-gray-500 text-sm font-light">April 8, 2025</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 02 — Design Lab (5 cols, bottom-aligned) -->
+            <div class="md:col-span-5 flex flex-col justify-end reveal-up" style="transition-delay:0.1s">
+                <a href="blog-detail.html?id=design-lab" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[4/3] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=80" alt="Design Lab" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[News]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">New Design Lab Opens in Hanoi's Ba Dinh District</h4>
+                        <p class="text-gray-500 text-sm font-light">March 18, 2025</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 03 — Dezeen Spotlight (4 cols) -->
+            <div class="md:col-span-4 reveal-up">
+                <a href="blog-detail.html?id=dezeen-spotlight" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-square bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80" alt="Dezeen Spotlight" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Press Coverage]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">Dezeen Spotlight: Vietnam's Modernist Architecture Revolution</h4>
+                        <p class="text-gray-500 text-sm font-light">February 22, 2025</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 04 — SUNJIN Academy (4 cols) -->
+            <div class="md:col-span-4 reveal-up" style="transition-delay:0.1s">
+                <a href="blog-detail.html?id=sunjin-academy" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[4/3] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?auto=format&fit=crop&w=800&q=80" alt="SUNJIN Academy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Community]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">SUNJIN Academy: Training the Next Generation of Architects</h4>
+                        <p class="text-gray-500 text-sm font-light">January 30, 2025</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 05 — National Award (4 cols) -->
+            <div class="md:col-span-4 reveal-up" style="transition-delay:0.2s">
+                <a href="blog-detail.html?id=national-award" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[3/4] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80" alt="National Award" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[News]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">SUNJIN VIETNAM Receives National Architecture Silver Award</h4>
+                        <p class="text-gray-500 text-sm font-light">January 15, 2025</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 06 — Public Space (full width banner) -->
+            <div class="md:col-span-12 reveal-up" style="transition-delay:0.1s">
+                <a href="blog-detail.html?id=public-space" class="group block interactive">
+                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[21/9] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=80" alt="Public Space" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Ideas]</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">The Role of Public Space in Shaping Urban Identity</h4>
+                        <p class="text-gray-500 text-sm font-light">December 12, 2024</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
+        <!-- Top Row: Contact, Nav, Back to Top -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 md:mb-32 reveal-up">
+            <!-- Left: Contact Info -->
+            <div class="flex flex-col gap-10 md:gap-12 font-sans text-[13px] md:text-sm tracking-[0.1em] uppercase text-white/90 leading-relaxed">
+                <div>
+                    <p>E: TRUYENTHONG@SUNJINVIETNAM.VN</p>
+                    <p>P: 097 7279 066</p>
+                </div>
+                <div>
+                    <p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p>
+                    <p>CAU GIAY WARD, HA NOI,</p>
+                    <p>VIETNAM</p>
+                </div>
+            </div>
+            
+            <!-- Center: Navigation -->
+            <div class="hidden md:flex flex-col items-start md:items-center gap-2">
+                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Home</a>
+                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">About</a>
+                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Projects</a>
+                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Blogs</a>
+                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Careers</a>
+            </div>
+
+            <!-- Right: Back to Top -->
+            <div class="flex justify-start md:justify-end items-start mt-8 md:mt-0">
+                <button onclick="window.scrollTo(0,0)" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 hover:text-white interactive transition-colors flex items-center gap-2 group">
+                    BACK TO TOP 
+                    <svg class="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Logo, Info, Sun Group Logo -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay: 0.2s">
+            <!-- Left: Logo & Copyright -->
+            <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
+                <a href="#" class="interactive"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+                <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                    &copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED
+                </p>
+            </div>
+            
+            <!-- Center: Description & Horizontal Links -->
+            <div class="lg:col-span-6 flex flex-col justify-between h-full gap-10 lg:gap-16">
+                <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">
+                    SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.
+                </p>
+                <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                    <a href="#" class="hover-underline interactive">LINKEDIN</a>
+                    <a href="#" class="hover-underline interactive">PRIVACY POLICY</a>
+                    <a href="#" class="hover-underline interactive">TERMS OF SERVICE</a>
+                </div>
+            </div>
+
+            
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Custom Cursor Logic
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+        const interactives = document.querySelectorAll('.interactive, a, button');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows exactly
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
+
+            // Outline follows with a slight delay using requestAnimationFrame
+            outline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover effect for links/buttons
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        // Scroll Reveal Animations using Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal-up, .reveal-fade');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Hero text elements are at the bottom of the viewport and fall within the
+        // rootMargin exclusion zone (-50px), so activate them directly on load.
+        setTimeout(() => {
+            document.querySelectorAll('#hero-text-content .reveal-up, #hero-text-content .reveal-fade').forEach(el => {
+                el.classList.add('active');
+            });
+        }, 100);
+
+        // Hero Banner Continuous Sync Logic (Videos, Text, Progress, Counter)
+        const videos = document.querySelectorAll('.hero-video');
+        const heroWordsContainer = document.getElementById('hero-words');
+        const heroCounter = document.getElementById('hero-counter');
+        const progressBar = document.getElementById('hero-progress');
+
+        if (videos.length > 0 && heroWordsContainer && heroCounter && progressBar) {
+            const spans = heroWordsContainer.querySelectorAll('span');
+            let currentSlide = 0;
+            const totalSlides = spans.length;
+            const slideDuration = 6000; // 6 seconds per slide
+            let slideStartTime = performance.now();
+
+            function updateHero(currentTime) {
+                const elapsed = currentTime - slideStartTime;
+                let progress = (elapsed / slideDuration) * 100;
+
+                if (progress >= 100) {
+                    // Reset progress for next slide
+                    progress = 0;
+                    slideStartTime = currentTime;
+                    
+                    // Transition OUT old slide
+                    videos[currentSlide].classList.replace('opacity-100', 'opacity-0');
+                    spans[currentSlide].classList.remove('active');
+                    spans[currentSlide].classList.add('prev');
+                    
+                    // Increment Slide Index
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    
+                    // Transition IN new slide
+                    videos[currentSlide].classList.replace('opacity-0', 'opacity-100');
+                    spans[currentSlide].classList.remove('prev');
+                    spans[currentSlide].classList.add('active');
+                    
+                    // Update counter text
+                    heroCounter.innerText = `0${currentSlide + 1} / 0${totalSlides}`;
+
+                    // Clean up animation classes for text
+                    setTimeout(() => {
+                        spans.forEach((span, idx) => {
+                            if(idx !== currentSlide) {
+                                span.classList.remove('prev');
+                            }
+                        });
+                    }, 500);
+                }
+
+                // Smoothly update progress bar width
+                progressBar.style.width = `${progress}%`;
+
+                // Loop
+                requestAnimationFrame(updateHero);
+            }
+
+            // Start the loop
+            requestAnimationFrame(updateHero);
+        }
+
+        // Scroll Sync for Mega Section (Hero Intro + Methodology Horizontal Scroll)
+        const megaSection = document.getElementById('mega-section');
+        const horizontalTrack = document.getElementById('horizontal-track');
+        const navItems = document.querySelectorAll('.methodology-nav-item');
+        
+        const heroMedia = document.getElementById('hero-media');
+        const heroText = document.getElementById('hero-text-content');
+        const slide1Text = document.getElementById('slide1-content');
+        const methNav = document.getElementById('methodology-nav');
+        const heroGradient = document.getElementById('hero-gradient');
+        const placeholder = document.getElementById('media-placeholder');
+
+        const navProgressLine = document.getElementById('nav-progress-line');
+
+        let currentTranslate = 0;
+        let targetTranslate = 0;
+        let currentProgressHero = 0;
+        let targetProgressHero = 0;
+        let currentNavProgress = 0;
+        let targetNavProgress = 0;
+
+        let targetClip = { top: 0, right: 0, bottom: 0, left: 0, radius: 32 };
+        
+        // Dynamically compute where the full-screen hero box needs to "shrink" down into
+        function updateClipTarget() {
+            if (!placeholder) return;
+            const rect = placeholder.getBoundingClientRect();
+            targetClip.top = rect.top;
+            targetClip.left = rect.left;
+            targetClip.right = window.innerWidth - rect.right;
+            targetClip.bottom = window.innerHeight - rect.bottom;
+            targetClip.radius = window.innerWidth < 768 ? 16 : 32;
+        }
+        
+        if (placeholder) {
+            window.addEventListener('resize', updateClipTarget);
+            updateClipTarget();
+        }
+
+        if (megaSection && horizontalTrack) {
+            window.addEventListener('scroll', () => {
+                const offsetTop = megaSection.offsetTop;
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+                
+                // Phase 1: Hero Shrink Transformation (0 to 100vh)
+                if (scrollY >= offsetTop && scrollY <= offsetTop + windowHeight) {
+                    targetProgressHero = (scrollY - offsetTop) / windowHeight;
+                } else if (scrollY > offsetTop + windowHeight) {
+                    targetProgressHero = 1;
+                } else {
+                    targetProgressHero = 0;
+                }
+
+                // Phase 2: Horizontal Scroll (Extended for slower, readable transitions with snap jumping)
+                const scrollHorizStart = offsetTop + windowHeight;
+                const maxHorizScroll = 8 * windowHeight; 
+                
+                if (scrollY >= scrollHorizStart && scrollY <= scrollHorizStart + maxHorizScroll) {
+                    let progress = (scrollY - scrollHorizStart) / maxHorizScroll;
+                    
+                    // Logic to hold the slide steady, then quickly jump to the next
+                    if (progress < 0.30) {
+                        targetTranslate = 0; // Hold Slide 1
+                    } else if (progress < 0.35) {
+                        // Smoothly transition from Slide 1 to 2
+                        let t_local = (progress - 0.30) / 0.05;
+                        t_local = t_local < 0.5 ? 4 * t_local * t_local * t_local : 1 - Math.pow(-2 * t_local + 2, 3) / 2; // easeInOutCubic
+                        targetTranslate = t_local * 100;
+                    } else if (progress < 0.65) {
+                        targetTranslate = 100; // Hold Slide 2
+                    } else if (progress < 0.70) {
+                        // Smoothly transition from Slide 2 to 3
+                        let t_local = (progress - 0.65) / 0.05;
+                        t_local = t_local < 0.5 ? 4 * t_local * t_local * t_local : 1 - Math.pow(-2 * t_local + 2, 3) / 2;
+                        targetTranslate = 100 + (t_local * 100);
+                    } else {
+                        targetTranslate = 200; // Hold Slide 3
+                    }
+                    
+                    // Drive the progress line (0 → 100% across all 3 slides)
+                    targetNavProgress = progress * 100;
+
+                    // Update active nav indicators based on horizontal progress thresholds
+                    navItems.forEach((item, index) => {
+                        const isActive =
+                            (index === 0 && progress < 0.325) ||
+                            (index === 1 && progress >= 0.325 && progress < 0.675) ||
+                            (index === 2 && progress >= 0.675);
+
+                        if (isActive) {
+                            item.classList.add('border-black', 'text-black');
+                            item.classList.remove('border-transparent', 'text-gray-400');
+                        } else {
+                            item.classList.remove('border-black', 'text-black');
+                            item.classList.add('border-transparent', 'text-gray-400');
+                        }
+                    });
+                } else if (scrollY < scrollHorizStart) {
+                    targetTranslate = 0;
+                    targetNavProgress = 0;
+                    navItems.forEach((item, i) => {
+                        if (i === 0) {
+                            item.classList.add('border-black', 'text-black');
+                            item.classList.remove('border-transparent', 'text-gray-400');
+                        } else {
+                            item.classList.remove('border-black', 'text-black');
+                            item.classList.add('border-transparent', 'text-gray-400');
+                        }
+                    });
+                } else {
+                    targetTranslate = 200;
+                }
+            });
+
+            function smoothScroll() {
+                // Horizontal Track Lerp
+                currentTranslate += (targetTranslate - currentTranslate) * 0.1;
+                horizontalTrack.style.transform = `translateX(-${currentTranslate}vw)`;
+
+                // Nav progress line Lerp
+                currentNavProgress += (targetNavProgress - currentNavProgress) * 0.1;
+                if (navProgressLine) navProgressLine.style.width = `${currentNavProgress}%`;
+
+                // Hero Intro Morph Lerp
+                currentProgressHero += (targetProgressHero - currentProgressHero) * 0.1;
+                const t = currentProgressHero;
+
+                // Sync Opacities dynamically to scroll
+                let heroTextOp = 1 - (t * 2);
+                heroTextOp = Math.max(0, Math.min(1, heroTextOp));
+                if(heroText) {
+                    heroText.style.opacity = heroTextOp;
+                    heroText.style.pointerEvents = heroTextOp > 0.1 ? 'auto' : 'none';
+                }
+                if(heroGradient) heroGradient.style.opacity = heroTextOp;
+                
+                let slide1Op = (t - 0.5) * 2;
+                slide1Op = Math.max(0, Math.min(1, slide1Op));
+                if(slide1Text) {
+                    slide1Text.style.opacity = slide1Op;
+                    slide1Text.style.pointerEvents = slide1Op > 0.1 ? 'auto' : 'none';
+                }
+                if(methNav) {
+                    methNav.style.opacity = slide1Op;
+                    methNav.style.pointerEvents = slide1Op > 0.1 ? 'auto' : 'none';
+                }
+
+                // Smoothly calculate bounding crop edges using Clip-Path inset
+                if(heroMedia && placeholder) {
+                    const insetT = targetClip.top * t;
+                    const insetR = targetClip.right * t;
+                    const insetB = targetClip.bottom * t;
+                    const insetL = targetClip.left * t;
+                    const rad = targetClip.radius * t;
+                    
+                    heroMedia.style.clipPath = `inset(${insetT}px ${insetR}px ${insetB}px ${insetL}px round ${rad}px)`;
+                    
+                    // Fade out the hero media completely at the very end to reveal the real photo
+                    if (t > 0.95) {
+                        heroMedia.style.opacity = 1 - ((t - 0.95) * 20);
+                    } else {
+                        heroMedia.style.opacity = 1;
+                    }
+                }
+
+                requestAnimationFrame(smoothScroll);
+            }
+            
+            // Allow CSS to render placeholder size then start the smooth scroll loop
+            setTimeout(() => {
+                updateClipTarget();
+                smoothScroll(); 
+            }, 100);
+        }
+
+        // Projects Scroll Section
+        const projSection    = document.getElementById('projects-section');
+        const projBgs        = document.querySelectorAll('.proj-bg');
+        const projWindow     = document.getElementById('proj-window');
+        const projImgStrip   = document.getElementById('proj-img-strip');
+        const projSlides     = document.querySelectorAll('.proj-slide');
+        const projInfoItems  = document.querySelectorAll('.proj-info-item');
+        const projYearItems  = document.querySelectorAll('.proj-year-item');
+        const projCounter    = document.getElementById('proj-counter');
+        const projDots       = document.querySelectorAll('.proj-dot');
+        const NUM_PROJ       = 5;
+
+        let currentProjScrub = 0;
+        let targetProjScrub  = 0;
+
+        function computeProjScrub(progress) {
+            const numTrans = NUM_PROJ - 1;        // 4
+            const raw      = progress * numTrans;
+            const idx      = Math.min(Math.floor(raw), numTrans - 1);
+            const local    = raw - idx;           // 0–1 within this transition slot
+            if (local < 0.60) return idx;
+            const t = (local - 0.60) / 0.40;
+            const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+            return idx + eased;
+        }
+
+        if (projSection && projImgStrip) {
+            window.addEventListener('scroll', () => {
+                const top      = projSection.offsetTop;
+                const h        = projSection.offsetHeight;
+                const winH     = window.innerHeight;
+                const progress = Math.max(0, Math.min(1, (window.scrollY - top) / (h - winH)));
+                targetProjScrub = computeProjScrub(progress);
+            }, { passive: true });
+
+            function animateProjects() {
+                currentProjScrub += (targetProjScrub - currentProjScrub) * 0.08;
+                const s = currentProjScrub;
+                const winH = projWindow ? projWindow.clientHeight : 0;
+
+                // Image slides: crossfade + upward movement between adjacent images
+                projSlides.forEach((slide, i) => {
+                    const delta = s - i;
+                    slide.style.opacity   = Math.max(0, 1 - Math.abs(delta));
+                    slide.style.transform = `translateY(${delta * 80}px)`;
+                });
+
+                // Backgrounds: crossfade between adjacent pairs
+                projBgs.forEach((bg, i) => {
+                    bg.style.opacity = Math.max(0, 1 - Math.abs(s - i));
+                });
+
+                // Info text: each item slides up and fades
+                projInfoItems.forEach((item, i) => {
+                    const delta = s - i;
+                    item.style.transform = `translateY(${-delta * 55}px)`;
+                    item.style.opacity   = Math.max(0, 1 - Math.abs(delta));
+                });
+
+                // Year text: same motion
+                projYearItems.forEach((item, i) => {
+                    const delta = s - i;
+                    item.style.transform = `translateY(${-delta * 55}px)`;
+                    item.style.opacity   = Math.max(0, 1 - Math.abs(delta));
+                });
+
+                // Counter + dots
+                const activeIdx = Math.min(NUM_PROJ - 1, Math.max(0, Math.round(s)));
+                if (projCounter) {
+                    const n = String(activeIdx + 1).padStart(2, '0');
+                    projCounter.textContent = `${n} / 0${NUM_PROJ}`;
+                }
+                projDots.forEach((dot, i) => {
+                    dot.style.width           = i === activeIdx ? '24px' : '8px';
+                    dot.style.backgroundColor = i === activeIdx ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.3)';
+                });
+
+                requestAnimationFrame(animateProjects);
+            }
+            animateProjects();
+        }
+
+        // Fullscreen Menu Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        if (menuBtn && closeMenuBtn && menuOverlay) {
+            menuBtn.addEventListener('click', () => {
+                menuOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                mainNav.classList.add('nav-hidden');
+            });
+
+            closeMenuBtn.addEventListener('click', () => {
+                menuOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+                mainNav.classList.remove('nav-hidden');
+            });
+        }
+
+        // Nav hide on scroll down, show on scroll up
+        const mainNav = document.querySelector('nav');
+        let lastScrollY = 0;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                mainNav.classList.add('nav-hidden');
+            } else {
+                mainNav.classList.remove('nav-hidden');
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // Contact Modal Logic
+        const contactModal = document.getElementById('contact-modal');
+        const contactContent = document.getElementById('contact-content');
+        
+        function openContact() {
+            if (contactModal && contactContent) {
+                contactModal.classList.remove('opacity-0', 'pointer-events-none');
+                contactContent.classList.remove('translate-y-10');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeContact() {
+            if (contactModal && contactContent) {
+                contactModal.classList.add('opacity-0', 'pointer-events-none');
+                contactContent.classList.add('translate-y-10');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function toggleInterestDropdown() {
+            const dd = document.getElementById('interest-dropdown');
+            const chevron = document.getElementById('interest-chevron');
+            const isHidden = dd.classList.contains('hidden');
+            dd.classList.toggle('hidden', !isHidden);
+            chevron.style.transform = isHidden ? 'rotate(180deg)' : '';
+        }
+
+        function selectInterest(value) {
+            document.getElementById('interest-value').value = value;
+            document.getElementById('interest-label').textContent = value;
+            document.getElementById('interest-label').classList.replace('text-white/50', 'text-white');
+            document.getElementById('interest-btn').classList.replace('text-white/50', 'text-white');
+            document.getElementById('interest-dropdown').classList.add('hidden');
+            document.getElementById('interest-chevron').style.transform = '';
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('custom-select-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('interest-dropdown').classList.add('hidden');
+                document.getElementById('interest-chevron').style.transform = '';
+            }
+        });
+        
+        // Culture Section Sync Logic (Videos & Boxes)
+        const cultureVideos = document.querySelectorAll('.culture-video');
+        const cultureBoxes = document.querySelectorAll('.culture-box');
+        
+        if (cultureVideos.length > 0 && cultureBoxes.length > 0) {
+            let currentCultureSlide = 0;
+            const totalCultureSlides = cultureVideos.length;
+            const cultureSlideDuration = 5000; // 5 seconds per highlight
+            let cultureStartTime = performance.now();
+
+            function updateCulture(currentTime) {
+                const elapsed = currentTime - cultureStartTime;
+
+                if (elapsed >= cultureSlideDuration) {
+                    cultureStartTime = currentTime;
+                    
+                    // Fade out current
+                    cultureVideos[currentCultureSlide].classList.replace('opacity-100', 'opacity-0');
+                    cultureBoxes[currentCultureSlide].classList.remove('active');
+                    
+                    // Increment
+                    currentCultureSlide = (currentCultureSlide + 1) % totalCultureSlides;
+                    
+                    // Fade in next
+                    cultureVideos[currentCultureSlide].classList.replace('opacity-0', 'opacity-100');
+                    cultureBoxes[currentCultureSlide].classList.add('active');
+                }
+                requestAnimationFrame(updateCulture);
+            }
+            
+            requestAnimationFrame(updateCulture);
+            
+            // Allow clicking on a box to switch the active slide immediately
+            cultureBoxes.forEach((box, index) => {
+                box.addEventListener('click', () => {
+                    // Reset timer to prevent immediate switch
+                    cultureStartTime = performance.now();
+                    
+                    // Fade out current
+                    cultureVideos[currentCultureSlide].classList.replace('opacity-100', 'opacity-0');
+                    cultureBoxes[currentCultureSlide].classList.remove('active');
+                    
+                    // Update index
+                    currentCultureSlide = index;
+                    
+                    // Fade in new
+                    cultureVideos[currentCultureSlide].classList.replace('opacity-0', 'opacity-100');
+                    cultureBoxes[currentCultureSlide].classList.add('active');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNJIN Vietnam — Website Presentation 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { display: ['Jost','sans-serif'], sans: ['Outfit','sans-serif'] },
+                    colors: { dark: '#0a0a0a', light: '#f5f5f5' }
+                }
+            }
+        }
+    </script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* Scroll animations */
+        .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal-l { opacity: 0; transform: translateX(-36px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-l.visible { opacity: 1; transform: none; }
+        .reveal-r { opacity: 0; transform: translateX(36px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-r.visible { opacity: 1; transform: none; }
+        .d1 { transition-delay: 0.1s !important; }
+        .d2 { transition-delay: 0.2s !important; }
+        .d3 { transition-delay: 0.3s !important; }
+        .d4 { transition-delay: 0.4s !important; }
+
+        /* Progress bar */
+        #pbar { position: fixed; top: 0; left: 0; height: 2px; background: #f5f5f5; z-index: 200; width: 0; transition: width 0.08s linear; pointer-events: none; }
+        #pbar-dark { position: fixed; top: 0; left: 0; height: 2px; background: #0a0a0a; z-index: 200; width: 0; transition: width 0.08s linear; pointer-events: none; }
+
+        /* Side dot nav */
+        #side-nav { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 150; display: flex; flex-direction: column; gap: 10px; }
+        .snav-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+        .snav-dot.on-light { background: rgba(0,0,0,0.2); }
+        .snav-dot.active { transform: scale(1.6); }
+        .snav-dot.active:not(.on-light) { background: #f5f5f5; }
+        .snav-dot.active.on-light { background: #0a0a0a; }
+
+        /* Section label */
+        .sec-num { font-family: 'Outfit', sans-serif; font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(10,10,10,0.3); }
+        .sec-num-light { color: rgba(245,245,245,0.3); }
+
+        /* Mockup */
+        .mockup { background: #0a0a0a; border-radius: 10px; overflow: hidden; box-shadow: 0 32px 72px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06); }
+        .mk-chrome { background: #1c1c1e; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); flex-shrink: 0; }
+        .mk-dots { display: flex; gap: 5px; }
+        .mk-dot { width: 7px; height: 7px; border-radius: 50%; }
+        .mk-url { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; padding: 3px 8px; font-family: 'Outfit',sans-serif; font-size: 8px; color: rgba(255,255,255,0.28); letter-spacing: 0.04em; }
+        .mk-body { overflow: hidden; }
+
+        /* Mockup section blocks */
+        .mk-nav-bar { height: 17px; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; padding: 0 10px; gap: 6px; flex-shrink: 0; }
+        .mk-img { background: repeating-linear-gradient(45deg,#181818,#181818 2px,#1f1f1f 2px,#1f1f1f 10px); }
+        .mk-img-light { background: repeating-linear-gradient(45deg,#dedede,#dedede 2px,#e8e8e8 2px,#e8e8e8 10px); }
+        .mk-dark { background: #111; }
+        .mk-dark2 { background: #161616; }
+        .mk-white { background: #f0f0f0; }
+        .mk-bar { height: 14px; background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; padding: 0 8px; gap: 4px; flex-shrink: 0; }
+
+        /* Feature list */
+        .feat-item { font-family: 'Outfit',sans-serif; font-size: 13px; color: rgba(10,10,10,0.55); line-height: 1.6; padding: 9px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; gap: 12px; }
+        .feat-item::before { content: '—'; color: rgba(0,0,0,0.2); flex-shrink: 0; }
+        .feat-item-light { color: rgba(245,245,245,0.5); border-bottom-color: rgba(255,255,255,0.06); }
+        .feat-item-light::before { color: rgba(255,255,255,0.2); }
+
+        /* Inline code / URL chip */
+        .url-chip { display: inline-block; font-family: 'Outfit',sans-serif; font-size: 11px; letter-spacing: 0.06em; color: rgba(10,10,10,0.4); border: 1px solid rgba(0,0,0,0.1); border-radius: 4px; padding: 2px 8px; margin-top: 6px; }
+
+        /* Animation: scroll line in cover */
+        @keyframes scrollPulse { 0%,100%{opacity:0;transform:scaleY(0);transform-origin:top;} 50%{opacity:1;transform:scaleY(1);transform-origin:top;} }
+        .scroll-line { animation: scrollPulse 1.8s ease-in-out infinite; }
+
+        /* Grid line bg */
+        .grid-bg { background-image: linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px); background-size: 72px 72px; }
+        .grid-bg-light { background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+
+        /* Hover underline */
+        .hu { position: relative; }
+        .hu::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:currentColor; transition:width 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .hu:hover::after { width:100%; }
+
+        /* Cover letter animation */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:none;} }
+        .cover-anim { animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) both; }
+        .ca2 { animation-delay:0.15s; }
+        .ca3 { animation-delay:0.3s; }
+        .ca4 { animation-delay:0.5s; }
+        .ca5 { animation-delay:0.7s; }
+
+        @media (max-width: 768px) { #side-nav { display: none; } }
+    </style>
+</head>
+<body class="bg-white font-sans text-dark overflow-x-hidden">
+
+    <div id="pbar"></div>
+
+    <!-- Side dot navigation -->
+    <nav id="side-nav"></nav>
+
+    <!-- ═══════════════════════════════════════════
+         00 · COVER
+    ═══════════════════════════════════════════ -->
+    <section data-label="Cover" data-theme="dark" id="s0" class="relative h-screen bg-dark grid-bg flex flex-col justify-between p-8 md:p-14 overflow-hidden">
+
+        <div class="relative flex justify-between items-start cover-anim">
+            <div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/25">Website Presentation</p>
+                <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/15 mt-1">2026</p>
+            </div>
+            <div class="text-right">
+                <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/25">Sunjin Vietnam</p>
+                <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/15 mt-1">Architecture & Design</p>
+            </div>
+        </div>
+
+        <div class="relative flex flex-col items-center text-center">
+            <p class="font-sans text-[10px] uppercase tracking-[0.5em] text-white/20 mb-8 cover-anim ca2">Digital Presence</p>
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="SUNJIN Vietnam" class="cover-anim ca2" style="height:clamp(5rem,14vw,13rem);width:auto;object-fit:contain;">
+            <div class="w-12 h-px bg-white/15 my-8 cover-anim ca3"></div>
+            <p class="font-sans font-light text-white/35 text-sm md:text-base tracking-[0.18em] uppercase cover-anim ca4">Website Design & Development</p>
+        </div>
+
+        <div class="relative flex justify-between items-end cover-anim ca5">
+            <div class="flex gap-6 font-sans text-[10px] uppercase tracking-[0.25em] text-white/20">
+                <span>8 Pages</span><span>·</span><span>Dark Editorial</span><span>·</span><span>Tailwind CSS</span><span>·</span><span>Vanilla JS</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <div class="w-px h-10 overflow-hidden bg-white/10">
+                    <div class="w-full h-full bg-white/50 scroll-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         01 · PROJECT OVERVIEW
+    ═══════════════════════════════════════════ -->
+    <section data-label="Overview" data-theme="light" id="s1" class="py-28 md:py-40 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">01 — Project Overview</p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20 items-start">
+
+                <!-- Left: Text -->
+                <div class="lg:col-span-3 reveal-l">
+                    <h2 class="font-display font-light text-dark leading-[1.1] mb-8" style="font-size:clamp(2.2rem,4.5vw,4rem);">A digital presence built for Vietnam's most ambitious architecture firm.</h2>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-5">SUNJIN Vietnam commands a reputation for landmark commercial and residential architecture across Vietnam. The website was engineered to match that standing — a dark editorial aesthetic that lets the architecture breathe, with precision typography that signals authority without shouting.</p>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-10">Eight interconnected pages cover every touchpoint: portfolio, project deep-dives, thought leadership, culture, and talent acquisition — each designed with the same visual grammar, each optimised for its specific job.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">HTML5</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">Tailwind CSS (CDN)</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">Vanilla JavaScript</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">Jost — Display Font</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">Outfit — Body Font</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">IntersectionObserver</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">CSS clip-path Animation</span>
+                        <span class="px-3 py-1.5 border border-dark/10 rounded-full font-sans text-[11px] tracking-wide text-dark/50">Custom Cursor</span>
+                    </div>
+                </div>
+
+                <!-- Right: Stats -->
+                <div class="lg:col-span-2 grid grid-cols-2 gap-4 reveal-r">
+                    <div class="border border-dark/8 rounded-xl p-7">
+                        <p class="font-display font-light text-dark" style="font-size:clamp(3rem,5vw,4.5rem);">8</p>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mt-1">Total Pages</p>
+                    </div>
+                    <div class="border border-dark/8 rounded-xl p-7">
+                        <p class="font-display font-light text-dark" style="font-size:clamp(3rem,5vw,4.5rem);">5</p>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mt-1">Nav Items</p>
+                    </div>
+                    <div class="border border-dark/8 rounded-xl p-7">
+                        <p class="font-display font-light text-dark" style="font-size:clamp(3rem,5vw,4.5rem);">4</p>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mt-1">Blog Categories</p>
+                        <p class="font-sans text-[10px] text-dark/25 mt-2 leading-relaxed">News · Press · Ideas · Community</p>
+                    </div>
+                    <div class="border border-dark/8 rounded-xl p-7">
+                        <p class="font-display font-light text-dark" style="font-size:clamp(3rem,5vw,4.5rem);">3</p>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mt-1">Career Filter Axes</p>
+                        <p class="font-sans text-[10px] text-dark/25 mt-2 leading-relaxed">Dept · Location · Level</p>
+                    </div>
+                    <div class="col-span-2 border border-dark/8 rounded-xl p-7">
+                        <p class="font-display font-light text-dark" style="font-size:clamp(3rem,5vw,4.5rem);">5</p>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mt-1">Project Categories</p>
+                        <p class="font-sans text-[10px] text-dark/25 mt-2 leading-relaxed">Planning · Housing · School · Hotel · Headquarters</p>
+                    </div>
+                    <div class="col-span-2 border border-dark/8 rounded-xl p-7">
+                        <p class="font-sans text-[10px] uppercase tracking-[0.22em] text-dark/35 mb-3">Design Principles</p>
+                        <p class="font-sans text-[13px] text-dark/55 leading-relaxed">Dark editorial minimalism · Architecture-first photography · Precision typography · Fluid scroll animation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         02 · SITEMAP
+    ═══════════════════════════════════════════ -->
+    <section data-label="Sitemap" data-theme="dark" id="s2" class="py-28 md:py-40 px-8 md:px-16 lg:px-24 grid-bg" style="background-color:#0a0a0a;">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num sec-num-light mb-10 reveal">02 — Sitemap</p>
+            <h2 class="font-display font-light text-light leading-tight mb-16 reveal" style="font-size:clamp(2rem,4vw,3.2rem);">Eight pages.<br>One coherent system.</h2>
+
+            <!-- Sitemap visual -->
+            <div class="reveal overflow-x-auto pb-4">
+                <div style="min-width:680px;">
+                    <!-- SVG Tree -->
+                    <svg viewBox="0 0 760 230" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'Outfit',sans-serif;">
+                        <!-- ROOT: HOME -->
+                        <rect x="320" y="8" width="120" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <text x="380" y="26" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" font-weight="300" fill="#f5f5f5">Home</text>
+                        <text x="380" y="42" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)">index.html</text>
+
+                        <!-- Connector: HOME → horizontal bar -->
+                        <line x1="380" y1="52" x2="380" y2="80" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <!-- Horizontal bar -->
+                        <line x1="80" y1="80" x2="680" y2="80" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+                        <!-- Vertical drops to L2 nodes -->
+                        <line x1="80"  y1="80" x2="80"  y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <line x1="260" y1="80" x2="260" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <line x1="500" y1="80" x2="500" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <line x1="680" y1="80" x2="680" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+                        <!-- ABOUT -->
+                        <rect x="30" y="104" width="100" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <text x="80" y="122" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" font-weight="300" fill="#f5f5f5">About</text>
+                        <text x="80" y="138" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)">about.html</text>
+
+                        <!-- PROJECTS -->
+                        <rect x="210" y="104" width="100" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <text x="260" y="122" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" font-weight="300" fill="#f5f5f5">Projects</text>
+                        <text x="260" y="138" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)">project.html</text>
+
+                        <!-- BLOGS -->
+                        <rect x="450" y="104" width="100" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <text x="500" y="122" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" font-weight="300" fill="#f5f5f5">Blogs</text>
+                        <text x="500" y="138" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)">blog.html</text>
+
+                        <!-- CAREERS -->
+                        <rect x="630" y="104" width="100" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <text x="680" y="122" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" font-weight="300" fill="#f5f5f5">Careers</text>
+                        <text x="680" y="138" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)">careers.html</text>
+
+                        <!-- Drop to detail pages -->
+                        <line x1="260" y1="148" x2="260" y2="172" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3,3"/>
+                        <line x1="500" y1="148" x2="500" y2="172" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3,3"/>
+                        <line x1="680" y1="148" x2="680" y2="172" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3,3"/>
+
+                        <!-- PROJECT DETAIL -->
+                        <rect x="195" y="172" width="130" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.07)" stroke-width="1" stroke-dasharray="4,3"/>
+                        <text x="260" y="190" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" font-weight="300" fill="rgba(255,255,255,0.55)">Project Detail</text>
+                        <text x="260" y="206" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.28)">project-detail.html</text>
+
+                        <!-- BLOG DETAIL -->
+                        <rect x="435" y="172" width="130" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.07)" stroke-width="1" stroke-dasharray="4,3"/>
+                        <text x="500" y="190" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" font-weight="300" fill="rgba(255,255,255,0.55)">Blog Detail</text>
+                        <text x="500" y="206" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.28)">blog-detail.html</text>
+
+                        <!-- CAREERS DETAIL -->
+                        <rect x="610" y="172" width="140" height="44" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.07)" stroke-width="1" stroke-dasharray="4,3"/>
+                        <text x="680" y="190" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" font-weight="300" fill="rgba(255,255,255,0.55)">Careers Detail</text>
+                        <text x="680" y="206" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.28)">careers-detail.html</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex flex-wrap gap-6 mt-10 reveal d1">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-px bg-light/20"></div>
+                    <span class="font-sans text-[11px] text-light/40 uppercase tracking-[0.2em]">Primary page</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-px border-t border-dashed border-light/20"></div>
+                    <span class="font-sans text-[11px] text-light/40 uppercase tracking-[0.2em]">Detail / child page</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         03 · DESIGN SYSTEM
+    ═══════════════════════════════════════════ -->
+    <section data-label="Design System" data-theme="light" id="s3" class="py-28 md:py-40 px-8 md:px-16 lg:px-24 bg-white text-dark">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">03 — Design System</p>
+            <h2 class="font-display font-light text-dark leading-tight mb-20 reveal" style="font-size:clamp(2rem,4vw,3.2rem);">A visual language<br>built on architecture.</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+
+                <!-- Typography -->
+                <div class="reveal d1">
+                    <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-dark/30 mb-8">Typography</p>
+                    <div class="mb-8">
+                        <p class="font-display font-light text-dark mb-2" style="font-size:3.5rem;line-height:1;">Jost</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-dark/35">Display — Headlines, Nav, Menu</p>
+                        <p class="font-sans text-[11px] text-dark/25 mt-2">Light 300 · Regular 400 · Italic</p>
+                    </div>
+                    <div>
+                        <p class="font-sans text-dark mb-2" style="font-size:2rem;line-height:1;">Outfit</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-dark/35">Body — Labels, Paragraphs, UI</p>
+                        <p class="font-sans text-[11px] text-dark/25 mt-2">Light 300 · Regular 400 · Medium 500</p>
+                    </div>
+                </div>
+
+                <!-- Colours -->
+                <div class="reveal d2">
+                    <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-dark/30 mb-8">Colour Palette</p>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="h-16 rounded-lg mb-3" style="background:#0a0a0a;border:1px solid rgba(0,0,0,0.08);"></div>
+                            <div class="flex justify-between">
+                                <span class="font-sans text-[12px] text-dark/70">Near Black</span>
+                                <span class="font-sans text-[11px] text-dark/30">#0a0a0a</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="h-16 rounded-lg mb-3" style="background:#f5f5f5;"></div>
+                            <div class="flex justify-between">
+                                <span class="font-sans text-[12px] text-dark/70">Off White</span>
+                                <span class="font-sans text-[11px] text-dark/30">#f5f5f5</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="h-16 rounded-lg mb-3" style="background:#888888;"></div>
+                            <div class="flex justify-between">
+                                <span class="font-sans text-[12px] text-dark/70">Mid Grey</span>
+                                <span class="font-sans text-[11px] text-dark/30">#888888</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interaction Principles -->
+                <div class="reveal d3">
+                    <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-dark/30 mb-8">Interaction Design</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Custom cursor with <code class="text-[11px] text-dark/40">mix-blend-mode: difference</code> — white dot + ring follows pointer</div>
+                        <div class="feat-item">Fullscreen menu overlay via <code class="text-[11px] text-dark/40">clip-path: circle()</code> animation — smooth open/close</div>
+                        <div class="feat-item">IntersectionObserver scroll-reveal — elements fade up as they enter viewport</div>
+                        <div class="feat-item">Hover italic on navigation — font shifts on hover for editorial feel</div>
+                        <div class="feat-item">Image scale on hover — 5% zoom on all project / blog cards</div>
+                        <div class="feat-item">Reading progress bar — <code class="text-[11px] text-dark/40">scrollY / scrollHeight</code> on blog detail</div>
+                        <div class="feat-item">Accordion transitions — <code class="text-[11px] text-dark/40">max-height</code> CSS for job detail sections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PHOTOGRAPHY — ACTUAL SITE IMAGERY
+    ═══════════════════════════════════════════ -->
+    <section data-label="Photography" data-theme="dark" id="s3b" class="py-20 md:py-28 px-8 md:px-16 lg:px-24 bg-dark overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num sec-num-light mb-6 reveal">Photography — Portfolio Imagery</p>
+            <h2 class="font-display font-light text-light leading-tight mb-14 reveal" style="font-size:clamp(2rem,4vw,3.2rem);">Architecture<br>as delivered.</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 reveal">
+                <div style="height:460px;overflow:hidden;border-radius:4px;">
+                    <img src="images/lanexang.jpg" alt="Lanexang project — SUNJIN Vietnam" style="width:100%;height:100%;object-fit:cover;transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                </div>
+                <div style="height:460px;overflow:hidden;border-radius:4px;">
+                    <img src="images/ct3.jpg" alt="CT3 project — SUNJIN Vietnam" style="width:100%;height:100%;object-fit:cover;transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                </div>
+                <div style="height:460px;overflow:hidden;border-radius:4px;">
+                    <img src="images/sipaphin.jpg" alt="Sipaphin project — SUNJIN Vietnam" style="width:100%;height:100%;object-fit:cover;transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                </div>
+            </div>
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-light/20 mt-6 text-center reveal">Selected project imagery displayed across the portfolio · SUNJIN Vietnam</p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         04 · HOME PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Home" data-theme="light" id="s4" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">04 — Home Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+
+                <!-- Description -->
+                <div class="reveal-l">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Home</h2>
+                        <span class="url-chip mt-2">index.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">The front door. A full-screen dark hero opens with an animated statement — "CRAFTING SPACES THAT INSPIRE" — followed by a floating project preview window that follows the cursor. Scroll reveals a curated project grid, studio story, and editorial blog teasers, ending in a bold CTA section before the footer.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Full-screen hero with large display typography and animated label</div>
+                        <div class="feat-item">Floating project window — appears on scroll, tracks mouse cursor position</div>
+                        <div class="feat-item">Selected works grid — 3 projects with hover image zoom</div>
+                        <div class="feat-item">Studio overview section — split layout with spinning badge</div>
+                        <div class="feat-item">Blog preview strip — 3 recent articles</div>
+                        <div class="feat-item">Partners / clients logo section</div>
+                        <div class="feat-item">Fullscreen overlay navigation with clip-path animation</div>
+                        <div class="feat-item">Contact modal triggered by "Let's Discuss" CTA button</div>
+                    </div>
+                </div>
+
+                <!-- Photo -->
+                <div class="reveal-r">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace the src below with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/homepage.png?auto=compress&cs=tinysrgb&w=1200" alt="Home page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         05 · ABOUT PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="About" data-theme="light" id="s5" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">05 — About Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l order-2 lg:order-1">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/about.png?auto=compress&cs=tinysrgb&w=1200" alt="About page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="reveal-r order-1 lg:order-2">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">About</h2>
+                        <span class="url-chip mt-2">about.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">Six layered sections deliver the studio's full identity. The page opens with a cinematic hero, then cascades through a Perspectives sticky-scroll with animated philosophical statements, a Studio Stats section (5+ offices · 200+ partners · 20+ disciplines) with crossfading image grids, a Core Values dark split layout, a Leadership Team portrait grid, fullscreen Foundation Principles, and an Awards section with project recognition imagery.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Full-screen hero — large "About" title over a gradient-overlaid background image</div>
+                        <div class="feat-item">Perspectives sticky scroll — philosophical statements animate in and out on scroll</div>
+                        <div class="feat-item">Studio stats sticky section — 3 count stats (5+ Offices · 200+ Partners · 20+ Disciplines) with crossfading image grids</div>
+                        <div class="feat-item">Core Values sticky scroll — dark split layout, text left / photo right, values cycle per scroll step</div>
+                        <div class="feat-item">Leadership Team — white section with team portrait grid and names</div>
+                        <div class="feat-item">Foundation Principles — fullscreen sticky scroll with centred animated principle headings</div>
+                        <div class="feat-item">Awards — dark section with award project thumbnails, descriptions, and recognition badges</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         06 · PROJECTS PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Projects" data-theme="light" id="s6" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">06 — Projects Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Projects</h2>
+                        <span class="url-chip mt-2">project.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">The portfolio. An editorial grid of 9 projects arranged in an intentionally asymmetric pattern — full-width, half-half, thirds — creating visual rhythm as the user scrolls. A sticky filter bar lets visitors narrow by typology. Hairline separators between cards are achieved by a 1px gap on a white container, giving precision without hard borders.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Sticky filter bar — categories scroll with page, active item underlined in white</div>
+                        <div class="feat-item">Editorial grid — 4 rows: 1×full, 2×split, 3×thirds, 2×split with varied heights</div>
+                        <div class="feat-item">Hairline dividers — <code class="text-[11px] text-dark/30">gap-px</code> on a white/12% container creates 1px hairline separators</div>
+                        <div class="feat-item">Equal-height rows — explicit <code class="text-[11px] text-dark/30">height</code> (vh) per row instead of <code class="text-[11px] text-dark/30">aspect-ratio</code></div>
+                        <div class="feat-item">Card images — <code class="text-[11px] text-dark/30">position:absolute; inset:0</code> fills entire card regardless of ratio</div>
+                        <div class="feat-item">Hover: image zooms 5%, project details fade in from bottom</div>
+                        <div class="feat-item">JS filter — hides non-matching cards with smooth opacity transition</div>
+                    </div>
+                </div>
+                <div class="reveal-r">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/project.png?auto=compress&cs=tinysrgb&w=1200" alt="Projects page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         07 · PROJECT DETAIL PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Project Detail" data-theme="light" id="s6b" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">07 — Project Detail Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l order-2 lg:order-1">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/projectdetail.png?auto=compress&cs=tinysrgb&w=1200" alt="Project Detail page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="reveal-r order-1 lg:order-2">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Project Detail</h2>
+                        <span class="url-chip mt-2">project-detail.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">A cinematic deep-dive into each project. The left panel is fixed — a full-height project photo with a clickable thumbnail strip, an award badge, category label, title and location. The right panel scrolls independently through a 3×2 meta grid, a lead narrative, three full-bleed panel photographs, design highlights, and expandable accordions for technical specifications, the design team, and awards.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Split-screen layout — <code class="text-[11px] text-dark/30">position:fixed; width:50%</code> left panel + <code class="text-[11px] text-dark/30">margin-left:50%</code> scrollable right</div>
+                        <div class="feat-item">Thumbnail strip — multiple small project photos; click to swap the main panel image</div>
+                        <div class="feat-item">Award badge — top-left star pill with award name injected from JS data object</div>
+                        <div class="feat-item">3×2 meta grid — Location · Year · Typology · Built Area · Client · Status</div>
+                        <div class="feat-item">3 full-bleed panel photos — negative margin breakout with captions below each image</div>
+                        <div class="feat-item">Accordions — Technical Data (open by default) · Design Team · Awards & Recognition</div>
+                        <div class="feat-item">Next Project card — full-bleed image with gradient overlay linking to adjacent project</div>
+                        <div class="feat-item">Mobile — left panel becomes relative 60vh block, right panel stacks below</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         08 · BLOG PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Blog" data-theme="light" id="s7" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">08 — Blog Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l order-2 lg:order-1">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/blog.png?auto=compress&cs=tinysrgb&w=1200" alt="Blog page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="reveal-r order-1 lg:order-2">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Blog</h2>
+                        <span class="url-chip mt-2">blog.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">Thought leadership and editorial content across four categories: News, Press Coverage, Ideas, and Community Responsibility. Eight articles arranged in an asymmetric editorial grid — the layout deliberately avoids uniform card sizes to create a magazine-like visual hierarchy. On hover, article excerpts and read-more links emerge from below the image.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">4 categories — News · Press Coverage · Ideas · Community Responsibility</div>
+                        <div class="feat-item">Editorial grid — 4 rows with varying column splits (full / 7+5 / 3×equal / 5+7)</div>
+                        <div class="feat-item">Card hover — image zooms, overlay darkens, excerpt fades up, arrow appears</div>
+                        <div class="feat-item">Category pill — glass-blur tag (backdrop-filter) positioned over image top-left</div>
+                        <div class="feat-item">JS filter — smooth hide/show by <code class="text-[11px] text-dark/30">data-cat</code> attribute matching</div>
+                        <div class="feat-item">Matching row heights — same explicit height per row for visual alignment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         09 · BLOG DETAIL PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Blog Detail" data-theme="light" id="s8" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">09 — Blog Detail Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Blog Detail</h2>
+                        <span class="url-chip mt-2">blog-detail.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">The reading experience. A full-screen dark hero — category pill, back link, title, meta bar — gives the article a cinematic open. Immediately below the hero, a 65vh full-bleed banner image sets the visual tone before the article body begins. Text is full-width with generous padding rather than a narrow column, keeping the editorial feel wide and spacious.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Reading progress bar — fixed 2px line at viewport top, width tracks <code class="text-[11px] text-dark/30">scrollY / scrollHeight</code></div>
+                        <div class="feat-item">Full-screen hero — category pill, ← back link, large title, author + date meta bar</div>
+                        <div class="feat-item">65vh hero banner image — full-bleed between hero and article body</div>
+                        <div class="feat-item">Article body — full-width with <code class="text-[11px] text-dark/30">px-6 md:px-16 lg:px-28 xl:px-40</code> padding</div>
+                        <div class="feat-item">Full-bleed in-article image — negative margins break out of text padding</div>
+                        <div class="feat-item">Pull quote — left border accent, italic Jost, visually distinct from body text</div>
+                        <div class="feat-item">Related articles — 3-column grid of article cards at bottom</div>
+                    </div>
+                </div>
+                <div class="reveal-r">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/blogdetail.png?auto=compress&cs=tinysrgb&w=1200" alt="Blog Detail page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         10 · CAREERS PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Careers" data-theme="light" id="s9" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">10 — Careers Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l order-2 lg:order-1">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/careers.png?auto=compress&cs=tinysrgb&w=1200" alt="Careers page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="reveal-r order-1 lg:order-2">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Careers</h2>
+                        <span class="url-chip mt-2">careers.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">Talent acquisition positioned as a brand moment. A dark hero opens the page, followed by a cinematic full-width banner photo and a culture strip of three candid studio images. The job listing section shifts to a deliberately white background — a visual signal of a different mode — with pill-style multi-axis filters (Department, Location, Level) and a clean tabular list of open positions.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Dark hero + 58vh full-bleed banner photo — same visual grammar as other pages</div>
+                        <div class="feat-item">3-photo culture strip — hover reveals overlay text, communicates studio life</div>
+                        <div class="feat-item">White listing section — deliberate break from dark theme signals different context</div>
+                        <div class="feat-item">Multi-axis filter — 3 sets of pill chips (Dept / Location / Level), combined logic</div>
+                        <div class="feat-item">Job rows — title + meta + arrow, hover highlights full row</div>
+                        <div class="feat-item">Second culture strip — 3 more photos below listing with overlay hover text</div>
+                        <div class="feat-item">JS filter logic — <code class="text-[11px] text-dark/30">activeFilters</code> object, all 3 axes combined with AND logic</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         11 · CAREERS DETAIL PAGE
+    ═══════════════════════════════════════════ -->
+    <section data-label="Careers Detail" data-theme="light" id="s10" class="py-24 md:py-36 px-8 md:px-16 lg:px-24 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="sec-num mb-10 reveal">11 — Careers Detail Page</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+                <div class="reveal-l">
+                    <div class="flex items-start gap-4 mb-6">
+                        <h2 class="font-display font-light text-dark leading-tight" style="font-size:clamp(2.2rem,4vw,3.5rem);">Careers Detail</h2>
+                        <span class="url-chip mt-2">careers-detail.html</span>
+                    </div>
+                    <p class="font-sans text-dark/55 text-[15px] leading-relaxed mb-8">A split-screen detail page that breaks from the standard scrolling layout. The left panel is fixed — a full-height studio image with the job title and a CLOSE button overlay. The right panel scrolls independently through the job's details: a 2×2 meta grid (Level, Salary, Deadline, Division), expandable accordion sections, and an application form with CV upload.</p>
+                    <div class="space-y-0">
+                        <div class="feat-item">Split-screen layout — <code class="text-[11px] text-dark/30">position:fixed; left:0; width:50%</code> panel + <code class="text-[11px] text-dark/30">margin-left:50%</code> scrollable panel</div>
+                        <div class="feat-item">Meta grid — 2×2 cards: Level · Salary · Deadline · Division/Location</div>
+                        <div class="feat-item">Accordion sections — <code class="text-[11px] text-dark/30">max-height</code> CSS transition, Job Description open by default</div>
+                        <div class="feat-item">Application form — Name, Email, Phone, Cover Note, CV upload field</div>
+                        <div class="feat-item">CV upload — custom styled file input with filename display, <code class="text-[11px] text-dark/30">updateUploadLabel()</code></div>
+                        <div class="feat-item">Submit success — button transforms to checkmark confirmation state</div>
+                        <div class="feat-item">Mobile — left panel becomes relative 60vh block, right stacks below</div>
+                    </div>
+                </div>
+                <div class="reveal-r">
+                    <div style="border-radius:10px;overflow:hidden;box-shadow:0 32px 72px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.06);">
+                        <!-- Replace src with your own screenshot -->
+                        <img src="https://sunjin-vietnam.vercel.app/images/careersdetail.png?auto=compress&cs=tinysrgb&w=1200" alt="Careers Detail page — SUNJIN Vietnam" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         11 · CLOSING
+    ═══════════════════════════════════════════ -->
+    <section data-label="View Site" data-theme="dark" id="s11" class="relative min-h-screen bg-dark grid-bg flex flex-col justify-between p-8 md:p-14 overflow-hidden">
+
+        <div class="relative flex justify-between items-start reveal">
+            <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/20">End of Presentation</p>
+            <p class="font-sans text-[10px] uppercase tracking-[0.35em] text-white/20">2026</p>
+        </div>
+
+        <div class="relative flex flex-col items-center text-center py-20">
+            <p class="font-sans text-[10px] uppercase tracking-[0.5em] text-white/20 mb-8 reveal">Explore the site</p>
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="SUNJIN Vietnam" class="reveal d1 mb-8" style="height:clamp(4rem,11vw,10rem);width:auto;object-fit:contain;">
+            <div class="w-12 h-px bg-white/12 mb-12 reveal d2"></div>
+
+            <!-- Page links -->
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 reveal d2">
+                <a href="index.html" class="font-display font-light text-white/60 text-lg hover:text-white hu transition-colors duration-300">Home</a>
+                <span class="text-white/15">·</span>
+                <a href="about.html" class="font-display font-light text-white/60 text-lg hover:text-white hu transition-colors duration-300">About</a>
+                <span class="text-white/15">·</span>
+                <a href="project.html" class="font-display font-light text-white/60 text-lg hover:text-white hu transition-colors duration-300">Projects</a>
+                <span class="text-white/15">·</span>
+                <a href="blog.html" class="font-display font-light text-white/60 text-lg hover:text-white hu transition-colors duration-300">Blog</a>
+                <span class="text-white/15">·</span>
+                <a href="careers.html" class="font-display font-light text-white/60 text-lg hover:text-white hu transition-colors duration-300">Careers</a>
+            </div>
+        </div>
+
+        <!-- Bottom: summary stats -->
+        <div class="relative reveal d3">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/6 border border-white/6 rounded-xl overflow-hidden">
+                <div class="bg-dark p-6 md:p-8">
+                    <p class="font-display font-light text-white text-3xl mb-3">4</p>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-white/25 mb-3">Blog Categories</p>
+                    <p class="font-sans text-[11px] text-white/20 leading-relaxed">News · Press Coverage<br>Ideas · Community Responsibility</p>
+                </div>
+                <div class="bg-dark p-6 md:p-8">
+                    <p class="font-display font-light text-white text-3xl mb-3">5</p>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-white/25 mb-3">Project Categories</p>
+                    <p class="font-sans text-[11px] text-white/20 leading-relaxed">Planning · Housing · School<br>Hotel · Headquarters</p>
+                </div>
+                <div class="bg-dark p-6 md:p-8">
+                    <p class="font-display font-light text-white text-3xl mb-3">3</p>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-white/25 mb-3">Career Filter Axes</p>
+                    <p class="font-sans text-[11px] text-white/20 leading-relaxed">Department · Location<br>Level</p>
+                </div>
+            </div>
+            <p class="font-sans text-[10px] text-white/15 text-center mt-8">SUNJIN Vietnam · Architecture & Design · 2026</p>
+        </div>
+    </section>
+
+    <script>
+    // ── IntersectionObserver for scroll reveals ──────────────────────────
+    const revealEls = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Progress bar ─────────────────────────────────────────────────────
+    const pbar = document.getElementById('pbar');
+    function updateProgress() {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        pbar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    // ── Side dot navigation ───────────────────────────────────────────────
+    const sections = document.querySelectorAll('[data-label]');
+    const sideNav = document.getElementById('side-nav');
+
+    sections.forEach((sec, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'snav-dot';
+        dot.title = sec.dataset.label;
+        dot.addEventListener('click', () => sec.scrollIntoView({ behavior: 'smooth' }));
+        sideNav.appendChild(dot);
+    });
+
+    const dots = sideNav.querySelectorAll('.snav-dot');
+
+    const secObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const idx = Array.from(sections).indexOf(entry.target);
+            const isLight = entry.target.dataset.theme === 'light';
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === idx);
+                d.classList.toggle('on-light', isLight);
+            });
+        });
+    }, { threshold: 0.5 });
+
+    sections.forEach(sec => secObserver.observe(sec));
+    </script>
+</body>
+</html>

@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | SUNJIN VIETNAM</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Jost', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0a0a',
+                        light: '#f5f5f5',
+                        accent: '#888888'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        @keyframes spin360 {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .spin-icon {
+            animation: spin360 8s linear infinite;
+            display: inline-block;
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .cursor-dot, .cursor-outline { display: none !important; }
+        }
+
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: white;
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid white;
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+        .cursor-hover .cursor-dot { width: 0; height: 0; }
+        .cursor-hover .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(255,255,255,0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+
+        .reveal-fade { opacity: 0; transition: opacity 1s ease; }
+        .reveal-fade.active { opacity: 1; }
+
+        #menu-overlay {
+            clip-path: circle(0% at 100% 0);
+            transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        #menu-overlay.open { clip-path: circle(150% at 100% 0); }
+
+        .hover-underline { position: relative; }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: -2px; left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after { width: 100%; }
+
+        nav {
+            transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.4s ease;
+        }
+        nav.nav-hidden { transform: translateY(-100%); opacity: 0; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Perspectives video section */
+        .persp-vid {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .persp-vid.active { opacity: 1; }
+
+        #persp-heading, #persp-desc {
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+        #persp-heading.fading, #persp-desc.fading {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .persp-dot {
+            height: 2px;
+            border: none;
+            background-color: rgba(255,255,255,0.3);
+            width: 16px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+            cursor: pointer;
+        }
+        .persp-dot.active {
+            width: 40px;
+            background-color: rgba(255,255,255,1);
+        }
+
+        /* Team card */
+        .img-wrapper { overflow: hidden; }
+        .img-wrapper img { transition: transform 0.7s ease; }
+        .img-wrapper:hover img { transform: scale(1.05); }
+
+        /* Stats sticky scroll */
+        #stats-sticky {
+            background-color: #eeecea;
+        }
+        .sn-el {
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+        .sn-el.sn-fading {
+            opacity: 0 !important;
+            transform: translateY(14px);
+        }
+        .stat-img-wrap {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.75s ease;
+        }
+        .stat-img-wrap.stat-active { opacity: 1; }
+        .stat-img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+        }
+        .stat-img-col { overflow: hidden; }
+        .stat-img-stack { display: flex; flex-direction: column; gap: 10px; }
+        .stat-img-stack > .stat-img-col { flex: 1; }
+
+        /* Core values sticky scroll — dark split layout */
+        #cv-sticky { background-color: #0a0a0a; }
+        .cv-img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.85s ease;
+        }
+        .cv-img.cv-active { opacity: 1; }
+        .cv-dot {
+            height: 2px; border: none; cursor: pointer;
+            background: rgba(255,255,255,0.25);
+            width: 16px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+        .cv-dot.cv-dot-on { width: 40px; background: rgba(255,255,255,1); }
+
+        /* Foundation Principles — fullscreen sticky scroll */
+        .fp-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .fp-bg.fp-bg-active { opacity: 1; }
+
+        .fp-title {
+            position: absolute;
+            left: 0; right: 0;
+            opacity: 0;
+            transform: translateY(70px);
+            transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fp-title.fp-active { opacity: 1; transform: translateY(0); }
+        .fp-title.fp-prev {
+            opacity: 0;
+            transform: translateY(-70px);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.7, 0, 1, 1);
+        }
+
+        .fp-desc {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s ease 0.2s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+        .fp-desc.fp-active { opacity: 1; transform: translateY(0); }
+        .fp-desc.fp-prev {
+            opacity: 0;
+            transform: translateY(-28px);
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.7, 0, 1, 1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-dark">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
+        <a href="index.html">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+        </a>
+        <div class="flex items-center gap-6">
+            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()">
+                Let's Discuss
+            </button>
+            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Menu</button>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Menu -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
+        <div class="flex justify-between items-center">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Close</button>
+        </div>
+        <div class="flex-1 flex items-center justify-center">
+            <ul class="text-center space-y-2 md:space-y-6">
+                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Home</a></li>
+                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">About</a></li>
+                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Projects</a></li>
+                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Blogs</a></li>
+                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Careers</a></li>
+            </ul>
+        </div>
+        <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
+            <div><a href="#" class="hover:text-white interactive">LinkedIn</a></div>
+            <div class="text-right">
+                <p>TRUYENTHONG@SUNJINVIETNAM.VN</p>
+                <p>2ND FLOOR-3A, N07-B2, CAU GIAY</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+        <div class="bg-[#111] border border-white/10 w-full max-w-2xl p-8 md:p-12 relative rounded-xl transform translate-y-10 transition-transform duration-500" id="contact-content">
+            <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <h2 class="font-display text-3xl md:text-5xl mb-8">Message us.</h2>
+            <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="tel" placeholder="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <div class="relative w-full" id="custom-select-wrapper">
+                        <input type="hidden" name="interest" id="interest-value" required>
+                        <button type="button" id="interest-btn"
+                            class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center focus:outline-none focus:border-white transition-colors bg-transparent"
+                            onclick="toggleInterestDropdown()">
+                            <span id="interest-label">Your Interest</span>
+                            <svg class="w-4 h-4 text-white/40 transition-transform duration-200" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <ul id="interest-dropdown" class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Partnership</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Media</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">General</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <textarea placeholder="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">
+                    Submit now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABOUT PAGE CONTENT -->
+    <!-- ============================================================ -->
+
+    <!-- 1. Hero -->
+    <section class="relative min-h-screen flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                 alt="Architecture" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-dark/30"></div>
+        </div>
+
+        <div class="relative z-10">
+            <p class="font-sans text-xs uppercase tracking-[0.3em] text-white/50 mb-6 reveal-fade">Who We Are</p>
+            <h1 class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up">About</h1>
+            <div class="w-full h-[1px] bg-white/20 mt-10 md:mt-16 mb-6 reveal-fade" style="transition-delay: 0.3s"></div>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 reveal-up" style="transition-delay: 0.4s">
+                <p class="font-sans text-sm md:text-base text-white/70 max-w-xl leading-relaxed">
+                    Architecture is not just built — it is felt. Sunjin Vietnam crafts spaces that carry meaning, identity, and the spirit of Vietnam into the future.
+                </p>
+                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40">Est. 2010 · Ha Noi, Vietnam</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Three Perspectives — full-screen auto-cycling video -->
+    <section class="relative overflow-hidden bg-dark" id="perspectives-section" style="height: 72vh; min-height: 520px;">
+
+        <!-- Video backgrounds (one per perspective) -->
+        <video class="persp-vid active" src="https://videos.pexels.com/video-files/31366924/13385366_2560_1440_50fps.mp4" autoplay loop muted playsinline></video>
+        <video class="persp-vid" src="https://videos.pexels.com/video-files/32537471/13876144_2560_1440_24fps.mp4" autoplay loop muted playsinline></video>
+        <video class="persp-vid" src="https://videos.pexels.com/video-files/15439673/15439673-uhd_2558_1440_30fps.mp4" autoplay loop muted playsinline></video>
+
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 z-10" style="background: linear-gradient(to top, #0a0a0a 0%, rgba(10,10,10,0.55) 40%, rgba(10,10,10,0.25) 100%);"></div>
+
+        <!-- Content layout -->
+        <div class="absolute inset-0 z-20 flex flex-col justify-between px-6 md:px-12 lg:px-16 pb-0">
+
+            <!-- Top: nav spacer + separator line -->
+            <div class="pt-32 md:pt-40">
+                <div class="flex items-center gap-5">
+                    <div class="w-32 md:w-56 h-px bg-white/50"></div>
+                    <span id="persp-counter" class="font-sans text-xs text-white/40 tracking-[0.25em]">01 / 03</span>
+                </div>
+            </div>
+
+            <!-- Middle: large heading (left) + description (right) -->
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-0 py-10 md:py-0 flex-1">
+                <div class="flex-1 pr-0 md:pr-10">
+                    <h2 id="persp-heading" class="font-display font-light text-white leading-tight"
+                        style="font-size: clamp(2.8rem, 8vw, 7rem);">Traditionally</h2>
+                </div>
+                <div class="w-full md:w-[42%] lg:w-[38%]">
+                    <p id="persp-desc" class="font-sans text-sm md:text-[15px] text-white/75 leading-relaxed max-w-md">
+                        Sunjin Vietnam overseeing architectural, interior, landscape, and planning projects across the country — collaborating with world-class international partners to deliver destinations that reflect the unique character and soul of each site.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom: progress dots -->
+            <div class="pb-8 md:pb-10">
+                <div class="flex items-center gap-3">
+                    <button class="persp-dot active interactive" onclick="perspGoTo(0)" aria-label="Traditionally"></button>
+                    <button class="persp-dot interactive" onclick="perspGoTo(1)" aria-label="Contemporarily"></button>
+                    <button class="persp-dot interactive" onclick="perspGoTo(2)" aria-label="Creatively"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Stats — sticky scroll (5+ → 200+ → 20+) -->
+    <section id="stats-section" style="height: 280vh;">
+        <div id="stats-sticky" class="sticky top-0 overflow-hidden" style="height: 100vh;">
+            <div class="h-full flex flex-col px-8 md:px-14 lg:px-20">
+
+                <!-- Top: huge number (left) + label + description (right) -->
+                <div class="flex items-start justify-between pt-28 md:pt-32 flex-shrink-0 gap-8">
+                    <p id="sn-num" class="sn-el font-display font-light text-[#0a0a0a] leading-none select-none"
+                       style="font-size: clamp(4.5rem, 16vw, 12rem);">5+</p>
+                    <div class="w-[44%] md:w-[38%] pt-1 flex-shrink-0">
+                        <p id="sn-label" class="sn-el font-sans text-[11px] md:text-xs uppercase tracking-[0.28em] text-[#0a0a0a]/45 mb-3 md:mb-4">5+ OFFICES</p>
+                        <p id="sn-desc" class="sn-el font-sans text-sm md:text-[15px] text-[#0a0a0a]/60 leading-relaxed">
+                            Sunjin Vietnam operates through five offices across Northern, Central, and Southern Vietnam. This presence allows our teams to remain closely connected to the diverse landscapes, cultures, and rhythms of the regions we design for — ensuring every project responds thoughtfully to the land and the communities it serves.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Image grid (3 overlapping layouts, crossfade on scroll) -->
+                <div class="relative flex-1 mt-6 mb-0 min-h-0">
+
+                    <!-- Layout 0: 5+ Offices — large left + 2 stacked right -->
+                    <div class="stat-img-wrap stat-active">
+                        <div class="stat-img-col" style="width:62%;">
+                            <img src="https://images.unsplash.com/photo-1558449070-b4ddd1f29f6f?auto=format&fit=crop&w=1400&q=80" alt="Office">
+                        </div>
+                        <div class="stat-img-stack" style="flex:1;">
+                            <div class="stat-img-col">
+                                <img src="https://images.unsplash.com/photo-1748050869375-a38a7bd50735?auto=format&fit=crop&w=800&q=80" alt="City">
+                            </div>
+                            <div class="stat-img-col">
+                                <img src="https://images.unsplash.com/photo-1686100511314-7d4a52987f2f?auto=format&fit=crop&w=800&q=80" alt="Blueprints">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layout 1: 200+ Partners — small | large panoramic | small -->
+                    <div class="stat-img-wrap">
+                        <div class="stat-img-col" style="width:17%;">
+                            <img src="https://images.unsplash.com/photo-1616587656879-8a8a7cce9d6c?auto=format&fit=crop&w=600&q=80" alt="Office">
+                        </div>
+                        <div class="stat-img-col" style="flex:1;">
+                            <img src="https://plus.unsplash.com/premium_photo-1681823251498-d79148213f39?auto=format&fit=crop&w=1400&q=80" alt="Team">
+                        </div>
+                        <div class="stat-img-col" style="width:17%;">
+                            <img src="https://images.unsplash.com/photo-1602008355435-2f4d349ed0cb?auto=format&fit=crop&w=600&q=80" alt="Blueprints">
+                        </div>
+                    </div>
+
+                    <!-- Layout 2: 20+ Disciplines — 2 stacked small left + large right -->
+                    <div class="stat-img-wrap">
+                        <div class="stat-img-stack" style="width:27%;">
+                            <div class="stat-img-col">
+                                <img src="https://plus.unsplash.com/premium_photo-1682089188159-a61a71d32fce?auto=format&fit=crop&w=600&q=80" alt="Office">
+                            </div>
+                            <div class="stat-img-col">
+                                <img src="https://plus.unsplash.com/premium_photo-1726704143288-b7d3d2a2bc43?auto=format&fit=crop&w=600&q=80" alt="Team">
+                            </div>
+                        </div>
+                        <div class="stat-img-col" style="flex:1;">
+                            <img src="https://plus.unsplash.com/premium_photo-1681823237713-ce2b13124240?auto=format&fit=crop&w=1400&q=80" alt="Architecture">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caption -->
+                <p id="sn-caption" class="sn-el font-sans text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/30 py-4 flex-shrink-0">ESTABLISHED</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Core Values — dark split: text left · photo right -->
+    <section id="cv-section" style="height: 370vh;">
+        <div id="cv-sticky" class="sticky top-0 overflow-hidden" style="height: 100vh;">
+            <div class="h-full flex flex-col">
+
+                <!-- Section header -->
+                <div class="flex-shrink-0 px-8 md:px-14 lg:px-20 pt-20 md:pt-24 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-4">
+                        <span class="font-sans text-xs uppercase tracking-[0.3em] text-white/40">What We Stand For</span>
+                        <div class="w-24 h-px bg-white/10"></div>
+                    </div>
+                </div>
+
+                <!-- Split body: text left · photo right -->
+                <div class="flex flex-1 min-h-0">
+
+                    <!-- Left: text content -->
+                    <div class="w-[45%] md:w-[42%] flex flex-col justify-between px-8 md:px-14 lg:px-20 pt-4 pb-6">
+                        <div>
+                            <!-- Index number -->
+                            <p id="cv-num" class="sn-el font-display font-light text-white/10 leading-none mb-3 select-none"
+                               style="font-size: clamp(3.5rem, 10vw, 7rem);">01</p>
+                            <!-- Value title -->
+                            <h3 id="cv-label" class="sn-el font-display text-xl md:text-2xl lg:text-3xl font-light text-white leading-snug mb-4">
+                                Creating Distinctive Experiences
+                            </h3>
+                            <!-- Divider -->
+                            <div class="w-8 h-px bg-white/30 mb-4"></div>
+                            <!-- Description -->
+                            <p id="cv-desc" class="sn-el font-sans text-xs md:text-sm text-white/60 leading-relaxed max-w-sm">
+                                Memorable places with strong identity and meaningful connections to their context. Each project leaves a lasting impression that resonates long after the first visit.
+                            </p>
+                        </div>
+
+                        <!-- Bottom: dots + caption -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <button class="cv-dot cv-dot-on interactive" onclick="setCvSlide(0)"></button>
+                                <button class="cv-dot interactive" onclick="setCvSlide(1)"></button>
+                                <button class="cv-dot interactive" onclick="setCvSlide(2)"></button>
+                                <button class="cv-dot interactive" onclick="setCvSlide(3)"></button>
+                            </div>
+                            <p id="cv-caption" class="sn-el font-sans text-[10px] uppercase tracking-[0.28em] text-white/25">IDENTITY</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: full-height crossfading photo -->
+                    <div class="flex-1 relative overflow-hidden">
+                        <img class="cv-img cv-active"
+                             src="https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=1400&q=80" alt="Distinctive Experiences">
+                        <img class="cv-img"
+                             src="https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?auto=format&fit=crop&w=1400&q=80" alt="Shaping Legacy">
+                        <img class="cv-img"
+                             src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=80" alt="Space for Connection">
+                        <img class="cv-img"
+                             src="https://images.unsplash.com/photo-1581774859631-87bc25f077f8?auto=format&fit=crop&w=1400&q=80" alt="Local Culture">
+                        <!-- Subtle left-edge fade into dark bg -->
+                        <div class="absolute inset-y-0 left-0 w-16 pointer-events-none"
+                             style="background: linear-gradient(to right, #0a0a0a, transparent);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Team -->
+    <section class="py-24 md:py-36 px-6 md:px-12 lg:px-20 bg-white">
+        <div class="max-w-screen-xl mx-auto">
+
+            <!-- Header -->
+            <div class="flex items-center gap-4 mb-8 reveal-up">
+                <span class="font-sans text-xs uppercase tracking-[0.3em] text-[#0a0a0a]/40">Our People</span>
+                <div class="flex-1 h-[1px] bg-[#0a0a0a]/10"></div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal-up" style="transition-delay:0.1s">
+                <h2 class="font-display text-4xl md:text-6xl font-light text-[#0a0a0a]">Leadership Team</h2>
+                <p class="font-sans text-sm text-[#0a0a0a]/45 max-w-xs leading-relaxed md:text-right">
+                    The visionaries guiding every project from concept to completion.
+                </p>
+            </div>
+
+            <!-- 6-box grid: 3 columns × 2 rows -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.2s">
+
+                <!-- 1 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Giang-new.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Hoang Vu Lan"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MR. TRINH THANH GIAN</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">Chairman<br>of the Board of Members</p>
+                    </div>
+                </div>
+
+                <!-- 2 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mrs-Ngoc-up.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Truong Hong Vinh"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MS. SU BUI BAO NGOC</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">Vice Chairwoman<br>of the Board of Members</p>
+                    </div>
+                </div>
+
+                <!-- 3 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Quang-UP-NEW.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Nguyen The Ngoc"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MR. TRAN NGUYEN QUANG</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">General Director<br>Architect, Top-tier Lead Designer</p>
+                    </div>
+                </div>
+
+                <!-- 4 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Cong-325x401-up.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Dang Van Minh"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MR. NGUYEN QUOC CONG</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">Deputy General Director<br>Engineer, Grade 1 Lead Designer</p>
+                    </div>
+                </div>
+
+                <!-- 5 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/02/E-Sy-KT2-up.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Nguyen Van Quyet"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MR. NGUYEN TIEN SY</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">Deputy General Director<br>Architect, Top-tier Lead Designer</p>
+                    </div>
+                </div>
+
+                <!-- 6 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Hung-UP.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Ha Huyen Tran"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-6 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-lg font-light text-[#0a0a0a]">MR. PHAM THANH HUNG</h3>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed">Deputy General Director<br>Architect, Top-tier Lead Designer</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Foundation Principles — fullscreen sticky scroll -->
+    <section id="fp-section" style="height: 280vh;">
+        <div id="fp-sticky" class="sticky top-0 overflow-hidden bg-dark" style="height: 100vh;">
+
+            <!-- Background layers -->
+            <div class="fp-bg fp-bg-active">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80"
+                     class="w-full h-full object-cover" alt="">
+                <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(10,10,10,0.35) 0%,rgba(10,10,10,0.6) 100%);"></div>
+            </div>
+            <div class="fp-bg">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80"
+                     class="w-full h-full object-cover" alt="">
+                <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(10,10,10,0.35) 0%,rgba(10,10,10,0.6) 100%);"></div>
+            </div>
+            <div class="fp-bg">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80"
+                     class="w-full h-full object-cover" alt="">
+                <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(10,10,10,0.35) 0%,rgba(10,10,10,0.6) 100%);"></div>
+            </div>
+
+            <!-- Content overlay -->
+            <div class="relative z-10 h-full flex flex-col px-8 md:px-14 lg:px-20">
+
+                <!-- Top: section label -->
+                <div class="pt-24 md:pt-28 flex-shrink-0">
+                    <span class="font-sans text-xs uppercase tracking-[0.3em] text-white/40">The Way We Work</span>
+                </div>
+
+                <!-- Center: animated titles (stacked, absolute) -->
+                <div class="relative flex-1 flex items-center justify-center">
+
+                    <h2 class="fp-title fp-active font-display font-light text-white text-center leading-[1.15] px-4"
+                        style="font-size: clamp(2.2rem, 6vw, 5.5rem);">
+                        People Are Our Most<br>Valuable Asset<span class="text-white/30 align-super" style="font-size:0.45em; margin-left:0.2em;">✦</span>
+                    </h2>
+
+                    <h2 class="fp-title font-display font-light text-white text-center leading-[1.15] px-4"
+                        style="font-size: clamp(2.2rem, 6vw, 5.5rem);">
+                        Integrity Is<br>Our Core Value<span class="text-white/30 align-super" style="font-size:0.45em; margin-left:0.2em;">✦</span>
+                    </h2>
+
+                    <h2 class="fp-title font-display font-light text-white text-center leading-[1.15] px-4"
+                        style="font-size: clamp(2.2rem, 6vw, 5.5rem);">
+                        Unity Is The Foundation<br>For Sustainable Growth<span class="text-white/30 align-super" style="font-size:0.45em; margin-left:0.2em;">✦</span>
+                    </h2>
+                </div>
+
+                <!-- Bottom: animated descriptions -->
+                <div class="flex-shrink-0 pb-10 md:pb-14">
+                    <div class="relative" style="height: 5.5rem;">
+                        <p class="fp-desc fp-active font-sans text-xs md:text-sm text-white/65 leading-relaxed max-w-md">
+                            People will always remain at the heart of Sunjin Vietnam. Individual creativity is nurtured through trust, collaboration, and mentorship, allowing each person to grow while contributing their voice to the ideas we shape together.
+                        </p>
+                        <p class="fp-desc font-sans text-xs md:text-sm text-white/65 leading-relaxed max-w-md">
+                            Sunjin Vietnam upholds moral principles, guiding every decision, partnership, and action with transparency, honesty, and responsibility to build lasting trust.
+                        </p>
+                        <p class="fp-desc font-sans text-xs md:text-sm text-white/65 leading-relaxed max-w-md">
+                            United by shared values and a common vision, we move forward together with a shared sense of purpose and commitment, remaining faithful to the principles that guide our collective journey.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Awards -->
+    <section class="bg-[#0a0a0a] py-24 md:py-36 px-8 md:px-14 lg:px-20">
+        <div class="max-w-screen-2xl mx-auto">
+
+            <!-- Header -->
+            <div class="pb-12 border-b border-white/8 reveal-up">
+                <span class="font-sans text-xs uppercase tracking-[0.35em] text-white/30 block mb-5">Recognition</span>
+                <h2 class="font-display font-light text-white leading-none" style="font-size:clamp(3rem,8vw,6.5rem);">Awards</h2>
+            </div>
+
+            <!-- Award list -->
+            <div class="divide-y divide-white/8">
+
+                <!-- 01 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">01</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Architecture Masterprize (AMP)</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            Pavilion Top 10 Awards
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            The project was built to serve as a showcase for the 2023 Top 10 Awards. The design strictly adheres to the motto "Touching life, Architecture is nature," with the construction site located in Dien Hong Flower Garden, near the city's cultural and historical area.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Nguyen Anh Duong · Tran Nguyen Quang · Dang Trung Hieu · Nguyen Tien Sy · Nguyen Xuan Hieu · Nguyen Duc Nam · Nguyen Viet Luan</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Dien Hong Flower Garden, Hoan Kiem District, Hanoi</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/10/pavilion_amp-scaled.jpg"
+                             alt="Pavilion Top 10 Awards" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+                <!-- 02 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.05s">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">02</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">A+ Awards for Architects</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            Dich Vong Hau Kindergarten
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            Outperforming hundreds of projects from 80 countries worldwide, the renovation project of Dich Vong Hau Kindergarten (Cau Giay District, Hanoi) was honored with the award, being the most voted-for project globally in the Kindergarten category.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Dinh Van Thanh · Nguyen Quang Hai · Dinh Van Truong</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Dich Vong, Cau Giay District, Hanoi</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/06/z5523924862513_982735619bbef78e550b752285151da5.jpg"
+                             alt="Dich Vong Hau Kindergarten" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+                <!-- 03 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.1s">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">03</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Green Good Design Award</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            University of Commerce
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            The design of the central lecture hall building at the University of Commerce is honored to be among the winning projects in the Green Architecture category of the Green GOOD DESIGN Sustainability Awards 2024.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Dinh Van Thanh · Trinh Tuan Dung · Nguyen Tien Sy · Nguyen Xuan Hieu · Nguyen Thach Thao</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">79 Ho Tung Mau St., Mai Dich Ward, Cau Giay District, Hanoi</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/08/dhtm5.jpg"
+                             alt="University of Commerce" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+                <!-- 04 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.15s">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">04</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Asia Architecture Award</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2023</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            GrandTourane Nha Trang
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            The Grand Tourane Nha Trang hotel project won the Best Hotel Architecture Award 2023 – Asia Design Awards.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Luong Van Thanh · Trinh Trung Hieu · Dinh Van Thanh</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Loc Tho Ward, Nha Trang City</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Asian-7-up.jpg"
+                             alt="GrandTourane Nha Trang" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+                <!-- 05 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.2s">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">05</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">National Architecture Silver Award</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2021</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            Cau Giay Secondary School
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            The Cau Giay Secondary School project won the Silver Award at the 2021 National Architecture Awards.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Luong Van Thanh · Trinh Trung Hieu</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Quan Hoa Ward, Cau Giay District, Hanoi</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Giai-Bac-KT-Quoc-Gia.jpg"
+                             alt="Cau Giay Secondary School" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+                <!-- 06 -->
+                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.25s">
+                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">06</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">National Architecture Bronze Award</span>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2023</span>
+                        </div>
+                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
+                            House CT11–12–13
+                        </h3>
+                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
+                            The CT11–12–13 high-rise apartment complex project won the Bronze Award at the National Architecture Awards 2022–2023.
+                        </p>
+                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Le Van Hao · Pham Thanh Hung · Nguyen Quang Hai · Dinh Van Thanh</p>
+                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Tu Hiep, Thanh Tri, Hanoi</p>
+                    </div>
+                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                        <img src="https://sunjinvietnam.vn/wp-content/uploads/2023/12/Giai-dong-KT-Quoc-Gia-Ct11-12-13.jpg"
+                             alt="House CT11-12-13" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Services -->
+    <section class="py-24 md:py-36 px-8 md:px-14 lg:px-20 bg-white">
+        <div class="max-w-screen-2xl mx-auto">
+
+            <!-- Header -->
+            <div class="flex items-center gap-4 mb-10 reveal-up">
+                <span class="font-sans text-xs uppercase tracking-[0.3em] text-[#0a0a0a]/35">What We Do</span>
+                <div class="flex-1 h-px bg-[#0a0a0a]/10"></div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal-up" style="transition-delay:0.1s">
+                <h2 class="font-display font-light text-[#0a0a0a] leading-none" style="font-size:clamp(3rem,8vw,6.5rem);">Services</h2>
+                <p class="font-sans text-sm text-[#0a0a0a]/40 max-w-xs leading-relaxed md:text-right">
+                    A full spectrum of design disciplines delivered under one integrated vision.
+                </p>
+            </div>
+
+            <!-- 2×2 grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.15s">
+
+                <!-- 01 School Design -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[4/3] overflow-hidden">
+                        <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                             alt="School Design"
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="p-8 border-t border-[#0a0a0a]/8">
+                        <div class="flex items-center gap-4 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#0a0a0a]/28">01</span>
+                            <div class="flex-1 h-px bg-[#0a0a0a]/10"></div>
+                        </div>
+                        <h3 class="font-display text-2xl md:text-3xl font-light text-[#0a0a0a] mb-4 leading-snug">School Design</h3>
+                        <p class="font-sans text-sm text-[#0a0a0a]/50 leading-relaxed">
+                            We design learning environments that inspire curiosity and nurture growth — from kindergartens to universities. Each school is shaped around its community, balancing function, safety, and the joy of discovery.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 02 Architectural Design -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[4/3] overflow-hidden">
+                        <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                             alt="Architectural Design"
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="p-8 border-t border-[#0a0a0a]/8">
+                        <div class="flex items-center gap-4 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#0a0a0a]/28">02</span>
+                            <div class="flex-1 h-px bg-[#0a0a0a]/10"></div>
+                        </div>
+                        <h3 class="font-display text-2xl md:text-3xl font-light text-[#0a0a0a] mb-4 leading-snug">Architectural Design</h3>
+                        <p class="font-sans text-sm text-[#0a0a0a]/50 leading-relaxed">
+                            From concept to completion, we craft architecture that is timeless and responsive to its context. Our work spans residential, hospitality, commercial, and cultural typologies — each shaped by place, culture, and purpose.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 03 Urban Planning -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[4/3] overflow-hidden">
+                        <img src="https://images.pexels.com/photos/2190283/pexels-photo-2190283.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                             alt="Urban Planning"
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="p-8 border-t border-[#0a0a0a]/8">
+                        <div class="flex items-center gap-4 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#0a0a0a]/28">03</span>
+                            <div class="flex-1 h-px bg-[#0a0a0a]/10"></div>
+                        </div>
+                        <h3 class="font-display text-2xl md:text-3xl font-light text-[#0a0a0a] mb-4 leading-snug">Urban Planning</h3>
+                        <p class="font-sans text-sm text-[#0a0a0a]/50 leading-relaxed">
+                            We shape the frameworks that guide how cities grow and evolve. Our urban planning work integrates mobility, public space, ecology, and community life — creating master plans that are human in scale and resilient over time.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 04 Structural & Mechanical Engineering -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[4/3] overflow-hidden">
+                        <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                             alt="Structural & Mechanical Engineering"
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="p-8 border-t border-[#0a0a0a]/8">
+                        <div class="flex items-center gap-4 mb-5">
+                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#0a0a0a]/28">04</span>
+                            <div class="flex-1 h-px bg-[#0a0a0a]/10"></div>
+                        </div>
+                        <h3 class="font-display text-2xl md:text-3xl font-light text-[#0a0a0a] mb-4 leading-snug">Structural &amp; Mechanical<br>Engineering</h3>
+                        <p class="font-sans text-sm text-[#0a0a0a]/50 leading-relaxed">
+                            Our engineering team integrates structural and mechanical systems seamlessly into the design process. From load-bearing frameworks to building services, we ensure every structure performs with precision, safety, and longevity.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. CTA -->
+    <section class="py-36 md:py-48 px-6 md:px-12 lg:px-16 relative overflow-hidden text-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                 alt="" class="w-full h-full object-cover opacity-15">
+            <div class="absolute inset-0 bg-dark/70"></div>
+        </div>
+        <div class="relative z-10 max-w-screen-xl mx-auto">
+            <p class="font-sans text-xs uppercase tracking-[0.3em] text-white/40 mb-8 reveal-fade">Let's Build Together</p>
+            <h2 class="font-display text-5xl md:text-8xl lg:text-[100px] font-light leading-none mb-14 reveal-up">
+                Have a project<br/>in mind?
+            </h2>
+            <button onclick="openContact()"
+                class="font-sans text-sm uppercase tracking-[0.2em] border border-white/50 rounded-full px-12 py-4 hover:bg-white hover:text-dark transition-colors duration-300 interactive reveal-up"
+                style="transition-delay: 0.2s">
+                Let's Discuss
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 md:mb-32 reveal-up">
+            <div class="flex flex-col gap-10 md:gap-12 font-sans text-[13px] md:text-sm tracking-[0.1em] uppercase text-white/90 leading-relaxed">
+                <div>
+                    <p>E: TRUYENTHONG@SUNJINVIETNAM.VN</p>
+                    <p>P: 097 7279 066</p>
+                </div>
+                <div>
+                    <p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p>
+                    <p>CAU GIAY WARD, HA NOI,</p>
+                    <p>VIETNAM</p>
+                </div>
+            </div>
+
+            <div class="hidden md:flex flex-col items-start md:items-center gap-2">
+                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Home</a>
+                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">About</a>
+                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Projects</a>
+                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Blogs</a>
+                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Careers</a>
+            </div>
+
+            <div class="flex justify-start md:justify-end items-start mt-8 md:mt-0">
+                <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 hover:text-white interactive transition-colors flex items-center gap-2 group">
+                    BACK TO TOP
+                    <svg class="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay: 0.2s">
+            <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
+                <a href="index.html" class="interactive">
+                    <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+                </a>
+                <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                    &copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED
+                </p>
+            </div>
+
+            <div class="lg:col-span-6 flex flex-col justify-between h-full gap-10 lg:gap-16">
+                <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">
+                    SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.
+                </p>
+                <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                    <a href="#" class="hover-underline interactive">LINKEDIN</a>
+                    <a href="#" class="hover-underline interactive">PRIVACY POLICY</a>
+                    <a href="#" class="hover-underline interactive">TERMS OF SERVICE</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Custom Cursor
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            dot.style.left = `${posX}px`;
+            dot.style.top  = `${posY}px`;
+            outline.animate(
+                { left: `${posX}px`, top: `${posY}px` },
+                { duration: 500, fill: 'forwards' }
+            );
+        });
+
+        document.querySelectorAll('a, button, .interactive').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Scroll Reveal
+        const revealEls = document.querySelectorAll('.reveal-up, .reveal-fade');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        revealEls.forEach(el => observer.observe(el));
+
+        // Perspectives — auto-cycling video section
+        const perspSlides = [
+            {
+                title: 'Traditionally',
+                desc: 'Sunjin Vietnam overseeing architectural, interior, landscape, and planning projects across the country — collaborating with world-class international partners to deliver destinations that reflect the unique character and soul of each site.',
+                counter: '01 / 03'
+            },
+            {
+                title: 'Contemporarily',
+                desc: 'Architecture evolves with its era. Sunjin Vietnam commits contemporary design to what endures — our projects embrace progress while remaining true to place, shaping spaces that evolve alongside their inhabitants and stand as honest expressions of the time in which they were made.',
+                counter: '02 / 03'
+            },
+            {
+                title: 'Creatively',
+                desc: 'Creativity grants soul to every project. Each design at Sunjin Vietnam stems from unique inspiration — shaped by emotion, memory, and the stories written into the land. We reinvent rather than repeat, granting each commission a distinctive spirit that cannot be replicated elsewhere.',
+                counter: '03 / 03'
+            }
+        ];
+
+        const perspVids    = document.querySelectorAll('.persp-vid');
+        const perspDots    = document.querySelectorAll('.persp-dot');
+        const perspHeading = document.getElementById('persp-heading');
+        const perspDesc    = document.getElementById('persp-desc');
+        const perspCounter = document.getElementById('persp-counter');
+
+        let perspCurrent = 0;
+        let perspTimer   = null;
+        const PERSP_DURATION = 7000;
+
+        function perspGoTo(index) {
+            if (index === perspCurrent) return;
+
+            // Swap videos
+            perspVids[perspCurrent].classList.remove('active');
+            perspDots[perspCurrent].classList.remove('active');
+
+            perspCurrent = index;
+
+            perspVids[perspCurrent].classList.add('active');
+            perspDots[perspCurrent].classList.add('active');
+
+            // Crossfade text
+            perspHeading.classList.add('fading');
+            perspDesc.classList.add('fading');
+            setTimeout(() => {
+                perspHeading.textContent = perspSlides[perspCurrent].title;
+                perspDesc.textContent    = perspSlides[perspCurrent].desc;
+                perspCounter.textContent = perspSlides[perspCurrent].counter;
+                perspHeading.classList.remove('fading');
+                perspDesc.classList.remove('fading');
+            }, 450);
+
+            // Reset auto-timer
+            clearInterval(perspTimer);
+            perspTimer = setInterval(() => perspGoTo((perspCurrent + 1) % 3), PERSP_DURATION);
+        }
+
+        // Kick off auto-cycle
+        perspTimer = setInterval(() => perspGoTo((perspCurrent + 1) % 3), PERSP_DURATION);
+
+        // ── Stats sticky scroll ──
+        const statsData = [
+            {
+                number:  '5+',
+                label:   '5+ OFFICES',
+                desc:    'Sunjin Vietnam operates through five offices across Northern, Central, and Southern Vietnam. This presence allows our teams to remain closely connected to the diverse landscapes, cultures, and rhythms of the regions we design for — ensuring every project responds thoughtfully to the land and the communities it serves.',
+                caption: 'ESTABLISHED'
+            },
+            {
+                number:  '200+',
+                label:   '200+ GLOBAL PARTNERS',
+                desc:    'These long-term partnerships bring international expertise, diverse perspectives, and world-class standards — facilitating the delivery of projects that meet global benchmarks while celebrating Vietnam\'s origins and honouring the spirit of every place we touch.',
+                caption: 'WORLD-CLASS'
+            },
+            {
+                number:  '20+',
+                label:   '20+ YEARS OF OPERATION',
+                desc:    'Throughout our 20 years of operation, we are proud to be a design consulting firm that implements  an innovative vision, delivering large-scale projects that contribute to ushering Vietnam into a new era with greater progress and stronger development.',
+                caption: 'MULTIDISCIPLINARY'
+            }
+        ];
+
+        const snNum      = document.getElementById('sn-num');
+        const snLabel    = document.getElementById('sn-label');
+        const snDesc     = document.getElementById('sn-desc');
+        const snCaption  = document.getElementById('sn-caption');
+        const statImgs   = document.querySelectorAll('.stat-img-wrap');
+        const statSec    = document.getElementById('stats-section');
+        const snEls      = [snNum, snLabel, snDesc, snCaption];
+
+        let currentStat = 0;
+
+        function setStatSlide(idx) {
+            if (idx === currentStat) return;
+
+            // Fade text out
+            snEls.forEach(el => el.classList.add('sn-fading'));
+
+            setTimeout(() => {
+                const d = statsData[idx];
+                snNum.textContent     = d.number;
+                snLabel.textContent   = d.label;
+                snDesc.textContent    = d.desc;
+                snCaption.textContent = d.caption;
+                snEls.forEach(el => el.classList.remove('sn-fading'));
+            }, 460);
+
+            // Crossfade images
+            statImgs.forEach((w, i) => {
+                w.classList.toggle('stat-active', i === idx);
+            });
+
+            currentStat = idx;
+        }
+
+        // Init text from data
+        (function() {
+            const d = statsData[0];
+            snNum.textContent     = d.number;
+            snLabel.textContent   = d.label;
+            snDesc.textContent    = d.desc;
+            snCaption.textContent = d.caption;
+        })();
+
+        window.addEventListener('scroll', () => {
+            if (!statSec) return;
+            const top    = statSec.getBoundingClientRect().top;
+            const total  = statSec.offsetHeight - window.innerHeight;
+            const prog   = Math.max(0, Math.min(1, -top / total));
+
+            let slide = 0;
+            if (prog >= 0.67) slide = 2;
+            else if (prog >= 0.33) slide = 1;
+
+            setStatSlide(slide);
+        }, { passive: true });
+
+        // ── Core Values sticky scroll ──
+        const cvData = [
+            {
+                number:  '01',
+                label:   'Creating Distinctive Experiences',
+                desc:    'Memorable places with strong identity and meaningful connections to their context. Each project leaves a lasting impression that resonates long after the first visit — spaces people return to, speak about, and carry with them.',
+                caption: 'IDENTITY'
+            },
+            {
+                number:  '02',
+                label:   'Shaping Legacy',
+                desc:    'Timeless architecture that delivers cultural, social, and environmental value. We build not just for today, but for the generations who will inhabit these spaces long into the future.',
+                caption: 'LEGACY'
+            },
+            {
+                number:  '03',
+                label:   'Building Space for Connection',
+                desc:    'Inclusive spaces that encourage community interaction and a sense of belonging. Architecture at its best draws people together, creating the conditions for life to flourish.',
+                caption: 'COMMUNITY'
+            },
+            {
+                number:  '04',
+                label:   'Promoting Local Culture',
+                desc:    'Integrating cultural narratives and heritage into contemporary architecture. Every project honours the place where it stands, weaving local stories into enduring built form.',
+                caption: 'HERITAGE'
+            }
+        ];
+
+        const cvNum     = document.getElementById('cv-num');
+        const cvLabel   = document.getElementById('cv-label');
+        const cvDesc    = document.getElementById('cv-desc');
+        const cvCaption = document.getElementById('cv-caption');
+        const cvImgs    = document.querySelectorAll('.cv-img');
+        const cvDots    = document.querySelectorAll('.cv-dot');
+        const cvSec     = document.getElementById('cv-section');
+        const cvEls     = [cvNum, cvLabel, cvDesc, cvCaption];
+
+        let currentCv = 0;
+
+        function setCvSlide(idx) {
+            if (idx === currentCv) return;
+
+            cvEls.forEach(el => el.classList.add('sn-fading'));
+
+            setTimeout(() => {
+                const d = cvData[idx];
+                cvNum.textContent     = d.number;
+                cvLabel.textContent   = d.label;
+                cvDesc.textContent    = d.desc;
+                cvCaption.textContent = d.caption;
+                cvEls.forEach(el => el.classList.remove('sn-fading'));
+            }, 460);
+
+            cvImgs.forEach((img, i) => img.classList.toggle('cv-active', i === idx));
+            cvDots.forEach((dot, i) => dot.classList.toggle('cv-dot-on', i === idx));
+
+            currentCv = idx;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!cvSec) return;
+            const top   = cvSec.getBoundingClientRect().top;
+            const total = cvSec.offsetHeight - window.innerHeight;
+            const prog  = Math.max(0, Math.min(1, -top / total));
+
+            let slide = 0;
+            if (prog >= 0.75)      slide = 3;
+            else if (prog >= 0.50) slide = 2;
+            else if (prog >= 0.25) slide = 1;
+
+            setCvSlide(slide);
+        }, { passive: true });
+
+        // ── Foundation Principles — fullscreen sticky scroll ──
+        const fpBgs    = document.querySelectorAll('.fp-bg');
+        const fpTitles = document.querySelectorAll('.fp-title');
+        const fpDescs  = document.querySelectorAll('.fp-desc');
+        const fpSec    = document.getElementById('fp-section');
+        let currentFp  = 0;
+
+        function setFpSlide(idx) {
+            if (idx === currentFp) return;
+            const prev = currentFp;
+
+            // Exit current
+            fpBgs[prev].classList.remove('fp-bg-active');
+            fpTitles[prev].classList.remove('fp-active');
+            fpTitles[prev].classList.add('fp-prev');
+            fpDescs[prev].classList.remove('fp-active');
+            fpDescs[prev].classList.add('fp-prev');
+
+            // Clean up prev class after exit transition finishes
+            setTimeout(() => {
+                fpTitles[prev].classList.remove('fp-prev');
+                fpDescs[prev].classList.remove('fp-prev');
+            }, 650);
+
+            // Enter new
+            currentFp = idx;
+            fpBgs[currentFp].classList.add('fp-bg-active');
+            fpTitles[currentFp].classList.add('fp-active');
+            fpDescs[currentFp].classList.add('fp-active');
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!fpSec) return;
+            const top   = fpSec.getBoundingClientRect().top;
+            const total = fpSec.offsetHeight - window.innerHeight;
+            const prog  = Math.max(0, Math.min(1, -top / total));
+
+            let slide = 0;
+            if (prog >= 0.67)      slide = 2;
+            else if (prog >= 0.33) slide = 1;
+
+            setFpSlide(slide);
+        }, { passive: true });
+
+        // Fullscreen Menu
+        const menuBtn      = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay  = document.getElementById('menu-overlay');
+        const mainNav      = document.querySelector('nav');
+
+        menuBtn.addEventListener('click', () => {
+            menuOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            mainNav.classList.add('nav-hidden');
+        });
+        closeMenuBtn.addEventListener('click', () => {
+            menuOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+            mainNav.classList.remove('nav-hidden');
+        });
+
+        // Nav hide / show on scroll
+        let lastScrollY = 0;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                mainNav.classList.add('nav-hidden');
+            } else {
+                mainNav.classList.remove('nav-hidden');
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // Contact Modal
+        const contactModal   = document.getElementById('contact-modal');
+        const contactContent = document.getElementById('contact-content');
+
+        function openContact() {
+            contactModal.classList.remove('opacity-0', 'pointer-events-none');
+            contactContent.classList.remove('translate-y-10');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeContact() {
+            contactModal.classList.add('opacity-0', 'pointer-events-none');
+            contactContent.classList.add('translate-y-10');
+            document.body.style.overflow = '';
+        }
+        function toggleInterestDropdown() {
+            const dd      = document.getElementById('interest-dropdown');
+            const chevron = document.getElementById('interest-chevron');
+            const isHidden = dd.classList.contains('hidden');
+            dd.classList.toggle('hidden', !isHidden);
+            chevron.style.transform = isHidden ? 'rotate(180deg)' : '';
+        }
+        function selectInterest(value) {
+            document.getElementById('interest-value').value = value;
+            document.getElementById('interest-label').textContent = value;
+            document.getElementById('interest-label').classList.replace('text-white/50', 'text-white');
+            document.getElementById('interest-btn').classList.replace('text-white/50', 'text-white');
+            document.getElementById('interest-dropdown').classList.add('hidden');
+            document.getElementById('interest-chevron').style.transform = '';
+        }
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('custom-select-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('interest-dropdown').classList.add('hidden');
+                document.getElementById('interest-chevron').style.transform = '';
+            }
+        });
+    </script>
+</body>
+</html>

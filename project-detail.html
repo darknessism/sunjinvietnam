@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Project | SUNJIN VIETNAM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,300&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit','sans-serif'], display: ['Jost','sans-serif'] },
+                    colors: { dark: '#0a0a0a', light: '#f5f5f5', accent: '#888888' }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #0a0a0a; color: #f5f5f5; cursor: none; overflow-x: hidden; font-family: 'Outfit', sans-serif; }
+
+        @media (hover: none), (pointer: coarse) { .cursor-dot, .cursor-outline { display: none !important; } }
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%,-50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
+        .cursor-dot { width: 8px; height: 8px; background-color: white; mix-blend-mode: difference; transition: width 0.2s, height 0.2s; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid white; mix-blend-mode: difference; transition: width 0.2s, height 0.2s; }
+        .cursor-hover .cursor-dot { width: 0; height: 0; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; background-color: rgba(255,255,255,0.08); backdrop-filter: blur(2px); }
+
+        .detail-left { position: fixed; top: 0; left: 0; width: 50%; height: 100vh; overflow: hidden; z-index: 10; }
+        .detail-left-img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease; }
+        .detail-left-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.4) 45%, rgba(5,5,5,0.12) 100%); }
+        .detail-left-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem; }
+
+        .thumb-strip { display: flex; gap: 6px; }
+        .thumb { width: 52px; height: 36px; object-fit: cover; border-radius: 3px; opacity: 0.45; cursor: pointer; transition: opacity 0.25s ease, outline 0.2s ease; outline: 1px solid transparent; flex-shrink: 0; }
+        .thumb.active { opacity: 1; outline-color: rgba(255,255,255,0.6); }
+        .thumb:hover:not(.active) { opacity: 0.75; }
+
+        .close-btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.28); padding: 8px 18px; border-radius: 4px; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); transition: background 0.25s, border-color 0.25s; cursor: pointer; width: fit-content; }
+        .close-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.6); }
+
+        .detail-right { margin-left: 50%; min-height: 100vh; background: #0a0a0a; border-left: 1px solid rgba(255,255,255,0.07); }
+        .right-inner { padding: 4rem 3.5rem 7rem; }
+
+        .meta-item { padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .meta-label { font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
+        .meta-value { font-family: 'Jost', sans-serif; font-weight: 300; color: #f5f5f5; font-size: 1rem; }
+
+        .lead-text { font-family: 'Jost', sans-serif; font-weight: 300; font-size: clamp(1.15rem, 2vw, 1.5rem); color: rgba(245,245,245,0.88); line-height: 1.65; }
+        .body-para { font-family: 'Outfit', sans-serif; font-size: 14px; color: rgba(245,245,245,0.58); line-height: 1.9; margin-bottom: 1.2rem; }
+
+        .panel-photo { margin-left: -3.5rem; margin-right: -3.5rem; position: relative; overflow: hidden; }
+        .panel-photo img { width: 100%; display: block; object-fit: cover; }
+        .panel-caption { font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); padding: 0.75rem 3.5rem 0; }
+
+        .highlight-item { display: flex; gap: 14px; align-items: flex-start; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(245,245,245,0.6); line-height: 1.65; padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .highlight-item::before { content: '—'; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+        .section-label { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); margin-bottom: 1rem; margin-top: 2.2rem; }
+        .section-label:first-child { margin-top: 0; }
+
+        .accordion-header { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 1.35rem 0; border-top: 1px solid rgba(255,255,255,0.1); background: none; cursor: pointer; color: white; text-align: left; }
+        .accordion-title { font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.28em; }
+        .accordion-chevron { flex-shrink: 0; transition: transform 0.35s ease; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.55s cubic-bezier(0.4,0,0.2,1); }
+        .accordion-content.open { max-height: 3000px; }
+        .accordion-inner { padding: 0.5rem 0 2rem; }
+
+        .spec-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .spec-key { font-family: 'Outfit', sans-serif; font-size: 12px; color: rgba(255,255,255,0.35); }
+        .spec-val { font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(245,245,245,0.75); text-align: right; }
+
+        .credit-row { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .credit-role { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.15em; }
+        .credit-name { font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(245,245,245,0.7); text-align: right; }
+
+        .next-proj-card { display: block; position: relative; overflow: hidden; border-radius: 6px; text-decoration: none; margin-left: -3.5rem; margin-right: -3.5rem; }
+        .next-proj-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.6s ease; }
+        .next-proj-card:hover img { transform: scale(1.04); }
+        .next-proj-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem 2rem; }
+
+        .award-badge { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.55); margin-bottom: 0.5rem; width: fit-content; }
+
+        @media (max-width: 768px) {
+            .detail-left { position: relative; width: 100%; height: 60vh; }
+            .detail-right { margin-left: 0; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
+            .right-inner { padding: 2.5rem 1.6rem 5rem; }
+            .panel-photo { margin-left: -1.6rem; margin-right: -1.6rem; }
+            .panel-caption { padding: 0.75rem 1.6rem 0; }
+            .next-proj-card { margin-left: -1.6rem; margin-right: -1.6rem; }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-dark">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- LEFT PANEL -->
+    <div class="detail-left">
+        <img id="main-photo" src="" alt="" class="detail-left-img">
+        <div class="detail-left-overlay"></div>
+        <div class="detail-left-content">
+            <div class="flex justify-between items-start">
+                <div class="award-badge" id="award-badge">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span id="award-badge-text"></span>
+                </div>
+                <a href="project.html" class="close-btn">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Close
+                </a>
+            </div>
+            <div>
+                <div class="thumb-strip mb-5" id="thumb-strip"></div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-3" id="proj-category"></p>
+                <h1 class="font-display font-light text-white leading-[1.05]" id="proj-title" style="font-size:clamp(1.9rem,4.2vw,3.4rem);"></h1>
+                <p class="font-sans text-[12px] text-white/35 mt-3 tracking-[0.08em]" id="proj-year-loc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="detail-right">
+    <div class="right-inner">
+
+        <!-- Project Overview Panel -->
+        <div id="proj-overview-panel" class="mb-10 pb-10 border-b border-white/[0.07]"></div>
+
+        <div class="mb-10 pb-10 border-b border-white/[0.07]">
+            <p class="lead-text" id="proj-lead"></p>
+        </div>
+
+        <div class="panel-photo mb-3" style="height:320px;">
+            <img id="proj-photo1" src="" alt="" style="height:320px; object-fit:cover; width:100%;">
+        </div>
+        <p class="panel-caption mb-10" id="proj-photo1-cap"></p>
+
+        <p class="section-label">Design Concept</p>
+        <div id="proj-narrative1"></div>
+
+        <div class="panel-photo mb-3 mt-10" style="height:300px;">
+            <img id="proj-photo2" src="" alt="" style="height:300px; object-fit:cover; width:100%;">
+        </div>
+        <p class="panel-caption mb-10" id="proj-photo2-cap"></p>
+
+        <div id="proj-narrative2"></div>
+
+        <div class="mt-10 mb-2">
+            <p class="section-label">Design Highlights</p>
+            <div id="proj-highlights"></div>
+        </div>
+
+        <div class="panel-photo mb-3 mt-10" style="height:260px;">
+            <img id="proj-photo3" src="" alt="" style="height:260px; object-fit:cover; width:100%;">
+        </div>
+        <p class="panel-caption mb-12" id="proj-photo3-cap"></p>
+
+        <!-- Technical Data -->
+        <div class="accordion-wrapper">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-title">Technical Data</span>
+                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-inner" id="proj-specs"></div>
+            </div>
+        </div>
+
+        <!-- Design Team -->
+        <div class="accordion-wrapper">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-title">Design Team</span>
+                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-inner" id="proj-credits"></div>
+            </div>
+        </div>
+
+        <!-- Awards -->
+        <div class="accordion-wrapper">
+            <button class="accordion-header" onclick="toggleAccordion(this)" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span class="accordion-title">Awards &amp; Recognition</span>
+                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-inner" id="proj-awards-inner"></div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-14 pt-10 border-t border-white/[0.07]">
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/28 mb-1">Interested in this typology?</p>
+            <h2 class="font-display font-light text-white mb-6" style="font-size:clamp(1.4rem,2.5vw,2rem);">Let's discuss your project.</h2>
+            <a href="index.html#contact" class="inline-flex items-center gap-3 border border-white/25 rounded-full px-8 py-3.5 font-sans text-[11px] uppercase tracking-[0.22em] text-white/70 hover:bg-white hover:text-dark transition-all duration-300">
+                Start a Conversation
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <!-- Back -->
+        <div class="mt-12 pt-8 border-t border-white/[0.07]">
+            <a href="project.html" class="inline-flex items-center gap-3 font-sans text-[11px] uppercase tracking-[0.25em] text-white/30 hover:text-white transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                All Projects
+            </a>
+        </div>
+
+    </div>
+    </div>
+
+    <script>
+    // ── All content driven by localStorage (seeded & edited via admin.html) ─────
+
+    const id = new URLSearchParams(window.location.search).get('id') || '';
+
+    // ── Helpers ──────────────────────────────────────────────────────────────────
+    function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // Build a minimal display object from sj_projects list metadata alone
+    function buildFromMeta(m) {
+        const CAT = { planning:'Planning', housing:'Residential Architecture', school:'Educational Architecture', hotel:'Hospitality Architecture', headquarters:'Corporate Architecture' };
+        const typology = CAT[m.category] || m.category || '';
+        const img = m.coverImage || '';
+        return {
+            titlePlain: m.title, title: m.title,
+            category: typology,
+            yearLoc: [m.year, m.location].filter(Boolean).join(' · ') + (m.location ? ', Vietnam' : ''),
+            award: m.award || '',
+            images: [img, img, img, img],
+            lead: '',
+            photo1alt: m.title, photo1cap: '',
+            photo2alt: m.title, photo2cap: '',
+            photo3alt: m.title, photo3cap: '',
+            narrative1: m.architects ? ['Design Team: ' + m.architects] : [],
+            narrative2: [], highlights: [], specs: [],
+            credits: m.architects ? [{ r: 'Design Team', n: m.architects }] : [],
+            awards: m.award ? [{ a: 'Recognition', d: m.award }] : [],
+            next: null
+        };
+    }
+
+    // ── Load from API ─────────────────────────────────────────────────────────────
+    let projectData = null;
+
+    (async () => {
+        try {
+            const proj = await fetch('/api/projects/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : null).catch(() => null);
+            if (proj) {
+                projectData = proj.detail || buildFromMeta(proj);
+                populate(projectData);
+                renderOverviewPanel(proj);
+            }
+        } catch(e) {}
+    })();
+
+    // ── Populate page ─────────────────────────────────────────────────────────────
+    function populate(d) {
+        document.title = (d.titlePlain || 'Project') + ' | Projects | SUNJIN VIETNAM';
+
+        const mp = document.getElementById('main-photo');
+        mp.src = d.images[0] || ''; mp.alt = d.titlePlain || '';
+
+        const badge = document.getElementById('award-badge');
+        if (d.award) {
+            document.getElementById('award-badge-text').textContent = d.award;
+        } else if (badge) {
+            badge.style.display = 'none';
+        }
+
+        document.getElementById('proj-category').textContent = d.category || '';
+        document.getElementById('proj-title').innerHTML = d.title || '';
+        document.getElementById('proj-year-loc').textContent = d.yearLoc || '';
+
+        document.getElementById('thumb-strip').innerHTML = (d.images || []).filter(Boolean).map((src, i) => {
+            const thumb = src.includes('unsplash') ? src.replace('w=1400', 'w=200') : src;
+            const escapedSrc = src.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            return `<img class="thumb${i === 0 ? ' active' : ''}" onclick="changePhoto(this,'${escapedSrc}')" src="${esc(thumb)}" alt="View ${i + 1}">`;
+        }).join('');
+
+        document.getElementById('proj-lead').textContent = d.lead || '';
+
+        const p1 = document.getElementById('proj-photo1');
+        p1.src = d.images[1] || d.images[0] || ''; p1.alt = d.photo1alt || '';
+        document.getElementById('proj-photo1-cap').textContent = d.photo1cap || '';
+
+        const p2 = document.getElementById('proj-photo2');
+        p2.src = d.images[2] || d.images[0] || ''; p2.alt = d.photo2alt || '';
+        document.getElementById('proj-photo2-cap').textContent = d.photo2cap || '';
+
+        const p3 = document.getElementById('proj-photo3');
+        p3.src = d.images[3] || d.images[0] || ''; p3.alt = d.photo3alt || '';
+        document.getElementById('proj-photo3-cap').textContent = d.photo3cap || '';
+
+        document.getElementById('proj-narrative1').innerHTML = (d.narrative1 || []).map(p => `<p class="body-para">${esc(p)}</p>`).join('');
+        document.getElementById('proj-narrative2').innerHTML = (d.narrative2 || []).map(p => `<p class="body-para">${esc(p)}</p>`).join('');
+        document.getElementById('proj-highlights').innerHTML = (d.highlights || []).map(h => `<div class="highlight-item">${esc(h)}</div>`).join('');
+        document.getElementById('proj-specs').innerHTML = (d.specs || []).map(s => `<div class="spec-row"><span class="spec-key">${esc(s.k)}</span><span class="spec-val">${esc(s.v)}</span></div>`).join('');
+        document.getElementById('proj-credits').innerHTML = (d.credits || []).map(c => `<div class="credit-row"><span class="credit-role">${esc(c.r)}</span><span class="credit-name">${esc(c.n)}</span></div>`).join('');
+        document.getElementById('proj-awards-inner').innerHTML = (d.awards || []).map(a => `<div class="credit-row"><span class="credit-role">${esc(a.a)}</span><span class="credit-name">${esc(a.d)}</span></div>`).join('');
+    }
+
+    // ── Overview panel — called with the API project object ──────────────────────
+    function renderOverviewPanel(proj) {
+        const CAT_LABEL = { planning:'Planning', housing:'Residential Architecture', school:'Educational Architecture', hotel:'Hospitality Architecture', headquarters:'Corporate Architecture' };
+        let fields = [
+            { label: 'Location',          value: proj.location || '' },
+            { label: 'Year',              value: proj.year ? String(proj.year) : '' },
+            { label: 'Category',          value: CAT_LABEL[proj.category] || proj.category || '' },
+            { label: 'Architects / Team', value: proj.architects || '' },
+            { label: 'Award / Tag Line',  value: proj.award || '' },
+        ];
+
+        const visible = fields.filter(f => f.value && String(f.value).trim());
+        if (!visible.length) return;
+
+        const panel = document.getElementById('proj-overview-panel');
+        if (!panel) return;
+
+        panel.innerHTML = `
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-5">Project Overview</p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0 2.5rem;">
+                ${visible.map(f => `
+                <div class="meta-item">
+                    <div class="meta-label">${esc(f.label)}</div>
+                    <div class="meta-value">${esc(f.value).replace(/\n/g, '<br>')}</div>
+                </div>`).join('')}
+            </div>`;
+    }
+
+    // ── Custom cursor ─────────────────────────────────────────────────────────────
+    const dot = document.getElementById('cursor-dot');
+    const outline = document.getElementById('cursor-outline');
+    window.addEventListener('mousemove', e => {
+        dot.style.left = `${e.clientX}px`;
+        dot.style.top  = `${e.clientY}px`;
+        outline.animate({ left:`${e.clientX}px`, top:`${e.clientY}px` }, { duration:500, fill:'forwards' });
+    });
+    document.querySelectorAll('a,button,label,input,textarea,.thumb').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    // ── Photo switcher ────────────────────────────────────────────────────────────
+    function changePhoto(thumb, src) {
+        document.getElementById('main-photo').src = src;
+        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+    }
+
+    // ── Accordion ─────────────────────────────────────────────────────────────────
+    function toggleAccordion(btn) {
+        const content = btn.nextElementSibling;
+        const chevron = btn.querySelector('.accordion-chevron');
+        const isOpen  = content.classList.contains('open');
+        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+        document.querySelectorAll('.accordion-chevron').forEach(ch => ch.style.transform = '');
+        if (!isOpen) {
+            content.classList.add('open');
+            chevron.style.transform = 'rotate(180deg)';
+        }
+    }
+    </script>
+</body>
+</html>

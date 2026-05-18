@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Blog | SUNJIN VIETNAM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit','sans-serif'], display: ['Jost','sans-serif'] },
+                    colors: { dark: '#0a0a0a', light: '#f5f5f5', accent: '#888888' }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #0a0a0a; color: #f5f5f5; cursor: none; overflow-x: hidden; }
+
+        @media (hover: none), (pointer: coarse) { .cursor-dot, .cursor-outline { display: none !important; } }
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%,-50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
+        .cursor-dot { width: 8px; height: 8px; background-color: white; mix-blend-mode: difference; transition: width 0.2s, height 0.2s; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid white; mix-blend-mode: difference; transition: width 0.2s, height 0.2s; }
+        .cursor-hover .cursor-dot { width: 0; height: 0; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; background-color: rgba(255,255,255,0.1); backdrop-filter: blur(2px); }
+
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5,0,0,1); }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+        .reveal-fade { opacity: 0; transition: opacity 1s ease; }
+        .reveal-fade.active { opacity: 1; }
+
+        #menu-overlay { clip-path: circle(0% at 100% 0); transition: clip-path 0.8s cubic-bezier(0.76,0,0.24,1); }
+        #menu-overlay.open { clip-path: circle(150% at 100% 0); }
+
+        .hover-underline { position: relative; }
+        .hover-underline::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -2px; left: 0; background-color: currentColor; transition: width 0.3s ease; }
+        .hover-underline:hover::after { width: 100%; }
+
+        nav { transition: transform 0.4s cubic-bezier(0.76,0,0.24,1), opacity 0.4s ease; }
+        nav.nav-hidden { transform: translateY(-100%); opacity: 0; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        .article-lead { font-family: 'Outfit', sans-serif; font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.9; color: rgba(245,245,245,0.88); margin-bottom: 2.2rem; }
+        .article-body p { font-family: 'Outfit', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1.02rem); line-height: 1.95; color: rgba(245,245,245,0.65); margin-bottom: 1.8rem; }
+        .article-body h3 { font-family: 'Jost', sans-serif; font-size: clamp(1.4rem, 2.5vw, 1.95rem); font-weight: 300; color: white; margin: 4rem 0 1.4rem; letter-spacing: -0.01em; }
+        .pull-quote { border-left: 1px solid rgba(255,255,255,0.2); padding: 0.5rem 2.2rem 0.5rem 2rem; margin: 4rem 0; }
+        .pull-quote p { font-family: 'Jost', sans-serif; font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 300; font-style: italic; color: rgba(245,245,245,0.9); line-height: 1.55; margin-bottom: 1.2rem; }
+        .pull-quote cite { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.28); font-style: normal; }
+
+        .blog-card { display: block; overflow: hidden; position: relative; background: #0d0d0d; cursor: pointer; text-decoration: none; color: white; }
+        .blog-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .blog-card:hover img { transform: scale(1.05); }
+        .blog-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.28) 55%, transparent 100%); transition: background 0.55s ease; }
+        .blog-card:hover .blog-overlay { background: linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.58) 60%, rgba(10,10,10,0.18) 100%); }
+        .blog-cat-tag { position: absolute; top: 1.4rem; left: 1.5rem; font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.22); padding: 3px 10px; border-radius: 20px; background: rgba(10,10,10,0.5); backdrop-filter: blur(8px); z-index: 2; }
+        .blog-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 1.7rem 1.8rem; z-index: 2; }
+        .blog-date { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.32); margin-bottom: 8px; display: block; }
+        .blog-title { font-family: 'Jost', sans-serif; font-weight: 300; color: white; line-height: 1.2; }
+
+        #read-progress { position: fixed; top: 0; left: 0; height: 2px; background: rgba(255,255,255,0.6); z-index: 100; width: 0%; transition: width 0.1s linear; }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-dark">
+
+    <div id="read-progress"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
+        <a href="index.html"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+
+        <div class="flex items-center gap-6">
+            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()">
+                Let's Discuss
+            </button>
+            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Menu</button>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Menu -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
+        <div class="flex justify-between items-center mix-blend-normal">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Close</button>
+        </div>
+        <div class="flex-1 flex items-center justify-center">
+            <ul class="text-center space-y-2 md:space-y-6">
+                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Home</a></li>
+                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">About</a></li>
+                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Projects</a></li>
+                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Blogs</a></li>
+                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Careers</a></li>
+            </ul>
+        </div>
+        <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
+            <div><a href="#" class="hover:text-white interactive">LinkedIn</a></div>
+            <div class="text-right">
+                <p>TRUYENTHONG@SUNJINVIETNAM.VN</p>
+                <p>2ND FLOOR-3A, N07-B2, CAU GIAY</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+        <div class="bg-[#111] border border-white/10 w-full max-w-2xl p-8 md:p-12 relative rounded-xl transform translate-y-10 transition-transform duration-500" id="contact-content">
+            <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <h2 class="font-display text-3xl md:text-5xl mb-8">Message us.</h2>
+            <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="tel" placeholder="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <div class="relative w-full" id="custom-select-wrapper">
+                        <input type="hidden" name="interest" id="interest-value" required>
+                        <button type="button" id="interest-btn" class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center focus:outline-none bg-transparent" onclick="toggleInterestDropdown()">
+                            <span id="interest-label">Your Interest</span>
+                            <svg class="w-4 h-4 text-white/40 transition-transform duration-200" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <ul id="interest-dropdown" class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Partnership</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Media</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">General</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <textarea placeholder="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">Submit now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ARTICLE HERO -->
+    <section class="relative min-h-screen flex flex-col justify-end overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-img" src="" alt="" class="w-full h-full object-cover opacity-45">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/65 to-dark/15"></div>
+        </div>
+        <div class="absolute top-36 left-6 md:left-12 z-10 reveal-fade">
+            <a href="blog.html" class="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.25em] text-white/40 hover:text-white transition-colors interactive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Blog
+            </a>
+        </div>
+        <div class="relative z-10 px-6 md:px-12 lg:px-16 pb-16 md:pb-24">
+            <div class="reveal-fade mb-5">
+                <span id="article-cat" class="inline-block font-sans text-[9px] uppercase tracking-[0.35em] text-white/70 border border-white/22 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-sm"></span>
+            </div>
+            <h1 id="article-title" class="font-display font-light leading-[1.08] tracking-tight text-white reveal-up" style="font-size:clamp(2.2rem,6vw,5.5rem); max-width:900px;"></h1>
+            <div class="mt-8 md:mt-12 flex flex-wrap items-center gap-6 md:gap-10 reveal-up" style="transition-delay:0.2s">
+                <div class="h-px flex-1 max-w-[120px] bg-white/20"></div>
+                <span id="article-date" class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/40"></span>
+                <span class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/25">·</span>
+                <span id="article-readtime" class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/40"></span>
+                <span class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/25">·</span>
+                <span id="article-author" class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/40"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLE BANNER IMAGE -->
+    <div class="w-full overflow-hidden" style="height: 65vh;">
+        <img id="banner-img" src="" alt="" class="w-full h-full object-cover">
+    </div>
+
+    <!-- ARTICLE BODY -->
+    <article id="article-content" class="py-20 md:py-28 px-6 md:px-16 lg:px-28 xl:px-40">
+        <div id="article-body"></div>
+
+        <!-- Tags -->
+        <div id="article-tags" class="mt-16 pt-10 border-t border-white/8 flex flex-wrap gap-3 reveal-fade"></div>
+
+        <!-- Share -->
+        <div class="mt-10 flex items-center gap-6 reveal-fade">
+            <span class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/25">Share</span>
+            <a href="#" class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors interactive hover-underline">LinkedIn</a>
+            <a href="#" class="font-sans text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors interactive hover-underline">Copy Link</a>
+        </div>
+    </article>
+
+    <!-- RELATED ARTICLES -->
+    <section class="border-t border-white/8 pt-20 pb-0">
+        <div class="px-6 md:px-12 lg:px-16 mb-10 reveal-up">
+            <span class="font-sans text-xs uppercase tracking-[0.3em] text-white/30 block mb-3">Continue Reading</span>
+            <h2 class="font-display font-light text-white" style="font-size: clamp(1.8rem, 4vw, 3rem);">Related Articles</h2>
+        </div>
+        <div class="grid grid-cols-12 gap-px bg-white/[0.12]" id="related-grid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 md:mb-32 reveal-up">
+            <div class="flex flex-col gap-10 md:gap-12 font-sans text-[13px] md:text-sm tracking-[0.1em] uppercase text-white/90 leading-relaxed">
+                <div><p>E: TRUYENTHONG@SUNJINVIETNAM.VN</p><p>P: 097 7279 066</p></div>
+                <div><p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p><p>CAU GIAY WARD, HA NOI,</p><p>VIETNAM</p></div>
+            </div>
+            <div class="hidden md:flex flex-col items-start md:items-center gap-2">
+                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Home</a>
+                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">About</a>
+                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Projects</a>
+                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Blogs</a>
+                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Careers</a>
+            </div>
+            <div class="flex justify-start md:justify-end items-start mt-8 md:mt-0">
+                <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 hover:text-white interactive transition-colors flex items-center gap-2 group">
+                    BACK TO TOP <svg class="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay:0.2s">
+            <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
+                <a href="index.html" class="interactive"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+                <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">&copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED</p>
+            </div>
+            <div class="lg:col-span-6 flex flex-col justify-between h-full gap-10 lg:gap-16">
+                <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.</p>
+                <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                    <a href="#" class="hover-underline interactive">LINKEDIN</a>
+                    <a href="#" class="hover-underline interactive">PRIVACY POLICY</a>
+                    <a href="#" class="hover-underline interactive">TERMS OF SERVICE</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // ── Populate from CMS (localStorage) ─────────────────────────────
+    function populateFromCMS(meta, content) {
+        document.title = meta.title + ' | Blog | SUNJIN VIETNAM';
+
+        const heroImg = document.getElementById('hero-img');
+        heroImg.src = meta.coverImage || '';
+        heroImg.alt = meta.title;
+        const bannerImg = document.getElementById('banner-img');
+        bannerImg.src = content.figureImage || meta.coverImage || '';
+        bannerImg.alt = meta.title;
+        document.getElementById('article-cat').textContent = CAT_LABEL[meta.category] || meta.category;
+        document.getElementById('article-title').textContent = meta.title;
+        document.getElementById('article-date').textContent = meta.date;
+        document.getElementById('article-readtime').textContent = (meta.readTime || '') + ' min read';
+        document.getElementById('article-author').textContent = meta.author;
+
+        const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+        let bodyHTML = '';
+        if (content.lead) bodyHTML += `<p class="article-lead">${esc(content.lead)}</p>`;
+        if (content.body && content.body.length) {
+            bodyHTML += '<div class="article-body">';
+            content.body.forEach(p => { if (p && p.trim()) bodyHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
+            bodyHTML += '</div>';
+        }
+        if (content.pullQuote) {
+            bodyHTML += `<blockquote class="pull-quote reveal-up"><p>${esc(content.pullQuote)}</p>${content.pullQuoteCite ? `<cite>${esc(content.pullQuoteCite)}</cite>` : ''}</blockquote>`;
+        }
+
+        const figureHTML = `<figure class="my-20 md:my-28 -mx-6 md:-mx-16 lg:-mx-28 xl:-mx-40 reveal-fade">
+            <div class="w-full overflow-hidden" style="height:60vh;">
+                <img src="${esc(content.figureImage || meta.coverImage || '')}" alt="${esc(meta.title)}" class="w-full h-full object-cover">
+            </div>
+            <figcaption class="mt-5 px-6 md:px-16 font-sans text-[10px] uppercase tracking-[0.25em] text-white/28 text-center">${esc(content.figureCaption || '')}</figcaption>
+        </figure>`;
+
+        let afterHTML = '';
+        if (content.bodyAfterFigure && content.bodyAfterFigure.length) {
+            afterHTML += '<div class="article-body">';
+            content.bodyAfterFigure.forEach(p => { if (p && p.trim()) afterHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
+            afterHTML += '</div>';
+        }
+
+        document.getElementById('article-body').innerHTML = bodyHTML + figureHTML + afterHTML;
+
+        const tags = (content.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        document.getElementById('article-tags').innerHTML = tags.map(t =>
+            `<span class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/40 border border-white/12 px-4 py-2 rounded-full">${esc(t)}</span>`
+        ).join('');
+
+        const related = (content.related || []).filter(r => r && r.id);
+        document.getElementById('related-grid').innerHTML = related.map(r => {
+            const rTitle = r.title || '';
+            const rImage = r.image || '';
+            const rCat   = CAT_LABEL[r.cat] || r.cat || '';
+            const rDate  = r.date || '';
+            return `<a href="blog-detail.html?id=${esc(r.id)}" class="blog-card col-span-12 md:col-span-4" style="height:48vh;">
+                <img src="${esc(rImage)}" alt="${esc(rTitle)}">
+                <div class="blog-overlay"></div>
+                <span class="blog-cat-tag">${esc(rCat)}</span>
+                <div class="blog-info">
+                    ${rDate ? `<span class="blog-date">${esc(rDate)}</span>` : ''}
+                    <h3 class="blog-title" style="font-size:clamp(1rem,2vw,1.5rem);">${esc(rTitle)}</h3>
+                </div>
+            </a>`;
+        }).join('');
+
+        document.querySelectorAll('.reveal-up:not(.active), .reveal-fade:not(.active)').forEach(el => observer.observe(el));
+    }
+
+    // ── Cursor ────────────────────────────────────────────────────────
+    const dot = document.getElementById('cursor-dot');
+    const outline = document.getElementById('cursor-outline');
+    window.addEventListener('mousemove', (e) => {
+        dot.style.left = `${e.clientX}px`; dot.style.top = `${e.clientY}px`;
+        outline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: 'forwards' });
+    });
+    document.querySelectorAll('a, button, .interactive').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    // ── Scroll reveal ─────────────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal-up, .reveal-fade').forEach(el => observer.observe(el));
+
+    const CAT_LABEL = {news:'News',press:'Press Coverage',ideas:'Ideas',community:'Community Responsibility'};
+    const id = new URLSearchParams(window.location.search).get('id') || '';
+
+    (async function initArticle() {
+        try {
+            const result = await fetch('/api/blog/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : null).catch(() => null);
+            if (result) {
+                populateFromCMS(result, result.content || {});
+            }
+        } catch(e) {}
+    })();
+
+    // ── Reading progress bar ──────────────────────────────────────────
+    const progressBar = document.getElementById('read-progress');
+    const articleEl = document.getElementById('article-content');
+    window.addEventListener('scroll', () => {
+        const rect = articleEl.getBoundingClientRect();
+        const scrolled = Math.max(0, -rect.top);
+        const pct = Math.min(100, (scrolled / (articleEl.offsetHeight - window.innerHeight)) * 100);
+        progressBar.style.width = pct + '%';
+    }, { passive: true });
+
+    // ── Menu ──────────────────────────────────────────────────────────
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const mainNav = document.querySelector('nav');
+    menuBtn.addEventListener('click', () => { menuOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; mainNav.classList.add('nav-hidden'); });
+    closeMenuBtn.addEventListener('click', () => { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; mainNav.classList.remove('nav-hidden'); });
+
+    let lastScrollY = 0;
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY && currentScrollY > 80) {
+            mainNav.classList.add('nav-hidden');
+        } else {
+            mainNav.classList.remove('nav-hidden');
+        }
+        lastScrollY = currentScrollY;
+    }, { passive: true });
+
+    // ── Contact ───────────────────────────────────────────────────────
+    const contactModal = document.getElementById('contact-modal');
+    const contactContent = document.getElementById('contact-content');
+    function openContact() { contactModal.classList.remove('opacity-0','pointer-events-none'); contactContent.classList.remove('translate-y-10'); document.body.style.overflow = 'hidden'; }
+    function closeContact() { contactModal.classList.add('opacity-0','pointer-events-none'); contactContent.classList.add('translate-y-10'); document.body.style.overflow = ''; }
+    function toggleInterestDropdown() { const dd = document.getElementById('interest-dropdown'); const ch = document.getElementById('interest-chevron'); const h = dd.classList.contains('hidden'); dd.classList.toggle('hidden', !h); ch.style.transform = h ? 'rotate(180deg)' : ''; }
+    function selectInterest(v) { document.getElementById('interest-value').value = v; document.getElementById('interest-label').textContent = v; toggleInterestDropdown(); }
+    document.addEventListener('click', (e) => { const w = document.getElementById('custom-select-wrapper'); if (w && !w.contains(e.target)) { document.getElementById('interest-dropdown').classList.add('hidden'); document.getElementById('interest-chevron').style.transform = ''; } });
+    contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeContact(); });
+    </script>
+</body>
+</html>
