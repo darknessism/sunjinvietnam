@@ -13,12 +13,19 @@ const upload = multer({
     limits:  { fileSize: 20 * 1024 * 1024 },
 });
 
-// Reusable mail transporter (Gmail SMTP via app password)
+// Reusable mail transporter (Gmail SMTP via app password).
+// Port is configurable via SMTP_PORT so we can switch 587 (STARTTLS) <-> 465
+// (SSL) on the host without a code change — some networks filter one but not
+// the other. Default to 587, which Railway tends to allow.
 let _transporter = null;
 function getTransporter() {
     if (_transporter) return _transporter;
+    const port = Number(process.env.SMTP_PORT) || 587;
     _transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host:   'smtp.gmail.com',
+        port,
+        secure: port === 465,   // SSL for 465, STARTTLS for 587
+        requireTLS: port !== 465,
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
         // Fail fast instead of hanging the request if SMTP is blocked/unreachable
         connectionTimeout: 15000,
@@ -84,6 +91,20 @@ router.post('/apply', upload.single('cv'), async (req, res, next) => {
 
         res.json({ ok: true });
     } catch (e) { next(e); }
+});
+
+// Diagnostic: verify SMTP connectivity WITHOUT sending an email. Used to test
+// whether the host can reach Gmail's SMTP after a deploy. Returns no secrets.
+router.get('/mail-status', async (req, res) => {
+    const port = Number(process.env.SMTP_PORT) || 587;
+    const configured = !!(process.env.SMTP_USER && process.env.SMTP_PASS);
+    if (!configured) return res.json({ ok: false, port, configured, error: 'SMTP not configured' });
+    try {
+        await getTransporter().verify();
+        res.json({ ok: true, port, configured });
+    } catch (e) {
+        res.json({ ok: false, port, configured, error: e.message, code: e.code });
+    }
 });
 
 // Public: list published careers
