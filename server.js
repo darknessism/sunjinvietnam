@@ -1,4 +1,9 @@
 require('dotenv').config();
+
+// Railway containers have no outbound IPv6 route. Without this, DNS may resolve
+// smtp.gmail.com to an IPv6 address and SMTP fails with ENETUNREACH/ETIMEDOUT.
+require('dns').setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const path    = require('path');
 
