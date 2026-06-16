@@ -7,14 +7,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit','sans-serif'], display: ['Jost','sans-serif'] },
+                    fontFamily: { sans: ['Open Sans','sans-serif'], display: ['Open Sans','sans-serif'] },
                     colors: { dark: '#0a0a0a', light: '#f5f5f5', accent: '#888888' }
                 }
             }
@@ -52,7 +52,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #555; }
 
         /* Filter chips */
-        .filter-chip { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 4px 14px 5px; background: none; cursor: pointer; transition: all 0.22s ease; white-space: nowrap; }
+        .filter-chip { font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 4px 14px 5px; background: none; cursor: pointer; transition: all 0.22s ease; white-space: nowrap; }
         .filter-chip:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.32); }
         .filter-chip.active { color: #0a0a0a; background: white; border-color: white; }
 
@@ -81,35 +81,35 @@
         .filter-chip.light.active { color: white; background: #0a0a0a; border-color: #0a0a0a; }
 
         /* Language toggle */
-        .lang-btn { color: rgba(255,255,255,0.55); background: transparent; padding: 6px 11px; font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
+        .lang-btn { color: rgba(255,255,255,0.55); background: transparent; padding: 6px 11px; font-family: 'Open Sans', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
         .lang-btn:hover { color: rgba(255,255,255,0.9); }
         .lang-btn.active { background: #fff; color: #0a0a0a; }
 
-        .job-number { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; min-width: 2.5rem; flex-shrink: 0; }
-        .job-level-pill { display: inline-block; font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.16); padding: 3px 10px; border-radius: 12px; margin-bottom: 9px; }
-        .job-title-text { font-family: 'Jost', sans-serif; font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 300; color: white; line-height: 1.2; margin-bottom: 7px; transition: letter-spacing 0.35s ease; }
+        .job-number { font-family: 'Open Sans', sans-serif; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; min-width: 2.5rem; flex-shrink: 0; }
+        .job-level-pill { display: inline-block; font-family: 'Open Sans', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.16); padding: 3px 10px; border-radius: 12px; margin-bottom: 9px; }
+        .job-title-text { font-family: 'Open Sans', sans-serif; font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 300; color: white; line-height: 1.2; margin-bottom: 7px; transition: letter-spacing 0.35s ease; }
         .job-row:hover .job-title-text { letter-spacing: 0.01em; }
-        .job-meta { font-family: 'Outfit', sans-serif; font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
+        .job-meta { font-family: 'Open Sans', sans-serif; font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
 
         .job-right-info { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; margin-left: 2rem; }
-        .job-salary { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
-        .job-deadline { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
+        .job-salary { font-family: 'Open Sans', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
+        .job-deadline { font-family: 'Open Sans', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
         .job-arrow-circle { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.14); border-radius: 50%; margin-top: 8px; transition: transform 0.35s ease, border-color 0.3s ease, background 0.3s ease; }
         .job-row:hover .job-arrow-circle { transform: translateX(5px); border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.05); }
 
         /* Apply form */
-        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Outfit', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
+        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Open Sans', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
         .apply-field::placeholder { color: rgba(255,255,255,0.32); }
         .apply-field:focus { border-bottom-color: rgba(255,255,255,0.6); }
         select.apply-field { -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 2px center; padding-right: 28px; }
         select.apply-field option { background: #141414; color: white; }
-        .apply-label { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
-        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
+        .apply-label { font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Open Sans', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
         .dropzone:hover, .dropzone.dragover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
-        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
+        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Open Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
         .apply-submit:hover { background: rgba(245,245,245,0.88); }
         .apply-submit:disabled { cursor: default; }
-        .step-num { font-family: 'Jost', sans-serif; font-weight: 300; font-size: 2.2rem; line-height: 1; color: rgba(255,255,255,0.25); flex-shrink: 0; width: 3.5rem; }
+        .step-num { font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 2.2rem; line-height: 1; color: rgba(255,255,255,0.25); flex-shrink: 0; width: 3.5rem; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-dark">

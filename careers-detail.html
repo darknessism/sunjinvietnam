@@ -7,14 +7,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit','sans-serif'], display: ['Jost','sans-serif'] },
+                    fontFamily: { sans: ['Open Sans','sans-serif'], display: ['Open Sans','sans-serif'] },
                     colors: { dark: '#0a0a0a', light: '#f5f5f5', accent: '#888888' }
                 }
             }
@@ -23,7 +23,7 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #0a0a0a; color: #f5f5f5; cursor: none; overflow-x: hidden; font-family: 'Outfit', sans-serif; }
+        body { background-color: #0a0a0a; color: #f5f5f5; cursor: none; overflow-x: hidden; font-family: 'Open Sans', sans-serif; }
 
         @media (hover: none), (pointer: coarse) { .cursor-dot, .cursor-outline { display: none !important; } }
         .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%,-50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
@@ -37,35 +37,35 @@
         .detail-left-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.35) 50%, rgba(5,5,5,0.15) 100%); }
         .detail-left-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem; }
 
-        .close-btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 4px; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); transition: background 0.25s ease, border-color 0.25s ease; cursor: pointer; width: fit-content; }
+        .close-btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Open Sans', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 4px; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); transition: background 0.25s ease, border-color 0.25s ease; cursor: pointer; width: fit-content; }
         .close-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.6); }
 
         .detail-right { margin-left: 50%; min-height: 100vh; background: #0a0a0a; padding: 4rem 3rem 6rem; border-left: 1px solid rgba(255,255,255,0.08); }
 
         .accordion-header { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 1.4rem 0; border-top: 1px solid rgba(255,255,255,0.1); background: none; cursor: pointer; color: white; text-align: left; }
         .accordion-wrapper:last-of-type .accordion-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .accordion-title { font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.28em; color: white; }
+        .accordion-title { font-family: 'Open Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.28em; color: white; }
         .accordion-chevron { flex-shrink: 0; transition: transform 0.35s ease; }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
         .accordion-content.open { max-height: 2000px; }
         .accordion-inner { padding: 0.5rem 0 2rem; }
 
-        .content-section-title { font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.45); margin-bottom: 1rem; margin-top: 1.6rem; }
+        .content-section-title { font-family: 'Open Sans', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.45); margin-bottom: 1rem; margin-top: 1.6rem; }
         .content-section-title:first-child { margin-top: 0; }
         .content-list { list-style: none; padding: 0; }
-        .content-list li { font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(245,245,245,0.65); line-height: 1.8; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; }
+        .content-list li { font-family: 'Open Sans', sans-serif; font-size: 13px; color: rgba(245,245,245,0.65); line-height: 1.8; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; }
         .content-list li::before { content: '·'; position: absolute; left: 0; color: rgba(255,255,255,0.3); }
 
         /* Apply form (shared style with careers page) */
-        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Outfit', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
+        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Open Sans', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
         .apply-field::placeholder { color: rgba(255,255,255,0.32); }
         .apply-field:focus { border-bottom-color: rgba(255,255,255,0.6); }
         select.apply-field { -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 2px center; padding-right: 28px; }
         select.apply-field option { background: #141414; color: white; }
-        .apply-label { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
-        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
+        .apply-label { font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Open Sans', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
         .dropzone:hover, .dropzone.dragover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
-        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
+        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Open Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
         .apply-submit:hover { background: rgba(245,245,245,0.88); }
         .apply-submit:disabled { cursor: default; }
 

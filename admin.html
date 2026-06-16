@@ -6,23 +6,23 @@
     <title>Admin — SUNJIN Vietnam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: { extend: { fontFamily: { display: ['Jost','sans-serif'], sans: ['Outfit','sans-serif'] }, colors: { dark: '#0a0a0a', light: '#f5f5f5' } } }
+            theme: { extend: { fontFamily: { display: ['Open Sans','sans-serif'], sans: ['Open Sans','sans-serif'] }, colors: { dark: '#0a0a0a', light: '#f5f5f5' } } }
         }
     </script>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
-        body { font-family: 'Outfit', sans-serif; background: #f2f2f2; margin: 0; }
+        body { font-family: 'Open Sans', sans-serif; background: #f2f2f2; margin: 0; }
 
         /* Sidebar */
         #sidebar { width: 216px; min-width: 216px; background: #0a0a0a; height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; z-index: 50; }
         #main { margin-left: 216px; min-height: 100vh; }
 
         /* Nav */
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 18px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.2s; border-left: 2px solid transparent; font-family: 'Outfit', sans-serif; background: none; border-top: none; border-right: none; border-bottom: none; width: 100%; text-align: left; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 18px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.2s; border-left: 2px solid transparent; font-family: 'Open Sans', sans-serif; background: none; border-top: none; border-right: none; border-bottom: none; width: 100%; text-align: left; }
         .nav-item:hover { color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.04); }
         .nav-item.active { color: white; border-left-color: white; background: rgba(255,255,255,0.06); }
 
@@ -31,23 +31,23 @@
         .view.active { display: block; }
 
         /* Filter chips */
-        .chip { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; border: 1px solid rgba(0,0,0,0.14); border-radius: 20px; padding: 4px 12px 5px; background: none; cursor: pointer; transition: all 0.2s; color: rgba(0,0,0,0.45); font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .chip { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; border: 1px solid rgba(0,0,0,0.14); border-radius: 20px; padding: 4px 12px 5px; background: none; cursor: pointer; transition: all 0.2s; color: rgba(0,0,0,0.45); font-family: 'Open Sans', sans-serif; white-space: nowrap; }
         .chip:hover { border-color: rgba(0,0,0,0.35); color: rgba(0,0,0,0.8); }
         .chip.active { background: #0a0a0a; color: white; border-color: #0a0a0a; }
 
         /* Table */
         .tbl-head { display: grid; border-bottom: 1px solid rgba(0,0,0,0.1); background: #f9f9f9; }
-        .tbl-th { padding: 10px 14px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(0,0,0,0.32); font-family: 'Outfit', sans-serif; }
+        .tbl-th { padding: 10px 14px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(0,0,0,0.32); font-family: 'Open Sans', sans-serif; }
         .tbl-row { display: grid; border-bottom: 1px solid rgba(0,0,0,0.055); transition: background 0.15s; }
         .tbl-row:hover { background: rgba(0,0,0,0.016); }
         .tbl-cell { padding: 12px 14px; font-size: 13px; color: rgba(0,0,0,0.72); display: flex; align-items: center; overflow: hidden; min-width: 0; }
         .tbl-cell:last-child { padding-right: 24px; }
 
         /* Badges */
-        .badge { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; padding: 3px 9px; border-radius: 10px; font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .badge { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; padding: 3px 9px; border-radius: 10px; font-family: 'Open Sans', sans-serif; white-space: nowrap; }
         .badge-published { background: #dcfce7; color: #15803d; }
         .badge-draft { background: #fef9c3; color: #854d0e; }
-        .cat-badge { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; padding: 3px 9px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); color: rgba(0,0,0,0.45); font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .cat-badge { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; padding: 3px 9px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); color: rgba(0,0,0,0.45); font-family: 'Open Sans', sans-serif; white-space: nowrap; }
 
         /* Action buttons */
         .act-btn { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: all 0.15s; background: white; color: rgba(0,0,0,0.45); flex-shrink: 0; }
@@ -64,8 +64,8 @@
         #confirm-overlay.open { display: flex; }
 
         /* Form */
-        .field-label { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(0,0,0,0.38); margin-bottom: 5px; font-family: 'Outfit', sans-serif; }
-        .field-input, .field-select, .field-textarea { width: 100%; border: 1px solid rgba(0,0,0,0.14); border-radius: 6px; padding: 8px 11px; font-size: 13px; font-family: 'Outfit', sans-serif; color: #0a0a0a; outline: none; transition: border-color 0.2s; background: white; }
+        .field-label { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(0,0,0,0.38); margin-bottom: 5px; font-family: 'Open Sans', sans-serif; }
+        .field-input, .field-select, .field-textarea { width: 100%; border: 1px solid rgba(0,0,0,0.14); border-radius: 6px; padding: 8px 11px; font-size: 13px; font-family: 'Open Sans', sans-serif; color: #0a0a0a; outline: none; transition: border-color 0.2s; background: white; }
         .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: #0a0a0a; }
         .field-select { appearance: none; cursor: pointer; }
         .field-textarea { resize: vertical; min-height: 76px; }
@@ -78,13 +78,13 @@
         .thumb { width: 38px; height: 38px; border-radius: 4px; object-fit: cover; background: #ebebeb; flex-shrink: 0; }
         .search-wrap { position: relative; }
         .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.32); pointer-events: none; }
-        .search-input { border: 1px solid rgba(0,0,0,0.14); border-radius: 6px; padding: 8px 12px 8px 34px; font-size: 12px; font-family: 'Outfit', sans-serif; color: #0a0a0a; outline: none; background: white; width: 210px; transition: border-color 0.2s; }
+        .search-input { border: 1px solid rgba(0,0,0,0.14); border-radius: 6px; padding: 8px 12px 8px 34px; font-size: 12px; font-family: 'Open Sans', sans-serif; color: #0a0a0a; outline: none; background: white; width: 210px; transition: border-color 0.2s; }
         .search-input:focus { border-color: #0a0a0a; }
         .stat-card { background: white; border-radius: 10px; padding: 22px; border: 1px solid rgba(0,0,0,0.07); }
-        .add-btn { display: inline-flex; align-items: center; gap: 7px; background: #0a0a0a; color: white; border: none; border-radius: 6px; padding: 9px 18px; font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; cursor: pointer; }
+        .add-btn { display: inline-flex; align-items: center; gap: 7px; background: #0a0a0a; color: white; border: none; border-radius: 6px; padding: 9px 18px; font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; cursor: pointer; }
         .add-btn:hover { background: #222; }
         .empty-state { padding: 52px 20px; text-align: center; color: rgba(0,0,0,0.22); font-size: 13px; }
-        #toast { position: fixed; bottom: 22px; right: 22px; background: #0a0a0a; color: white; font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.04em; padding: 11px 18px; border-radius: 7px; z-index: 300; transform: translateY(70px); opacity: 0; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s; pointer-events: none; }
+        #toast { position: fixed; bottom: 22px; right: 22px; background: #0a0a0a; color: white; font-family: 'Open Sans', sans-serif; font-size: 11px; letter-spacing: 0.04em; padding: 11px 18px; border-radius: 7px; z-index: 300; transform: translateY(70px); opacity: 0; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s; pointer-events: none; }
         #toast.show { transform: translateY(0); opacity: 1; }
         ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.14); border-radius: 3px; }
         .divider { width: 1px; height: 22px; background: rgba(0,0,0,0.1); flex-shrink: 0; }
@@ -102,7 +102,7 @@
         <label class="field-label" style="color:rgba(255,255,255,0.3);">Password</label>
         <input type="password" id="login-pw" class="field-input" style="background:#181818;border-color:rgba(255,255,255,0.1);color:white;margin-bottom:8px;" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
         <p id="login-err" style="font-size:11px;color:#f87171;margin-bottom:12px;display:none;">Incorrect password.</p>
-        <button onclick="doLogin()" style="width:100%;padding:11px;background:white;color:#0a0a0a;border:none;border-radius:6px;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.22em;cursor:pointer;">Sign In</button>
+        <button onclick="doLogin()" style="width:100%;padding:11px;background:white;color:#0a0a0a;border:none;border-radius:6px;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.22em;cursor:pointer;">Sign In</button>
     </div>
 </div>
 
@@ -137,7 +137,7 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             View Site
         </a>
-        <button onclick="doLogout()" style="display:flex;align-items:center;gap:7px;font-size:9px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.22);background:none;border:none;cursor:pointer;padding:5px 0;font-family:'Outfit',sans-serif;width:100%;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.55)'" onmouseout="this.style.color='rgba(255,255,255,0.22)'">
+        <button onclick="doLogout()" style="display:flex;align-items:center;gap:7px;font-size:9px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.22);background:none;border:none;cursor:pointer;padding:5px 0;font-family:'Open Sans',sans-serif;width:100%;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.55)'" onmouseout="this.style.color='rgba(255,255,255,0.22)'">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             Sign Out
         </button>
@@ -153,7 +153,7 @@
         <!-- Header -->
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;">
             <div>
-                <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Dashboard</h1>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Dashboard</h1>
                 <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;">SUNJIN Vietnam — Content Management</p>
             </div>
             <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.25);" id="dash-date"></p>
@@ -162,21 +162,21 @@
         <!-- Stat strip -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;">
             <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
-                <span style="font-family:'Jost',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-p">—</span>
+                <span style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-p">—</span>
                 <div>
                     <p style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.32);margin:0;">Projects</p>
                     <p style="font-size:10px;color:rgba(0,0,0,0.28);margin-top:3px;" id="stat-p-sub"></p>
                 </div>
             </div>
             <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
-                <span style="font-family:'Jost',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-b">—</span>
+                <span style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-b">—</span>
                 <div>
                     <p style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.32);margin:0;">Blog Articles</p>
                     <p style="font-size:10px;color:rgba(0,0,0,0.28);margin-top:3px;" id="stat-b-sub"></p>
                 </div>
             </div>
             <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
-                <span style="font-family:'Jost',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-c">—</span>
+                <span style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:2rem;color:#0a0a0a;line-height:1;" id="stat-c">—</span>
                 <div>
                     <p style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.32);margin:0;">Open Positions</p>
                     <p style="font-size:10px;color:rgba(0,0,0,0.28);margin-top:3px;" id="stat-c-sub"></p>
@@ -189,9 +189,9 @@
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Outfit',sans-serif;">Projects</span>
+                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Open Sans',sans-serif;">Projects</span>
                 </div>
-                <button onclick="showView('projects')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
+                <button onclick="showView('projects')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
             </div>
             <div id="dash-p" style="padding:0 18px;"></div>
         </div>
@@ -201,9 +201,9 @@
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Outfit',sans-serif;">Blog Articles</span>
+                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Open Sans',sans-serif;">Blog Articles</span>
                 </div>
-                <button onclick="showView('blog')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
+                <button onclick="showView('blog')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
             </div>
             <div id="dash-b" style="padding:0 18px;"></div>
         </div>
@@ -213,9 +213,9 @@
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Outfit',sans-serif;">Open Positions</span>
+                    <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(0,0,0,0.45);font-family:'Open Sans',sans-serif;">Open Positions</span>
                 </div>
-                <button onclick="showView('careers')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
+                <button onclick="showView('careers')" style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.38);background:none;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:4px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.4)';this.style.color='rgba(0,0,0,0.7)';" onmouseout="this.style.borderColor='rgba(0,0,0,0.12)';this.style.color='rgba(0,0,0,0.38)';">Manage →</button>
             </div>
             <div id="dash-c" style="padding:0 18px;"></div>
         </div>
@@ -226,7 +226,7 @@
     <div id="view-projects" class="view">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
             <div>
-                <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Projects</h1>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Projects</h1>
                 <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="proj-lbl"></p>
             </div>
             <button class="add-btn" onclick="openModal('project')">
@@ -272,7 +272,7 @@
     <div id="view-blog" class="view">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
             <div>
-                <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Blog</h1>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Blog</h1>
                 <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="blog-lbl"></p>
             </div>
             <button class="add-btn" onclick="openModal('blog')">
@@ -317,7 +317,7 @@
     <div id="view-careers" class="view">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
             <div>
-                <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Careers</h1>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Careers</h1>
                 <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="car-lbl"></p>
             </div>
             <button class="add-btn" onclick="openModal('career')">
@@ -359,17 +359,17 @@
     <div id="view-detail" class="view" style="padding:0;">
         <div style="position:sticky;top:0;background:#f2f2f2;z-index:20;padding:16px 36px;border-bottom:1px solid rgba(0,0,0,0.09);display:flex;align-items:center;justify-content:space-between;gap:16px;">
             <div style="display:flex;align-items:center;gap:14px;min-width:0;">
-                <button onclick="closeDetail()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;">
+                <button onclick="closeDetail()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;white-space:nowrap;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                     Projects
                 </button>
                 <div style="min-width:0;">
-                    <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="detail-heading">Page Content</h1>
-                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Outfit',sans-serif;">project-detail.html · saved to localStorage</p>
+                    <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="detail-heading">Page Content</h1>
+                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Open Sans',sans-serif;">project-detail.html · saved to localStorage</p>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                <a id="detail-preview-link" href="project-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;">
+                <a id="detail-preview-link" href="project-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                     Preview
                 </a>
@@ -383,17 +383,17 @@
     <div id="view-blog-content" class="view" style="padding:0;">
         <div style="position:sticky;top:0;background:#f2f2f2;z-index:20;padding:16px 36px;border-bottom:1px solid rgba(0,0,0,0.09);display:flex;align-items:center;justify-content:space-between;gap:16px;">
             <div style="display:flex;align-items:center;gap:14px;min-width:0;">
-                <button onclick="closeBlogContent()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;">
+                <button onclick="closeBlogContent()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;white-space:nowrap;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                     Blog
                 </button>
                 <div style="min-width:0;">
-                    <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="bc-heading">Article Content</h1>
-                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Outfit',sans-serif;">blog-detail.html · saved to localStorage</p>
+                    <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="bc-heading">Article Content</h1>
+                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Open Sans',sans-serif;">blog-detail.html · saved to localStorage</p>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                <a id="bc-preview-link" href="blog-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;">
+                <a id="bc-preview-link" href="blog-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                     Preview
                 </a>
@@ -407,17 +407,17 @@
     <div id="view-career-edit" class="view" style="padding:0;">
         <div style="position:sticky;top:0;background:#f2f2f2;z-index:20;padding:16px 36px;border-bottom:1px solid rgba(0,0,0,0.09);display:flex;align-items:center;justify-content:space-between;gap:16px;">
             <div style="display:flex;align-items:center;gap:14px;min-width:0;">
-                <button onclick="closeCareerEdit()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;">
+                <button onclick="closeCareerEdit()" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.42);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;white-space:nowrap;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                     Careers
                 </button>
                 <div style="min-width:0;">
-                    <h1 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="ce-heading">Edit Position</h1>
-                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Outfit',sans-serif;">careers-detail.html</p>
+                    <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.2rem;color:#0a0a0a;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="ce-heading">Edit Position</h1>
+                    <p style="font-size:10px;color:rgba(0,0,0,0.35);margin:2px 0 0;font-family:'Open Sans',sans-serif;">careers-detail.html</p>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                <a id="ce-preview-link" href="careers-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;">
+                <a id="ce-preview-link" href="careers-detail.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:7px 13px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                     Preview
                 </a>
@@ -437,11 +437,11 @@
 <!-- CONFIRM -->
 <div id="confirm-overlay" onclick="if(event.target===this)closeConfirm()">
     <div style="background:white;border-radius:12px;padding:28px;width:100%;max-width:380px;box-shadow:0 24px 72px rgba(0,0,0,0.22);">
-        <h3 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.3rem;color:#0a0a0a;margin:0 0 8px;">Delete this item?</h3>
+        <h3 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.3rem;color:#0a0a0a;margin:0 0 8px;">Delete this item?</h3>
         <p style="font-size:12px;color:rgba(0,0,0,0.45);margin:0 0 22px;" id="confirm-msg"></p>
         <div style="display:flex;gap:9px;">
-            <button onclick="closeConfirm()" style="flex:1;padding:9px;border:1px solid rgba(0,0,0,0.14);border-radius:6px;background:white;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;color:rgba(0,0,0,0.45);">Cancel</button>
-            <button id="confirm-ok" style="flex:1;padding:9px;background:#dc2626;color:white;border:none;border-radius:6px;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">Delete</button>
+            <button onclick="closeConfirm()" style="flex:1;padding:9px;border:1px solid rgba(0,0,0,0.14);border-radius:6px;background:white;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;color:rgba(0,0,0,0.45);">Cancel</button>
+            <button id="confirm-ok" style="flex:1;padding:9px;background:#dc2626;color:white;border:none;border-radius:6px;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">Delete</button>
         </div>
     </div>
 </div>
@@ -563,7 +563,7 @@ function openTaxManager(kind) {
                 <input id="tax-new-label" class="field-input" placeholder="e.g. ${kind === 'location' ? 'Can Tho' : kind === 'level' ? 'Senior' : 'Marketing'}"
                        onkeydown="if(event.key==='Enter'){event.preventDefault();addTax('${kind}');}">
             </div>
-            <button onclick="addTax('${kind}')" style="padding:10px 20px;background:#0a0a0a;color:white;border:none;border-radius:6px;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">Add</button>
+            <button onclick="addTax('${kind}')" style="padding:10px 20px;background:#0a0a0a;color:white;border:none;border-radius:6px;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">Add</button>
         </div>
         ${modalFooter('closeModal', 'Done')}
     </div>`;
@@ -816,14 +816,14 @@ function sel(opts, val) {
 }
 function modalHeader(title) {
     return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
-        <h2 style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.4rem;color:#0a0a0a;margin:0;">${title}</h2>
+        <h2 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.4rem;color:#0a0a0a;margin:0;">${title}</h2>
         <button onclick="closeModal()" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.38);padding:2px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>`;
 }
 function modalFooter(saveFunc, label) {
     return `<div style="display:flex;justify-content:flex-end;gap:9px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(0,0,0,0.07);">
-        <button onclick="closeModal()" style="padding:9px 18px;border:1px solid rgba(0,0,0,0.13);border-radius:6px;background:white;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;color:rgba(0,0,0,0.42);">Cancel</button>
-        <button onclick="${saveFunc}()" style="padding:9px 22px;background:#0a0a0a;color:white;border:none;border-radius:6px;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">${label}</button>
+        <button onclick="closeModal()" style="padding:9px 18px;border:1px solid rgba(0,0,0,0.13);border-radius:6px;background:white;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;color:rgba(0,0,0,0.42);">Cancel</button>
+        <button onclick="${saveFunc}()" style="padding:9px 22px;background:#0a0a0a;color:white;border:none;border-radius:6px;font-family:'Open Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">${label}</button>
     </div>`;
 }
 function grid2(a, b) { return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">${a}${b}</div>`; }
@@ -1170,12 +1170,12 @@ function buildDetailHTML(d) {
     const narrative = card('Design Concept & Narrative', `
         <p class="field-label" style="margin-bottom:10px;">Design Concept paragraphs (shown after Panel Photo 1)</p>
         <div id="n1-wrap">${n1}</div>
-        <button onclick="addNarrative(1)" style="margin-bottom:20px;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Paragraph</button>
+        <button onclick="addNarrative(1)" style="margin-bottom:20px;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
         ${mkPhotoBlock(1, imgs[1], 'd-photo1alt', d.photo1alt, 'd-photo1cap', d.photo1cap)}
         ${mkPhotoBlock(2, imgs[2], 'd-photo2alt', d.photo2alt, 'd-photo2cap', d.photo2cap)}
         <p class="field-label" style="margin:14px 0 10px;">Continuation paragraphs (shown after Panel Photo 2)</p>
         <div id="n2-wrap">${n2}</div>
-        <button onclick="addNarrative(2)" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Paragraph</button>
+        <button onclick="addNarrative(2)" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
         ${mkPhotoBlock(3, imgs[3], 'd-photo3alt', d.photo3alt, 'd-photo3cap', d.photo3cap)}
     `);
 
@@ -1188,7 +1188,7 @@ function buildDetailHTML(d) {
         </div>`).join('');
     const highlights = card('Design Highlights', `
         <div id="hl-wrap">${hlItems}</div>
-        <button onclick="addItem('highlights')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Highlight</button>
+        <button onclick="addItem('highlights')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Highlight</button>
     `);
 
     // SPECS
@@ -1201,7 +1201,7 @@ function buildDetailHTML(d) {
     const specs = card('Technical Data (accordion)', `
         <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Label</span><span class="field-label">Value</span><span></span></div>
         <div id="spec-wrap">${specRows}</div>
-        <button onclick="addItem('specs')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Row</button>
+        <button onclick="addItem('specs')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Row</button>
     `);
 
     // CREDITS
@@ -1214,7 +1214,7 @@ function buildDetailHTML(d) {
     const credits = card('Design Team (accordion)', `
         <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Role</span><span class="field-label">Name</span><span></span></div>
         <div id="credit-wrap">${creditRows}</div>
-        <button onclick="addItem('credits')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Member</button>
+        <button onclick="addItem('credits')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Member</button>
     `);
 
     // AWARDS
@@ -1227,7 +1227,7 @@ function buildDetailHTML(d) {
     const awards = card('Awards & Recognition (accordion)', `
         <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Award</span><span class="field-label">Description</span><span></span></div>
         <div id="award-wrap">${awardRows}</div>
-        <button onclick="addItem('awards')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Award</button>
+        <button onclick="addItem('awards')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Award</button>
     `);
 
     return identity + gallery + leadSec + narrative + highlights + specs + credits + awards;
@@ -1477,7 +1477,7 @@ function buildBlogContentHTML(d) {
 
     const bodySec = bcCard('Article Body Paragraphs', `
         <div id="bc-body-wrap">${bodyRows}</div>
-        <button onclick="bcAddBody()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Paragraph</button>
+        <button onclick="bcAddBody()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
         <p style="font-size:10px;color:rgba(0,0,0,0.3);margin-top:8px;">These paragraphs appear after the lead and before the figure image. Basic HTML like &lt;h3&gt; and &lt;em&gt; is supported.</p>
     `);
 
@@ -1503,7 +1503,7 @@ function buildBlogContentHTML(d) {
 
     const afterSec = bcCard('Paragraphs After Figure', `
         <div id="bc-after-wrap">${afterRows}</div>
-        <button onclick="bcAddAfter()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Outfit',sans-serif;">+ Add Paragraph</button>
+        <button onclick="bcAddAfter()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
     `);
 
     const tagsSec = bcCard('Tags', `

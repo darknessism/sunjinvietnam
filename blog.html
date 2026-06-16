@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -15,8 +15,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        display: ['Jost', 'sans-serif'],
+                        sans: ['Open Sans', 'sans-serif'],
+                        display: ['Open Sans', 'sans-serif'],
                     },
                     colors: { dark: '#0a0a0a', light: '#f5f5f5', accent: '#888888' }
                 }
@@ -57,7 +57,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Filter */
-        .filter-btn { font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; color: white; background: none; border: none; border-bottom: 1px solid transparent; cursor: pointer; padding: 4px 0 5px; white-space: nowrap; transition: opacity 0.3s ease, border-color 0.3s ease; }
+        .filter-btn { font-family: 'Open Sans', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; color: white; background: none; border: none; border-bottom: 1px solid transparent; cursor: pointer; padding: 4px 0 5px; white-space: nowrap; transition: opacity 0.3s ease, border-color 0.3s ease; }
         .filter-btn.active { border-bottom-color: white; }
         .filter-btn:hover { opacity: 0.65; }
 
@@ -68,14 +68,14 @@
         .blog-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.28) 55%, rgba(10,10,10,0.05) 100%); transition: background 0.55s ease; }
         .blog-card:hover .blog-overlay { background: linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.58) 60%, rgba(10,10,10,0.18) 100%); }
 
-        .blog-cat-tag { position: absolute; top: 1.6rem; left: 1.8rem; font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.22); padding: 4px 12px; border-radius: 20px; background: rgba(10,10,10,0.5); backdrop-filter: blur(8px); z-index: 2; }
+        .blog-cat-tag { position: absolute; top: 1.6rem; left: 1.8rem; font-family: 'Open Sans', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.22); padding: 4px 12px; border-radius: 20px; background: rgba(10,10,10,0.5); backdrop-filter: blur(8px); z-index: 2; }
 
         .blog-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.8rem 2rem 2.2rem; z-index: 2; }
-        .blog-date { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); margin-bottom: 10px; display: block; }
-        .blog-title { font-family: 'Jost', sans-serif; font-weight: 300; color: white; line-height: 1.18; }
-        .blog-excerpt { font-family: 'Outfit', sans-serif; font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 10px; line-height: 1.7; opacity: 0; transform: translateY(5px); transition: opacity 0.38s ease 0.08s, transform 0.38s ease 0.08s; }
+        .blog-date { font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); margin-bottom: 10px; display: block; }
+        .blog-title { font-family: 'Open Sans', sans-serif; font-weight: 300; color: white; line-height: 1.18; }
+        .blog-excerpt { font-family: 'Open Sans', sans-serif; font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 10px; line-height: 1.7; opacity: 0; transform: translateY(5px); transition: opacity 0.38s ease 0.08s, transform 0.38s ease 0.08s; }
         .blog-card:hover .blog-excerpt { opacity: 1; transform: translateY(0); }
-        .blog-read-more { display: inline-flex; align-items: center; gap: 6px; font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.38); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.35s ease 0.18s, transform 0.35s ease 0.18s; }
+        .blog-read-more { display: inline-flex; align-items: center; gap: 6px; font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.38); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.35s ease 0.18s, transform 0.35s ease 0.18s; }
         .blog-card:hover .blog-read-more { opacity: 1; transform: translateY(0); }
         .blog-card.hidden-card { display: none; }
     </style>
