@@ -20,6 +20,10 @@ function getTransporter() {
     _transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        // Fail fast instead of hanging the request if SMTP is blocked/unreachable
+        connectionTimeout: 15000,
+        greetingTimeout:   10000,
+        socketTimeout:     20000,
     });
     return _transporter;
 }
@@ -34,6 +38,12 @@ router.post('/apply', upload.single('cv'), async (req, res, next) => {
 
         if (!name || !email || !phone) {
             return res.status(400).json({ error: 'Name, email and phone are required.' });
+        }
+
+        // Without SMTP credentials the email send would hang/fail — fail fast with a clear error
+        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+            console.error('Career application not sent: SMTP_USER/SMTP_PASS not configured.');
+            return res.status(503).json({ error: 'Mail service is not configured. Please try again later or contact HR directly.' });
         }
 
         const position = jobTitle || jobId || 'General application';
