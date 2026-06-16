@@ -91,10 +91,10 @@
         <div class="detail-left-content">
             <a href="careers.html" class="close-btn">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                Close
+                <span data-en="Close">Đóng</span>
             </a>
             <div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/45 mb-4">Open Position</p>
+                <p data-en="Open Position" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/45 mb-4">Vị trí đang tuyển</p>
                 <h1 id="job-title-h1" class="font-display font-light text-white leading-[1.1]" style="font-size: clamp(2rem, 4.5vw, 3.5rem);"></h1>
             </div>
         </div>
@@ -103,25 +103,27 @@
     <!-- RIGHT PANEL -->
     <div class="detail-right">
 
+        <div class="flex justify-end mb-6"><span data-lang-toggle class="text-white/85"></span></div>
+
         <!-- Meta -->
         <div class="grid grid-cols-2 gap-0 mb-8">
             <div class="py-5 border-b border-white/10">
-                <p class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Level</p>
+                <p data-en="Level" class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Cấp bậc</p>
                 <p id="meta-level" class="font-display font-light text-white text-lg"></p>
             </div>
             <div class="py-5 border-b border-white/10 pl-6">
-                <p class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Salary</p>
+                <p data-en="Salary" class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Lương</p>
                 <p id="meta-salary" class="font-display font-light text-white text-lg"></p>
             </div>
             <div class="py-5 border-b border-white/10 pr-6">
                 <div class="flex items-center gap-2 mb-2">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-white/30"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    <p class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30">Deadline</p>
+                    <p data-en="Deadline" class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30">Hạn nộp</p>
                 </div>
-                <p class="font-sans text-sm text-white/70">Closes in <strong id="meta-deadline" class="text-white font-medium"></strong></p>
+                <p class="font-sans text-sm text-white/70"><span data-en="Closes:">Hạn:</span> <strong id="meta-deadline" class="text-white font-medium"></strong></p>
             </div>
             <div class="py-5 border-b border-white/10 pl-6">
-                <p class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Division</p>
+                <p data-en="Division" class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/30 mb-2">Bộ phận</p>
                 <p id="meta-division" class="font-sans text-sm text-white/70"></p>
                 <p id="meta-location" class="font-sans text-sm text-white/45 mt-0.5"></p>
             </div>
@@ -130,7 +132,7 @@
         <!-- Accordion: Job Description -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title">Job Description</span>
+                <span class="accordion-title" data-en="Job Description">Mô tả công việc</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15l-6-6-6 6"/></svg>
             </button>
             <div class="accordion-content open">
@@ -141,7 +143,7 @@
         <!-- Accordion: Requirements -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title">Requirements</span>
+                <span class="accordion-title" data-en="Requirements">Yêu cầu</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="accordion-content">
@@ -152,7 +154,7 @@
         <!-- Accordion: Benefits -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title">Benefits</span>
+                <span class="accordion-title" data-en="Benefits">Phúc lợi</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="accordion-content">
@@ -162,39 +164,39 @@
 
         <!-- Application Form -->
         <div class="mt-12 pt-10 border-t border-white/8">
-            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Apply for this position</p>
-            <h2 class="font-display font-light text-white mb-8" style="font-size: clamp(1.5rem, 3vw, 2.2rem);">Send your application.</h2>
+            <p data-en="Apply for this position" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Ứng tuyển vị trí này</p>
+            <h2 data-en="Send your application." class="font-display font-light text-white mb-8" style="font-size: clamp(1.5rem, 3vw, 2.2rem);">Gửi hồ sơ của bạn.</h2>
             <form id="apply-form" class="flex flex-col gap-6" onsubmit="submitApplication(event)">
-                <input id="af-name"  type="text"  class="apply-field" placeholder="Full Name *" required>
-                <input id="af-phone" type="tel"   class="apply-field" placeholder="Phone Number *" required>
-                <input id="af-email" type="email" class="apply-field" placeholder="Email *" required>
+                <input id="af-name"  type="text"  class="apply-field" placeholder="Họ và tên *" data-en-ph="Full Name *" required>
+                <input id="af-phone" type="tel"   class="apply-field" placeholder="Số điện thoại *" data-en-ph="Phone Number *" required>
+                <input id="af-email" type="email" class="apply-field" placeholder="Email *" data-en-ph="Email *" required>
 
                 <div>
-                    <label class="apply-label" for="af-exp">Years of Experience</label>
+                    <label class="apply-label" for="af-exp" data-en="Years of Experience">Số năm kinh nghiệm</label>
                     <select id="af-exp" class="apply-field">
-                        <option value="" disabled selected>— Select —</option>
-                        <option>Less than 1 year</option>
-                        <option>1–3 years</option>
-                        <option>3–5 years</option>
-                        <option>Over 5 years</option>
+                        <option value="" disabled selected data-en="— Select —">— Chọn —</option>
+                        <option data-en="Less than 1 year">Dưới 1 năm</option>
+                        <option data-en="1–3 years">1–3 năm</option>
+                        <option data-en="3–5 years">3–5 năm</option>
+                        <option data-en="Over 5 years">Trên 5 năm</option>
                     </select>
                 </div>
 
-                <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Message / Portfolio Link"></textarea>
+                <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Lời nhắn / Liên kết hồ sơ" data-en-ph="Message / Portfolio Link"></textarea>
 
                 <div>
-                    <label class="apply-label">CV / Portfolio</label>
+                    <label class="apply-label" data-en="CV / Portfolio">CV / Hồ sơ năng lực</label>
                     <label id="af-dropzone" class="dropzone block" for="af-cv">
-                        <span id="af-dropzone-label">📎 &nbsp;Drag and drop or click to upload (PDF · ≤20MB)</span>
+                        <span id="af-dropzone-label">📎 &nbsp;Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)</span>
                     </label>
                     <input id="af-cv" type="file" accept=".pdf" class="hidden">
                 </div>
 
-                <button type="submit" class="apply-submit mt-2">Submit Application →</button>
+                <button type="submit" data-en="Submit Application →" class="apply-submit mt-2">Gửi hồ sơ ứng tuyển →</button>
                 <p id="af-status" class="font-sans text-[12px] text-white/40 text-center min-h-[16px]"></p>
             </form>
-            <p class="font-sans text-[10px] text-white/20 mt-5 leading-relaxed">
-                By submitting this form you agree to SUNJIN VIETNAM processing your personal data for recruitment purposes.
+            <p data-en="By submitting this form you agree to SUNJIN VIETNAM processing your personal data for recruitment purposes." class="font-sans text-[10px] text-white/20 mt-5 leading-relaxed">
+                Khi gửi biểu mẫu này, bạn đồng ý để SUNJIN VIETNAM xử lý dữ liệu cá nhân của bạn cho mục đích tuyển dụng.
             </p>
         </div>
 
@@ -202,7 +204,7 @@
         <div class="mt-16 pt-8 border-t border-white/8">
             <a href="careers.html" class="inline-flex items-center gap-3 font-sans text-[11px] uppercase tracking-[0.25em] text-white/35 hover:text-white transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                All Open Positions
+                <span data-en="All Open Positions">Tất cả vị trí đang tuyển</span>
             </a>
         </div>
 
@@ -212,9 +214,18 @@
     // ── Helpers ───────────────────────────────────────────────────────────────────────────────
     function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    const DEPT_LABEL = {design:'Design Division',interior:'Interior Design Division',urbanplan:'Urban Plan Division',construction:'Construction Division',general:'General Affairs'};
-    const LOC_LABEL  = {hanoi:'Hanoi, Vietnam',danang:'Da Nang, Vietnam',hcm:'Ho Chi Minh City, Vietnam',phuquoc:'Phu Quoc, Vietnam'};
-    const LVL_LABEL  = {entry:'Entry',intermediate:'Intermediate',expert:'Expert'};
+    const L = () => (window.getLang ? window.getLang() : 'vi');
+    const META = {
+        vi: { department:{design:'Khối Thiết kế',interior:'Khối Thiết kế Nội thất',urbanplan:'Khối Quy hoạch Đô thị',construction:'Khối Xây dựng',general:'Hành chính Tổng hợp'}, location:{hanoi:'Hà Nội, Việt Nam',danang:'Đà Nẵng, Việt Nam',hcm:'TP. Hồ Chí Minh, Việt Nam',phuquoc:'Phú Quốc, Việt Nam'}, level:{entry:'Mới vào nghề',intermediate:'Trung cấp',expert:'Chuyên gia'} },
+        en: { department:{design:'Design Division',interior:'Interior Design Division',urbanplan:'Urban Plan Division',construction:'Construction Division',general:'General Affairs'}, location:{hanoi:'Hanoi, Vietnam',danang:'Da Nang, Vietnam',hcm:'Ho Chi Minh City, Vietnam',phuquoc:'Phu Quoc, Vietnam'}, level:{entry:'Entry',intermediate:'Intermediate',expert:'Expert'} },
+    };
+    const TXT = {
+        vi: { notFound:'Không tìm thấy vị trí.', negotiating:'Thỏa thuận', dropzone:'📎  Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)', sending:'Đang gửi…', sent:'Đã gửi hồ sơ ✓', thanks:'Cảm ơn bạn — đội ngũ của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.', tooLarge:'Tệp quá lớn — tối đa 20MB.', error:'Đã có lỗi xảy ra. Vui lòng thử lại hoặc gửi email tới hr@sunjinvietnam.vn' },
+        en: { notFound:'Position not found.', negotiating:'Negotiating', dropzone:'📎  Drag and drop or click to upload (PDF · ≤20MB)', sending:'Sending…', sent:'Application Sent ✓', thanks:'Thank you — our team will respond within 5 business days.', tooLarge:'File too large — maximum 20MB.', error:'Something went wrong. Please try again or email hr@sunjinvietnam.vn' },
+    };
+    const tx = k => (TXT[L()] || TXT.vi)[k];
+    const metaLabel = (kind, val) => ((META[L()] || META.vi)[kind] || {})[val] || val;
+    let _meta = null;
 
     function buildList(text) {
         const t = String(text || '').trim();
@@ -228,6 +239,7 @@
     }
 
     function populate(meta) {
+        _meta = meta;
         document.title = (meta.title || '') + ' | Careers | SUNJIN VIETNAM';
 
         const img = document.getElementById('left-img');
@@ -235,16 +247,23 @@
         else { img.style.display = 'none'; }
 
         document.getElementById('job-title-h1').textContent = meta.title || '';
-        document.getElementById('meta-level').textContent    = LVL_LABEL[meta.level]      || meta.level      || '';
-        document.getElementById('meta-salary').textContent   = meta.salary || 'Negotiating';
+        document.getElementById('meta-level').textContent    = metaLabel('level', meta.level);
+        document.getElementById('meta-salary').textContent   = meta.salary || tx('negotiating');
         document.getElementById('meta-deadline').textContent = meta.deadline || '';
-        document.getElementById('meta-division').textContent = DEPT_LABEL[meta.department] || meta.department || '';
-        document.getElementById('meta-location').textContent = LOC_LABEL[meta.location]    || meta.location   || '';
+        document.getElementById('meta-division').textContent = metaLabel('department', meta.department);
+        document.getElementById('meta-location').textContent = metaLabel('location', meta.location);
 
         document.getElementById('desc-content').innerHTML     = buildList(meta.description);
         document.getElementById('req-content').innerHTML      = buildList(meta.requirements);
         document.getElementById('benefits-content').innerHTML = buildBenefits(meta.benefits);
     }
+
+    // Re-render dynamic labels when the language changes
+    document.addEventListener('langchange', () => {
+        if (_meta) populate(_meta);
+        const dzl = document.getElementById('af-dropzone-label'), cv = document.getElementById('af-cv');
+        if (dzl && cv && !cv.files[0]) dzl.textContent = tx('dropzone');
+    });
 
     const id = new URLSearchParams(window.location.search).get('id') || '';
 
@@ -252,8 +271,11 @@
     async function loadTaxLabels() {
         try {
             const tax = await fetch('/api/careers/taxonomies').then(r => r.json());
-            const MAP = { department: DEPT_LABEL, location: LOC_LABEL, level: LVL_LABEL };
-            for (const kind in MAP) (tax[kind] || []).forEach(o => { if (!MAP[kind][o.value]) MAP[kind][o.value] = o.label; });
+            for (const kind in (tax || {})) (tax[kind] || []).forEach(o => {
+                if (!META.vi[kind]) { META.vi[kind] = {}; META.en[kind] = {}; }
+                if (!META.vi[kind][o.value]) META.vi[kind][o.value] = o.label;
+                if (!META.en[kind][o.value]) META.en[kind][o.value] = o.label;
+            });
         } catch (e) {}
     }
 
@@ -265,7 +287,7 @@
             ]);
             if (meta) { populate(meta); return; }
         } catch(e) {}
-        document.getElementById('job-title-h1').textContent = 'Position not found.';
+        document.getElementById('job-title-h1').textContent = tx('notFound');
     })();
 
     // ── Custom cursor ─────────────────────────────────────────────────
@@ -301,7 +323,7 @@
         const setLabel = () => {
             label.textContent = input.files[0]
                 ? '📎  ' + input.files[0].name
-                : '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+                : tx('dropzone');
         };
         input.addEventListener('change', setLabel);
 
@@ -322,13 +344,13 @@
 
         if (file && file.size > 20 * 1024 * 1024) {
             status.style.color = 'rgba(220,120,120,0.9)';
-            status.textContent = 'File too large — maximum 20MB.';
+            status.textContent = tx('tooLarge');
             return;
         }
 
         const original = btn.textContent;
         btn.disabled = true;
-        btn.textContent = 'Sending…';
+        btn.textContent = tx('sending');
         status.style.color = 'rgba(255,255,255,0.4)';
         status.textContent = '';
 
@@ -347,19 +369,20 @@
             if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to send');
 
             e.target.reset();
-            document.getElementById('af-dropzone-label').textContent = '📎  Drag and drop or click to upload (PDF · ≤20MB)';
-            btn.textContent = 'Application Sent ✓';
+            document.getElementById('af-dropzone-label').textContent = tx('dropzone');
+            btn.textContent = tx('sent');
             btn.style.background = 'rgba(255,255,255,0.15)';
             btn.style.color = 'white';
             status.style.color = 'rgba(255,255,255,0.55)';
-            status.textContent = 'Thank you — our team will respond within 5 business days.';
+            status.textContent = tx('thanks');
         } catch (err) {
             btn.disabled = false;
             btn.textContent = original;
             status.style.color = 'rgba(220,120,120,0.9)';
-            status.textContent = 'Something went wrong. Please try again or email hr@sunjinvietnam.vn';
+            status.textContent = tx('error');
         }
     }
     </script>
+    <script src="i18n.js" defer></script>
 </body>
 </html>

@@ -113,7 +113,7 @@
                 </div>
                 <a href="project.html" class="close-btn">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                    Close
+                    <span data-en="Close">Đóng</span>
                 </a>
             </div>
             <div>
@@ -129,6 +129,8 @@
     <div class="detail-right">
     <div class="right-inner">
 
+        <div class="flex justify-end mb-6"><span data-lang-toggle class="text-white/85"></span></div>
+
         <!-- Project Overview Panel -->
         <div id="proj-overview-panel" class="mb-10 pb-10 border-b border-white/[0.07]"></div>
 
@@ -141,7 +143,7 @@
         </div>
         <p class="panel-caption mb-10" id="proj-photo1-cap"></p>
 
-        <p class="section-label">Design Concept</p>
+        <p class="section-label" data-en="Design Concept">Ý tưởng thiết kế</p>
         <div id="proj-narrative1"></div>
 
         <div class="panel-photo mb-3 mt-10" style="height:300px;">
@@ -152,7 +154,7 @@
         <div id="proj-narrative2"></div>
 
         <div class="mt-10 mb-2">
-            <p class="section-label">Design Highlights</p>
+            <p class="section-label" data-en="Design Highlights">Điểm nhấn thiết kế</p>
             <div id="proj-highlights"></div>
         </div>
 
@@ -164,7 +166,7 @@
         <!-- Technical Data -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title">Technical Data</span>
+                <span class="accordion-title" data-en="Technical Data">Thông số kỹ thuật</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="accordion-content">
@@ -175,7 +177,7 @@
         <!-- Design Team -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title">Design Team</span>
+                <span class="accordion-title" data-en="Design Team">Đội ngũ thiết kế</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="accordion-content">
@@ -186,7 +188,7 @@
         <!-- Awards -->
         <div class="accordion-wrapper">
             <button class="accordion-header" onclick="toggleAccordion(this)" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <span class="accordion-title">Awards &amp; Recognition</span>
+                <span class="accordion-title" data-en="Awards &amp; Recognition">Giải thưởng &amp; Ghi nhận</span>
                 <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="accordion-content">
@@ -196,10 +198,10 @@
 
         <!-- CTA -->
         <div class="mt-14 pt-10 border-t border-white/[0.07]">
-            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/28 mb-1">Interested in this typology?</p>
-            <h2 class="font-display font-light text-white mb-6" style="font-size:clamp(1.4rem,2.5vw,2rem);">Let's discuss your project.</h2>
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/28 mb-1" data-en="Interested in this typology?">Quan tâm đến thể loại này?</p>
+            <h2 class="font-display font-light text-white mb-6" style="font-size:clamp(1.4rem,2.5vw,2rem);" data-en="Let's discuss your project.">Hãy cùng trao đổi về dự án của bạn.</h2>
             <a href="index.html#contact" class="inline-flex items-center gap-3 border border-white/25 rounded-full px-8 py-3.5 font-sans text-[11px] uppercase tracking-[0.22em] text-white/70 hover:bg-white hover:text-dark transition-all duration-300">
-                Start a Conversation
+                <span data-en="Start a Conversation">Bắt đầu trò chuyện</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
@@ -208,7 +210,7 @@
         <div class="mt-12 pt-8 border-t border-white/[0.07]">
             <a href="project.html" class="inline-flex items-center gap-3 font-sans text-[11px] uppercase tracking-[0.25em] text-white/30 hover:text-white transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                All Projects
+                <span data-en="All Projects">Tất cả dự án</span>
             </a>
         </div>
 
@@ -247,17 +249,22 @@
 
     // ── Load from API ─────────────────────────────────────────────────────────────
     let projectData = null;
+    let _proj = null;
 
     (async () => {
         try {
             const proj = await fetch('/api/projects/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : null).catch(() => null);
             if (proj) {
+                _proj = proj;
                 projectData = proj.detail || buildFromMeta(proj);
                 populate(projectData);
                 renderOverviewPanel(proj);
             }
         } catch(e) {}
     })();
+
+    // Re-render the (translated) overview panel when language changes
+    document.addEventListener('langchange', () => { if (_proj) renderOverviewPanel(_proj); });
 
     // ── Populate page ─────────────────────────────────────────────────────────────
     function populate(d) {
@@ -306,14 +313,19 @@
     }
 
     // ── Overview panel — called with the API project object ──────────────────────
+    const L = () => (window.getLang ? window.getLang() : 'vi');
+    const OV = {
+        vi: { title:'Tổng quan dự án', cat:{planning:'Quy hoạch',housing:'Kiến trúc Nhà ở',school:'Kiến trúc Giáo dục',hotel:'Kiến trúc Nghỉ dưỡng',headquarters:'Kiến trúc Doanh nghiệp'}, f:{location:'Địa điểm',year:'Năm',category:'Hạng mục',architects:'Kiến trúc sư / Đội ngũ',award:'Giải thưởng / Thông điệp'} },
+        en: { title:'Project Overview', cat:{planning:'Planning',housing:'Residential Architecture',school:'Educational Architecture',hotel:'Hospitality Architecture',headquarters:'Corporate Architecture'}, f:{location:'Location',year:'Year',category:'Category',architects:'Architects / Team',award:'Award / Tag Line'} },
+    };
     function renderOverviewPanel(proj) {
-        const CAT_LABEL = { planning:'Planning', housing:'Residential Architecture', school:'Educational Architecture', hotel:'Hospitality Architecture', headquarters:'Corporate Architecture' };
+        const o = OV[L()] || OV.vi;
         let fields = [
-            { label: 'Location',          value: proj.location || '' },
-            { label: 'Year',              value: proj.year ? String(proj.year) : '' },
-            { label: 'Category',          value: CAT_LABEL[proj.category] || proj.category || '' },
-            { label: 'Architects / Team', value: proj.architects || '' },
-            { label: 'Award / Tag Line',  value: proj.award || '' },
+            { label: o.f.location,   value: proj.location || '' },
+            { label: o.f.year,       value: proj.year ? String(proj.year) : '' },
+            { label: o.f.category,   value: o.cat[proj.category] || proj.category || '' },
+            { label: o.f.architects, value: proj.architects || '' },
+            { label: o.f.award,      value: proj.award || '' },
         ];
 
         const visible = fields.filter(f => f.value && String(f.value).trim());
@@ -323,7 +335,7 @@
         if (!panel) return;
 
         panel.innerHTML = `
-            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-5">Project Overview</p>
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-5">${esc(o.title)}</p>
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0 2.5rem;">
                 ${visible.map(f => `
                 <div class="meta-item">
@@ -366,5 +378,6 @@
         }
     }
     </script>
+    <script src="i18n.js" defer></script>
 </body>
 </html>

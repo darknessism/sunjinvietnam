@@ -247,11 +247,12 @@
     <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
         <a href="#"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
         
-        <div class="flex items-center gap-6">
-            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()">
-                Let's Discuss
+        <div class="flex items-center gap-4 md:gap-6">
+            <span data-lang-toggle></span>
+            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()" data-en="Let's Discuss">
+                Liên hệ
             </button>
-            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Menu</button>
+            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-en="Menu">Menu</button>
         </div>
     </nav>
 
@@ -259,15 +260,15 @@
     <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
         <div class="flex justify-between items-center mix-blend-normal">
             <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
-            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Close</button>
+            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-en="Close">Đóng</button>
         </div>
         <div class="flex-1 flex items-center justify-center">
             <ul class="text-center space-y-2 md:space-y-6">
-                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Home</a></li>
-                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">About</a></li>
-                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Projects</a></li>
-                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Blog</a></li>
-                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Careers</a></li>
+                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Home">Trang chủ</a></li>
+                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="About">Giới thiệu</a></li>
+                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Projects">Dự án</a></li>
+                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Blog">Blog</a></li>
+                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Careers">Tuyển dụng</a></li>
             </ul>
         </div>
         <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
@@ -285,33 +286,33 @@
             <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
-            <h2 class="font-display text-3xl md:text-5xl mb-8">Message us.</h2>
+            <h2 data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
             <form class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" placeholder="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
-                    <input type="email" placeholder="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Bắt buộc)" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="tel" placeholder="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                     <div class="relative w-full" id="custom-select-wrapper">
                         <input type="hidden" name="interest" id="interest-value" required>
                         <button type="button" id="interest-btn"
                             class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center focus:outline-none focus:border-white transition-colors bg-transparent"
                             onclick="toggleInterestDropdown()">
-                            <span id="interest-label">Your Interest</span>
+                            <span id="interest-label" data-en="Your Interest">Lĩnh vực quan tâm</span>
                             <svg class="w-4 h-4 text-white/40 transition-transform duration-200" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                         </button>
                         <ul id="interest-dropdown"
                             class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Partnership</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Media</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">General</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="Partnership" onclick="selectInterest('Partnership')">Hợp tác</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="Media" onclick="selectInterest('Media')">Truyền thông</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="General" onclick="selectInterest('General')">Chung</button></li>
                         </ul>
                     </div>
                 </div>
-                <textarea placeholder="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
-                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">
-                    Submit now
+                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto" data-en="Submit now">
+                    Gửi ngay
                 </button>
             </form>
         </div>
@@ -1038,11 +1039,11 @@
             
             <!-- Center: Navigation -->
             <div class="hidden md:flex flex-col items-start md:items-center gap-2">
-                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Home</a>
-                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">About</a>
-                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Projects</a>
-                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Blog</a>
-                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Careers</a>
+                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Home">Trang chủ</a>
+                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="About">Giới thiệu</a>
+                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Projects">Dự án</a>
+                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Blog">Blog</a>
+                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Careers">Tuyển dụng</a>
             </div>
 
             <!-- Right: Back to Top -->
@@ -1067,12 +1068,12 @@
             <!-- Center: Description & Horizontal Links -->
             <div class="lg:col-span-6 flex flex-col justify-between h-full gap-10 lg:gap-16">
                 <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">
-                    SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.
+                    <span data-en="SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.">SUNJIN VIETNAM CAM KẾT MỖI DỰ ÁN ĐỀU PHẢN ÁNH TIÊU CHUẨN ĐẲNG CẤP QUỐC TẾ, ĐỒNG THỜI KIẾN TẠO MỘT DI SẢN KIẾN TRÚC TRƯỜNG TỒN.</span>
                 </p>
                 <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
                     <a href="#" class="hover-underline interactive">LINKEDIN</a>
-                    <a href="#" class="hover-underline interactive">PRIVACY POLICY</a>
-                    <a href="#" class="hover-underline interactive">TERMS OF SERVICE</a>
+                    <a href="#" class="hover-underline interactive" data-en="PRIVACY POLICY">CHÍNH SÁCH BẢO MẬT</a>
+                    <a href="#" class="hover-underline interactive" data-en="TERMS OF SERVICE">ĐIỀU KHOẢN DỊCH VỤ</a>
                 </div>
             </div>
 
@@ -1582,5 +1583,6 @@
             });
         }
     </script>
+    <script src="i18n.js" defer></script>
 </body>
 </html>
