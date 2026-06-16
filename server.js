@@ -16,12 +16,17 @@ app.use(express.static(path.join(__dirname)));
 // Ensure the careers filter-options table exists and is seeded
 require('./db/initCareerTax')().catch(e => console.error('career taxonomy init failed:', e.message));
 
+// Ensure the managed page-images table exists
+const pageImages = require('./routes/pageImages');
+pageImages.initPageImages().catch(e => console.error('page images init failed:', e.message));
+
 // API routes
-app.use('/api/auth',    require('./routes/auth'));
-app.use('/api/admin',   require('./routes/admin'));
-app.use('/api/projects',require('./routes/projects'));
-app.use('/api/blog',    require('./routes/blog'));
-app.use('/api/careers', require('./routes/careers'));
+app.use('/api/auth',        require('./routes/auth'));
+app.use('/api/admin',       require('./routes/admin'));
+app.use('/api/projects',    require('./routes/projects'));
+app.use('/api/blog',        require('./routes/blog'));
+app.use('/api/careers',     require('./routes/careers'));
+app.use('/api/page-images', pageImages);
 
 // Fallback: serve index.html for any unmatched route
 app.get('*', (req, res) => {

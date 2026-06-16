@@ -168,7 +168,7 @@
     <!-- 1. Hero -->
     <section class="relative mt-[64px] md:mt-[76px] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-76px)] flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80"
+            <img data-img-slot="careers-hero" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80"
                  alt="Careers" class="w-full h-full object-cover opacity-25">
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/65 to-dark/20"></div>
         </div>
@@ -196,7 +196,7 @@
 
     <!-- 1b. Banner Photo -->
     <div class="w-full overflow-hidden" style="height:58vh;">
-        <img src="images/teamwork.jpg"
+        <img data-img-slot="careers-banner" src="images/teamwork.jpg"
              alt="SUNJIN Studio Team" class="w-full h-full object-cover">
     </div>
 
@@ -265,7 +265,7 @@
             <!-- A1 -->
             <div class="reveal-up">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="/images/sipaphin.jpg"
+                    <img data-img-slot="careers-a1" src="/images/sipaphin.jpg"
                          alt="Award-winning architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A1 &nbsp;|&nbsp; Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A1 &nbsp;|&nbsp; Dự án giàu ảnh hưởng</p>
@@ -277,7 +277,7 @@
             <!-- A2 -->
             <div class="reveal-up" style="transition-delay:0.05s">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    <img data-img-slot="careers-a2" src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Design and modeling workstation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A2 &nbsp;|&nbsp; Fully Licensed Tools" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A2 &nbsp;|&nbsp; Công cụ bản quyền đầy đủ</p>
@@ -289,7 +289,7 @@
             <!-- A3 -->
             <div class="reveal-up" style="transition-delay:0.1s">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    <img data-img-slot="careers-a3" src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A3 &nbsp;|&nbsp; Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A3 &nbsp;|&nbsp; Lộ trình thăng tiến rõ ràng</p>
@@ -301,7 +301,7 @@
             <!-- A4 -->
             <div class="reveal-up" style="transition-delay:0.15s">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    <img data-img-slot="careers-a4" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="International team collaboration" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A4 &nbsp;|&nbsp; Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A4 &nbsp;|&nbsp; Học hỏi không ngừng</p>
@@ -313,7 +313,7 @@
             <!-- A5 -->
             <div class="reveal-up" style="transition-delay:0.2s">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    <img data-img-slot="careers-a5" src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Modern workplace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A5 &nbsp;|&nbsp; Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A5 &nbsp;|&nbsp; Phúc lợi minh bạch</p>
@@ -325,7 +325,7 @@
             <!-- A6 -->
             <div class="reveal-up" style="transition-delay:0.25s">
                 <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
-                    <img src="/images/sanbayphanthiet.jpg"
+                    <img data-img-slot="careers-a6" src="/images/sanbayphanthiet.jpg"
                          alt="Vietnamese cultural architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 <p data-en="A6 &nbsp;|&nbsp; Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">A6 &nbsp;|&nbsp; Bản sắc Việt Nam</p>
@@ -350,7 +350,7 @@
             <!-- 01 Quy Hoạch / Planning — large feature, tall -->
             <div class="portfolio-card flex flex-col overflow-hidden rounded-lg md:col-span-4 md:row-span-2 h-full min-h-[320px]">
                 <div class="flex-1 min-h-[140px] overflow-hidden">
-                    <img src="/images/quyhoach.jpg"
+                    <img data-img-slot="careers-pf-planning" src="/images/quyhoach.jpg"
                          alt="Quy hoạch" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6 md:p-8">
@@ -365,7 +365,7 @@
             <!-- 02 Khu dân cư / Nhà ở -->
             <div class="portfolio-card flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
-                    <img src="/images/nhao.jpg"
+                    <img data-img-slot="careers-pf-resi" src="/images/nhao.jpg"
                          alt="Khu dân cư / Nhà ở" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
@@ -378,7 +378,7 @@
             <!-- 03 Trường học -->
             <div class="portfolio-card flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
-                    <img src="/images/truonghoc.jpg"
+                    <img data-img-slot="careers-pf-school" src="/images/truonghoc.jpg"
                          alt="Trường học" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
@@ -391,7 +391,7 @@
             <!-- 04 Khách Sạn -->
             <div class="portfolio-card flex flex-col overflow-hidden rounded-lg md:col-span-3 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
-                    <img src="/images/khachsan.jpg"
+                    <img data-img-slot="careers-pf-hotel" src="/images/khachsan.jpg"
                          alt="Khách sạn" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
@@ -404,7 +404,7 @@
             <!-- 05 Trụ Sở -->
             <div class="portfolio-card flex flex-col overflow-hidden rounded-lg md:col-span-3 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
-                    <img src="/images/truso.jpg"
+                    <img data-img-slot="careers-pf-hq" src="/images/truso.jpg"
                          alt="Trụ sở" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
@@ -497,7 +497,7 @@
     <!-- Culture Strip -->
     <div class="grid grid-cols-3 gap-px bg-white/[0.12]">
         <div class="overflow-hidden relative group" style="height:48vh;">
-            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80"
+            <img data-img-slot="careers-culture-1" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80"
                  alt="Design studio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
@@ -506,7 +506,7 @@
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
-            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=900&q=80"
+            <img data-img-slot="careers-culture-2" src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=900&q=80"
                  alt="Architecture team" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
@@ -515,7 +515,7 @@
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
-            <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80"
+            <img data-img-slot="careers-culture-3" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80"
                  alt="Architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
@@ -787,6 +787,21 @@
                 status.textContent = t('error');
             }
         }
+    </script>
+
+    <!-- ── Managed photos: swap in any admin-uploaded overrides ────────────── -->
+    <script>
+        (function loadPhotoOverrides(){
+            fetch('/api/page-images/overrides?page=careers')
+                .then(r => r.ok ? r.json() : {})
+                .then(map => {
+                    document.querySelectorAll('img[data-img-slot]').forEach(img => {
+                        const v = map[img.dataset.imgSlot];
+                        if (v) img.src = '/api/page-images/raw/' + img.dataset.imgSlot + '?v=' + v;
+                    });
+                })
+                .catch(() => {}); // page keeps its default images if the API is unavailable
+        })();
     </script>
 </body>
 </html>
