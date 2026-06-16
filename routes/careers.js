@@ -1,4 +1,5 @@
 const express    = require('express');
+const https      = require('https');
 const multer     = require('multer');
 const nodemailer = require('nodemailer');
 const pool       = require('../db/connection');
@@ -6,6 +7,12 @@ const router     = express.Router();
 
 // HR inbox that receives applications
 const HR_EMAIL = process.env.HR_EMAIL || 'thuhuong.mkttrangan@gmail.com';
+
+// Mail transport selection: prefer Brevo's HTTPS API in production (cloud hosts
+// such as Railway block outbound SMTP), fall back to Gmail SMTP for local dev.
+const USE_BREVO   = !!process.env.BREVO_API_KEY;
+const MAIL_FROM   = process.env.MAIL_FROM || process.env.SMTP_USER;
+const MAIL_FROM_NAME = process.env.MAIL_FROM_NAME || 'SUNJIN Careers';
 
 // Accept a single CV/portfolio file, kept in memory, max 20 MB
 const upload = multer({
@@ -35,6 +42,58 @@ function getTransporter() {
     return _transporter;
 }
 
+// POST a transactional email through Brevo's HTTPS API (api.brevo.com:443).
+function brevoRequest(method, path, payload) {
+    return new Promise((resolve, reject) => {
+        const data = payload ? JSON.stringify(payload) : null;
+        const req = https.request({
+            host: 'api.brevo.com', path, method,
+            headers: {
+                'api-key':      process.env.BREVO_API_KEY,
+                'accept':       'application/json',
+                ...(data ? { 'content-type': 'application/json', 'content-length': Buffer.byteLength(data) } : {}),
+            },
+            timeout: 15000,
+        }, res => {
+            let body = '';
+            res.on('data', c => body += c);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    resolve(body ? JSON.parse(body) : {});
+                } else {
+                    reject(new Error(`Brevo API ${res.statusCode}: ${body}`));
+                }
+            });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => req.destroy(new Error('Brevo API request timed out')));
+        if (data) req.write(data);
+        req.end();
+    });
+}
+
+// Send an application email via whichever transport is configured.
+async function sendApplicationMail({ subject, html, replyTo, replyToName, file }) {
+    if (USE_BREVO) {
+        return brevoRequest('POST', '/v3/smtp/email', {
+            sender:  { name: MAIL_FROM_NAME, email: MAIL_FROM },
+            to:      [{ email: HR_EMAIL }],
+            replyTo: replyTo ? { email: replyTo, name: replyToName || replyTo } : undefined,
+            subject,
+            htmlContent: html,
+            attachment:  file ? [{ content: file.buffer.toString('base64'), name: file.originalname || 'cv' }] : undefined,
+        });
+    }
+    return getTransporter().sendMail({
+        from:    `"${MAIL_FROM_NAME}" <${MAIL_FROM}>`,
+        to:      HR_EMAIL,
+        replyTo,
+        subject,
+        html,
+        attachments: file ? [{ filename: file.originalname || 'cv', content: file.buffer, contentType: file.mimetype }] : [],
+    });
+}
+
 const esc = s => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -47,9 +106,10 @@ router.post('/apply', upload.single('cv'), async (req, res, next) => {
             return res.status(400).json({ error: 'Name, email and phone are required.' });
         }
 
-        // Without SMTP credentials the email send would hang/fail — fail fast with a clear error
-        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-            console.error('Career application not sent: SMTP_USER/SMTP_PASS not configured.');
+        // Without a configured transport the send would fail — fail fast with a clear error
+        const mailReady = USE_BREVO ? !!MAIL_FROM : !!(process.env.SMTP_USER && process.env.SMTP_PASS);
+        if (!mailReady) {
+            console.error('Career application not sent: mail transport not configured.');
             return res.status(503).json({ error: 'Mail service is not configured. Please try again later or contact HR directly.' });
         }
 
@@ -74,36 +134,37 @@ router.post('/apply', upload.single('cv'), async (req, res, next) => {
             ${req.file ? '' : '<p style="font-family:Arial,sans-serif;color:#999;font-size:13px;"><em>No CV/portfolio file attached.</em></p>'}
         `;
 
-        const attachments = req.file ? [{
-            filename:    req.file.originalname || 'cv',
-            content:     req.file.buffer,
-            contentType: req.file.mimetype,
-        }] : [];
-
-        await getTransporter().sendMail({
-            from:        `"SUNJIN Careers" <${process.env.SMTP_USER}>`,
-            to:          HR_EMAIL,
-            replyTo:     email,
+        await sendApplicationMail({
             subject:     `New Application — ${position} — ${name}`,
             html,
-            attachments,
+            replyTo:     email,
+            replyToName: name,
+            file:        req.file,
         });
 
         res.json({ ok: true });
     } catch (e) { next(e); }
 });
 
-// Diagnostic: verify SMTP connectivity WITHOUT sending an email. Used to test
-// whether the host can reach Gmail's SMTP after a deploy. Returns no secrets.
+// Diagnostic: verify mail connectivity WITHOUT sending an email. Used to test
+// the transport after a deploy. Returns no secrets.
 router.get('/mail-status', async (req, res) => {
+    if (USE_BREVO) {
+        try {
+            const acct = await brevoRequest('GET', '/v3/account');
+            return res.json({ ok: true, transport: 'brevo', from: MAIL_FROM, plan: !!acct.email });
+        } catch (e) {
+            return res.json({ ok: false, transport: 'brevo', from: MAIL_FROM, error: e.message });
+        }
+    }
     const port = Number(process.env.SMTP_PORT) || 587;
     const configured = !!(process.env.SMTP_USER && process.env.SMTP_PASS);
-    if (!configured) return res.json({ ok: false, port, configured, error: 'SMTP not configured' });
+    if (!configured) return res.json({ ok: false, transport: 'smtp', port, configured, error: 'SMTP not configured' });
     try {
         await getTransporter().verify();
-        res.json({ ok: true, port, configured });
+        res.json({ ok: true, transport: 'smtp', port, configured });
     } catch (e) {
-        res.json({ ok: false, port, configured, error: e.message, code: e.code });
+        res.json({ ok: false, transport: 'smtp', port, configured, error: e.message, code: e.code });
     }
 });
 
