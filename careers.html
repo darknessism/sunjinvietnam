@@ -135,7 +135,7 @@
     <!-- Contact Modal -->
     <div id="contact-modal" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 p-4">
         <div class="bg-[#111] border border-white/10 w-full max-w-2xl p-8 md:p-12 relative rounded-xl transform translate-y-10 transition-transform duration-500" id="contact-content">
-            <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
+            <button onclick="closeContact()" class="absolute top-6 right-6 text-white hover:text-white interactive">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
             <h2 data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
@@ -148,14 +148,14 @@
                     <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                     <div class="relative w-full" id="custom-select-wrapper">
                         <input type="hidden" name="interest" id="interest-value">
-                        <button type="button" id="interest-btn" class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center bg-transparent" onclick="toggleInterestDropdown()">
+                        <button type="button" id="interest-btn" class="w-full border-b border-white/20 py-3 text-left text-sm text-white flex justify-between items-center bg-transparent" onclick="toggleInterestDropdown()">
                             <span id="interest-label" data-en="Your Interest">Lĩnh vực quan tâm</span>
-                            <svg class="w-4 h-4 text-white/40" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            <svg class="w-4 h-4 text-white" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                         </button>
                         <ul id="interest-dropdown" class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
-                            <li><button type="button" data-en="Partnership" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Hợp tác</button></li>
-                            <li><button type="button" data-en="Media" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Truyền thông</button></li>
-                            <li><button type="button" data-en="General" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">Chung</button></li>
+                            <li><button type="button" data-en="Partnership" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Hợp tác</button></li>
+                            <li><button type="button" data-en="Media" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Truyền thông</button></li>
+                            <li><button type="button" data-en="General" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">Chung</button></li>
                         </ul>
                     </div>
                 </div>
@@ -177,16 +177,19 @@
             <div class="w-full h-[1px] bg-white/20 mt-10 md:mt-16 mb-6 reveal-fade" style="transition-delay:0.3s"></div>
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 reveal-up" style="transition-delay:0.4s">
                 <div class="max-w-2xl">
-                    <p data-en="The next blueprint bears your name." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">Bản thiết kế tiếp theo mang tên bạn.</p>
-                    <p data-en="Sunjin Vietnam — a Korean-Vietnamese joint venture design consultancy with over 300 completed projects. We are seeking architects and engineers who want to leave their mark on the skyline." class="font-sans text-sm md:text-base text-white/65 leading-relaxed mb-8">
-                        Sunjin Việt Nam — công ty tư vấn thiết kế liên doanh Hàn–Việt với hơn 300 dự án đã hoàn thành. Chúng tôi đang tìm kiếm những kiến trúc sư và kỹ sư mong muốn để lại dấu ấn trên đường chân trời thành phố.
+                    <p data-en="Let the next blueprint carry your &quot;Signature&quot;." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">Hãy để bản vẽ tiếp theo mang "Signature" của bạn.</p>
+                    <p data-en="Architecture's dialogue with time will never come to a close, and Sunjin Vietnam always needs new voices to continue that journey with us. We are not merely looking for draftspeople who sketch out forms, but for partners ready to share a 'promise' with space and with people." class="font-sans text-sm md:text-base text-white leading-relaxed mb-4">
+                        Cuộc đối thoại của kiến trúc với thời gian sẽ chẳng bao giờ khép lại, và Sunjin Việt Nam luôn cần những tiếng nói mới để cùng chúng tôi tiếp nối hành trình đó. Chúng tôi không đơn thuần tìm kiếm những người thợ phác họa nên các khối hình, mà tìm kiếm những người cộng sự sẵn sàng cùng chia sẻ 'lời hứa' với không gian và con người.
+                    </p>
+                    <p data-en="If you carry the mindset of the 21st century, a desire to create green buildings that truly understand identity, and the courage to care about 'the day after tomorrow' rather than just today — then now is the moment to step into this dialogue. At Sunjin Vietnam, creative freedom is always nurtured and every perspective is heard. Come, and bring your faith in architecture. So that the author of the new schools and the living spaces of the future... is you." class="font-sans text-sm md:text-base text-white leading-relaxed mb-8">
+                        Nếu bạn mang trong mình tư duy của thế kỷ XXI, khao khát kiến tạo những công trình xanh thấu hiểu bản sắc, và dám trăn trở cho 'ngày kia' thay vì chỉ hôm nay — thì đây là lúc bạn bước vào cuộc đối thoại này. Ở Sunjin Việt Nam, sự tự do sáng tạo luôn được dung dưỡng và mọi góc nhìn đều được lắng nghe. Hãy đến, mang theo niềm tin của bạn vào kiến trúc. Để rồi, tác giả của những ngôi trường mới, những không gian sống tương lai... chính là bạn.
                     </p>
                     <div class="flex flex-wrap items-center gap-4">
                         <a href="#positions" data-en="Open Positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Vị trí đang tuyển</a>
                         <a href="#culture" data-en="Why Sunjin?" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Vì sao chọn Sunjin?</a>
                     </div>
                 </div>
-                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 flex-shrink-0"><span id="open-count">—</span> <span data-en="Open Positions">Vị trí đang tuyển</span></p>
+                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white flex-shrink-0"><span id="open-count">—</span> <span data-en="Open Positions">Vị trí đang tuyển</span></p>
             </div>
         </div>
     </section>
@@ -199,7 +202,7 @@
 
     <!-- 1c. Section Intro Strip -->
     <div id="positions" class="bg-dark px-6 md:px-12 lg:px-16 py-16 md:py-20 scroll-mt-24">
-        <p data-en="Discover Your Role" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Khám phá vai trò của bạn</p>
+        <p data-en="Discover Your Role" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Khám phá vai trò của bạn</p>
         <h2 data-en="From distinctive concept designs to fast-paced technical execution. Choose where you make an impact." class="font-display font-light text-white leading-snug max-w-3xl reveal-up" style="font-size: clamp(1.5rem, 3.2vw, 2.6rem);">
             Từ những thiết kế ý tưởng độc đáo đến triển khai kỹ thuật nhịp độ cao. Hãy chọn nơi bạn tạo nên ảnh hưởng.
         </h2>
@@ -248,11 +251,14 @@
     <!-- Why Sunjin -->
     <section id="culture" class="bg-dark px-6 md:px-12 lg:px-16 py-24 md:py-32 scroll-mt-24">
         <div class="max-w-3xl mb-16 md:mb-20">
-            <p data-en="Why Join Sunjin" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Vì sao gia nhập Sunjin</p>
-            <h2 data-en="Where your craft is respected." class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Nơi tay nghề của bạn được trân trọng.</h2>
-            <p data-en="We believe top professionals need the right tools, meaningful projects, and the space to create." class="font-sans text-sm md:text-base text-white/60 leading-relaxed reveal-up" style="transition-delay:0.1s">
-                Chúng tôi tin rằng những chuyên gia hàng đầu cần công cụ phù hợp, những dự án ý nghĩa và không gian để sáng tạo.
-            </p>
+            <p data-en="Why Join Sunjin" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Vì sao gia nhập Sunjin</p>
+            <h2 data-en="Your Space to Create" class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Không gian kiến tạo của bạn.</h2>
+            <ul class="font-sans text-sm md:text-base text-white leading-relaxed reveal-up space-y-3" style="transition-delay:0.1s">
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Where craft speaks: a wide-open &quot;stage&quot; for you to freely show what you can do.">Nơi tay nghề lên tiếng: "Đất diễn" rộng mở để bạn thoải mái thể hiện năng lực.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Top-tier gear: we provide all the latest tools and technology so your ideas are never limited.">Đồ nghề cực xịn: Cung cấp đủ công cụ và công nghệ tiên tiến nhất để ý tưởng không bao giờ bị giới hạn.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Flexible operations: open processes that adapt fast — work smart instead of just working hard.">Vận hành linh hoạt: Quy trình mở, thích ứng nhanh, làm việc thông minh thay vì làm việc chăm chỉ.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Top-notch teamwork: there are always teammates ready to support and back you up.">Teamwork "đỉnh nóc": Luôn có những người anh em đồng nghiệp hỗ trợ và "back-up" phía sau.</span></li>
+            </ul>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
@@ -263,8 +269,8 @@
                     <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Award-winning architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A1 &nbsp;|&nbsp; Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A1 &nbsp;|&nbsp; Dự án giàu ảnh hưởng</p>
-                <p data-en="Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A1 &nbsp;|&nbsp; Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A1 &nbsp;|&nbsp; Dự án giàu ảnh hưởng</p>
+                <p data-en="Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you." class="font-sans text-sm text-white leading-relaxed">
                     Trường học đoạt giải thưởng, khu phức hợp nhà ở, trụ sở quy mô lớn và các dự án phức hợp đa năng — một danh mục đa dạng đủ rộng để thử thách bạn.
                 </p>
             </div>
@@ -275,8 +281,8 @@
                     <img src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Design and modeling workstation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A2 &nbsp;|&nbsp; Fully Licensed Tools" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A2 &nbsp;|&nbsp; Công cụ bản quyền đầy đủ</p>
-                <p data-en="Autodesk AEC Collection, CSI, BIM infrastructure, and internal AI workflows — so you can focus entirely on your craft, not on struggling with your tools." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A2 &nbsp;|&nbsp; Fully Licensed Tools" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A2 &nbsp;|&nbsp; Công cụ bản quyền đầy đủ</p>
+                <p data-en="Autodesk AEC Collection, CSI, BIM infrastructure, and internal AI workflows — so you can focus entirely on your craft, not on struggling with your tools." class="font-sans text-sm text-white leading-relaxed">
                     Autodesk AEC Collection, CSI, hạ tầng BIM và quy trình AI nội bộ — để bạn toàn tâm cho chuyên môn, không phải vật lộn với công cụ.
                 </p>
             </div>
@@ -287,8 +293,8 @@
                     <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A3 &nbsp;|&nbsp; Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A3 &nbsp;|&nbsp; Lộ trình thăng tiến rõ ràng</p>
-                <p data-en="From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A3 &nbsp;|&nbsp; Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A3 &nbsp;|&nbsp; Lộ trình thăng tiến rõ ràng</p>
+                <p data-en="From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority." class="font-sans text-sm text-white leading-relaxed">
                     Từ triển khai kỹ thuật đến kiến trúc sư ý tưởng chủ trì. Chúng tôi ghi nhận năng lực và tưởng thưởng theo thực lực, không bị giới hạn bởi thâm niên.
                 </p>
             </div>
@@ -299,8 +305,8 @@
                     <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="International team collaboration" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A4 &nbsp;|&nbsp; Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A4 &nbsp;|&nbsp; Học hỏi không ngừng</p>
-                <p data-en="As a Korean-Vietnamese joint venture, we connect you with international experts in an environment that highly values diverse perspectives and critical thinking." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A4 &nbsp;|&nbsp; Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A4 &nbsp;|&nbsp; Học hỏi không ngừng</p>
+                <p data-en="As a Korean-Vietnamese joint venture, we connect you with international experts in an environment that highly values diverse perspectives and critical thinking." class="font-sans text-sm text-white leading-relaxed">
                     Là liên doanh Hàn–Việt, chúng tôi kết nối bạn với các chuyên gia quốc tế trong môi trường đề cao sự đa dạng góc nhìn và tư duy phản biện.
                 </p>
             </div>
@@ -311,8 +317,8 @@
                     <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Modern workplace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A5 &nbsp;|&nbsp; Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A5 &nbsp;|&nbsp; Phúc lợi minh bạch</p>
-                <p data-en="Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A5 &nbsp;|&nbsp; Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A5 &nbsp;|&nbsp; Phúc lợi minh bạch</p>
+                <p data-en="Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies." class="font-sans text-sm text-white leading-relaxed">
                     Mức lương cạnh tranh, thưởng theo dự án, bảo hiểm toàn diện và chính sách nghỉ phép rõ ràng.
                 </p>
             </div>
@@ -323,8 +329,8 @@
                     <img src="https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Vietnamese cultural architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="A6 &nbsp;|&nbsp; Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A6 &nbsp;|&nbsp; Bản sắc Việt Nam</p>
-                <p data-en="We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation." class="font-sans text-sm text-white/65 leading-relaxed">
+                <p data-en="A6 &nbsp;|&nbsp; Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white mb-3">A6 &nbsp;|&nbsp; Bản sắc Việt Nam</p>
+                <p data-en="We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation." class="font-sans text-sm text-white leading-relaxed">
                     Chúng tôi theo đuổi những thiết kế ý tưởng bắt rễ sâu trong bản sắc văn hóa Việt — dẫn dắt bởi sáng tạo, không phải sao chép.
                 </p>
             </div>
@@ -336,66 +342,87 @@
     <section class="bg-white px-6 md:px-12 lg:px-16 pb-24 md:pb-32 border-t border-black/10 pt-24 md:pt-32">
         <div class="max-w-3xl mb-16 md:mb-20">
             <p data-en="Our Portfolio" class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Danh mục dự án</p>
-            <h2 data-en="What we build together." class="font-display font-light text-dark leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Những gì chúng ta cùng kiến tạo.</h2>
-            <p data-en="A glimpse into our 300+ completed projects — and the starting point for what you will design next." class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up" style="transition-delay:0.1s">
-                Một thoáng nhìn vào hơn 300 dự án đã hoàn thành của chúng tôi — và là điểm khởi đầu cho những gì bạn sẽ thiết kế tiếp theo.
+            <h2 data-en="The Mark We Leave Together" class="font-display font-light text-dark leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Dấu ấn chúng ta cùng để lại.</h2>
+            <p data-en="Instead of merely producing drawings, together we create real value:" class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up mb-5" style="transition-delay:0.1s">
+                Thay vì chỉ tạo ra những bản vẽ, chúng ta cùng nhau kiến tạo những giá trị thực:
             </p>
+            <ul class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up space-y-3" style="transition-delay:0.15s">
+                <li class="flex gap-3"><span class="text-black/30 flex-shrink-0">•</span><span data-en="Elevated living spaces: modern housing and high-rise solutions that raise the quality of urban life.">Không gian sống vươn tầm: Mang đến những giải pháp nhà ở và chung cư cao tầng hiện đại, nâng tầm chất lượng sống nơi đô thị.</span></li>
+                <li class="flex gap-3"><span class="text-black/30 flex-shrink-0">•</span><span data-en="Architecture for nature: green designs in harmony with the landscape and resilient to a changing climate.">Kiến trúc vị tự nhiên: Ưu tiên các thiết kế xanh, hài hòa với cảnh quan và bền bỉ trước những biến đổi của khí hậu.</span></li>
+                <li class="flex gap-3"><span class="text-black/30 flex-shrink-0">•</span><span data-en="Nurturing the future: building creative schools and learning spaces that nurture the generations to come.">Ươm mầm tương lai: Dựng xây những không gian giáo dục, trường học sáng tạo - nơi nuôi dưỡng những thế hệ tiếp nối.</span></li>
+                <li class="flex gap-3"><span class="text-black/30 flex-shrink-0">•</span><span data-en="Honouring identity: breathing life into landscape and cultural projects, preserving heritage within contemporary life.">Tôn vinh bản sắc: Thổi hồn vào các dự án cảnh quan, văn hóa, giữ gìn dấu ấn di sản trong nhịp sống đương đại.</span></li>
+            </ul>
         </div>
+
+        <p data-en="A glimpse into our 300+ projects — and the starting point for what you will leave your mark on next." class="font-sans text-sm md:text-base text-black/55 leading-relaxed max-w-3xl mb-12 reveal-up">Một cái nhìn thoáng qua về hơn 300 dự án của chúng tôi và là điểm khởi đầu cho những gì bạn sẽ đặt dấu ấn tiếp theo.</p>
 
         <!-- Asymmetric mosaic -->
         <div class="grid grid-cols-1 md:grid-cols-6 gap-3 md:gap-4 md:auto-rows-[clamp(240px,26vw,320px)]">
 
-            <!-- Education — large feature, tall -->
+            <!-- 01 Quy Hoạch / Planning — large feature, tall -->
             <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-4 md:row-span-2 h-full min-h-[320px]">
                 <div class="flex-1 min-h-[140px] overflow-hidden">
-                    <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1400"
-                         alt="Education facilities" class="w-full h-full object-cover">
+                    <img src="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                         alt="Quy hoạch" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6 md:p-8">
-                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">01</p>
-                    <h3 data-en="Education" class="font-display font-light text-white text-3xl md:text-4xl leading-none mb-3">Giáo dục</h3>
-                    <p data-en="Award-winning schools and educational facilities — from rural community schools to international campuses. Spaces engineered for light, acoustics, and the way a new generation learns." class="font-sans text-sm text-white/60 leading-relaxed">
-                        Trường học và cơ sở giáo dục đoạt giải — từ trường cộng đồng vùng nông thôn đến những khuôn viên quốc tế. Không gian được thiết kế cho ánh sáng, âm học và cách một thế hệ mới học tập.
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">01</p>
+                    <h3 data-en="Planning" class="font-display font-light text-white text-3xl md:text-4xl leading-none mb-3">Quy hoạch</h3>
+                    <p data-en="Masterplanning and urban development — shaping how cities grow while balancing people, space, and landscape." class="font-sans text-sm text-white leading-relaxed">
+                        Quy hoạch tổng thể và phát triển đô thị — định hình cách các thành phố lớn lên, cân bằng giữa con người, không gian và cảnh quan.
                     </p>
                 </div>
             </a>
 
-            <!-- Residential -->
+            <!-- 02 Khu dân cư / Nhà ở -->
             <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
                     <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=900"
-                         alt="Residential complexes" class="w-full h-full object-cover">
+                         alt="Khu dân cư / Nhà ở" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
-                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">02</p>
-                    <h3 data-en="Residential" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Nhà ở</h3>
-                    <p data-en="High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities." class="font-sans text-[13px] text-white/60 leading-relaxed">Căn hộ cao tầng và khu phức hợp đa năng — những cộng đồng theo chiều đứng định nghĩa lại cuộc sống đô thị tại các thành phố phát triển nhanh nhất Việt Nam.</p>
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">02</p>
+                    <h3 data-en="Residential" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khu dân cư / Nhà ở</h3>
+                    <p data-en="High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities." class="font-sans text-[13px] text-white leading-relaxed">Căn hộ cao tầng và khu phức hợp đa năng — những cộng đồng theo chiều đứng định nghĩa lại cuộc sống đô thị tại các thành phố phát triển nhanh nhất Việt Nam.</p>
                 </div>
             </a>
 
-            <!-- Office & Commercial -->
+            <!-- 03 Trường học -->
             <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
                 <div class="flex-1 min-h-[110px] overflow-hidden">
-                    <img src="https://images.pexels.com/photos/2462015/pexels-photo-2462015.jpeg?auto=compress&cs=tinysrgb&w=900"
-                         alt="Office and commercial buildings" class="w-full h-full object-cover">
+                    <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                         alt="Trường học" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-dark p-6">
-                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">03</p>
-                    <h3 data-en="Office &amp; Commercial" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Văn phòng &amp; Thương mại</h3>
-                    <p data-en="Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them." class="font-sans text-[13px] text-white/60 leading-relaxed">Trụ sở doanh nghiệp và những công trình thương mại biểu tượng — được thiết kế cho hiệu năng, bản sắc và những con người làm việc bên trong.</p>
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">03</p>
+                    <h3 data-en="School" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trường học</h3>
+                    <p data-en="Award-winning schools and educational facilities — from rural community schools to international campuses, engineered for light, acoustics, and the way a new generation learns." class="font-sans text-[13px] text-white leading-relaxed">Trường học và cơ sở giáo dục đoạt giải — từ trường cộng đồng vùng nông thôn đến những khuôn viên quốc tế, được thiết kế cho ánh sáng, âm học và cách một thế hệ mới học tập.</p>
                 </div>
             </a>
 
-            <!-- Public & Civic — wide bottom banner -->
-            <a href="project.html" class="portfolio-card interactive flex flex-col md:flex-row overflow-hidden rounded-lg md:col-span-6 h-full min-h-[260px]">
-                <div class="flex-1 min-h-[160px] md:min-h-0 overflow-hidden">
-                    <img src="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                         alt="Public and civic complexes" class="w-full h-full object-cover">
+            <!-- 04 Khách Sạn -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-3 h-full min-h-[260px]">
+                <div class="flex-1 min-h-[110px] overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80"
+                         alt="Khách sạn" class="w-full h-full object-cover">
                 </div>
-                <div class="bg-dark p-7 md:p-9 md:w-[42%] md:flex md:flex-col md:justify-center flex-shrink-0">
-                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">04</p>
-                    <h3 data-en="Public &amp; Civic" class="font-display font-light text-white text-2xl md:text-4xl leading-none mb-3">Công cộng &amp; Hành chính</h3>
-                    <p data-en="Large-scale administrative and civic complexes that serve entire provinces — architecture at the scale of public life, built to endure for generations." class="font-sans text-sm text-white/60 leading-relaxed">Những khu phức hợp hành chính và công cộng quy mô lớn phục vụ cả tỉnh — kiến trúc ở tầm vóc đời sống cộng đồng, được xây dựng để trường tồn qua nhiều thế hệ.</p>
+                <div class="bg-dark p-6">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">04</p>
+                    <h3 data-en="Hotel" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khách sạn</h3>
+                    <p data-en="Hotels and resorts — destinations rich in identity, where the stay experience blends with the culture of each place." class="font-sans text-[13px] text-white leading-relaxed">Khách sạn và khu nghỉ dưỡng — những điểm đến giàu bản sắc, nơi trải nghiệm lưu trú hòa quyện cùng văn hóa của mỗi vùng đất.</p>
+                </div>
+            </a>
+
+            <!-- 05 Trụ Sở -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-3 h-full min-h-[260px]">
+                <div class="flex-1 min-h-[110px] overflow-hidden">
+                    <img src="https://images.pexels.com/photos/2462015/pexels-photo-2462015.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Trụ sở" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-dark p-6">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">05</p>
+                    <h3 data-en="Headquarters" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trụ sở</h3>
+                    <p data-en="Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them." class="font-sans text-[13px] text-white leading-relaxed">Trụ sở doanh nghiệp và những công trình thương mại biểu tượng — được thiết kế cho hiệu năng, bản sắc và những con người làm việc bên trong.</p>
                 </div>
             </a>
 
@@ -408,24 +435,24 @@
 
             <!-- Left: steps -->
             <div>
-                <p data-en="Apply in 3 Minutes" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Ứng tuyển trong 3 phút</p>
+                <p data-en="Apply in 3 Minutes" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Ứng tuyển trong 3 phút</p>
                 <h2 data-en="Show us how you think." class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Cho chúng tôi thấy cách bạn tư duy.</h2>
-                <p data-en="Your portfolio speaks louder than any description." class="font-sans text-sm md:text-base text-white/60 leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
+                <p data-en="Your portfolio speaks louder than any description." class="font-sans text-sm md:text-base text-white leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
                     Hồ sơ năng lực của bạn nói lên nhiều hơn mọi lời mô tả.
                 </p>
 
                 <div class="flex flex-col gap-8">
                     <div class="flex items-start gap-6 reveal-up">
                         <span class="step-num">01</span>
-                        <p data-en="Enter your details and select your desired role." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Điền thông tin của bạn và chọn vị trí mong muốn.</p>
+                        <p data-en="Enter your details and select your desired role." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Điền thông tin của bạn và chọn vị trí mong muốn.</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.08s">
                         <span class="step-num">02</span>
-                        <p data-en="Attach your CV and portfolio (PDF, max 20MB)." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 20MB).</p>
+                        <p data-en="Attach your CV and portfolio (PDF, max 20MB)." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 20MB).</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.16s">
                         <span class="step-num">03</span>
-                        <p data-en="Our recruitment team will respond within 5 business days." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Đội ngũ tuyển dụng của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</p>
+                        <p data-en="Our recruitment team will respond within 5 business days." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đội ngũ tuyển dụng của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</p>
                     </div>
                 </div>
             </div>
@@ -466,7 +493,7 @@
                     </div>
 
                     <button type="submit" data-en="Submit Application →" class="apply-submit interactive mt-2">Gửi hồ sơ ứng tuyển →</button>
-                    <p id="af-status" class="font-sans text-[12px] text-white/40 text-center min-h-[16px]"></p>
+                    <p id="af-status" class="font-sans text-[12px] text-white text-center min-h-[16px]"></p>
                 </form>
             </div>
 
@@ -480,7 +507,7 @@
                  alt="Design studio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Studio Culture" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Văn hóa studio</p>
+                <p data-en="Studio Culture" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white">Văn hóa studio</p>
                 <p data-en="Where ideas take shape" class="font-display font-light text-white text-lg mt-1">Nơi ý tưởng thành hình</p>
             </div>
         </div>
@@ -489,7 +516,7 @@
                  alt="Architecture team" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Collaboration" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Hợp tác</p>
+                <p data-en="Collaboration" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white">Hợp tác</p>
                 <p data-en="Built on shared ambition" class="font-display font-light text-white text-lg mt-1">Xây dựng trên khát vọng chung</p>
             </div>
         </div>
@@ -498,7 +525,7 @@
                  alt="Architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Our Work" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Công việc của chúng tôi</p>
+                <p data-en="Our Work" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white">Công việc của chúng tôi</p>
                 <p data-en="Craft that defines cities" class="font-display font-light text-white text-lg mt-1">Tay nghề định hình đô thị</p>
             </div>
         </div>
@@ -507,7 +534,7 @@
     <!-- Footer -->
     <footer class="hidden bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white border-t border-white/8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 md:mb-32 reveal-up">
-            <div class="flex flex-col gap-10 md:gap-12 font-sans text-[13px] md:text-sm tracking-[0.1em] uppercase text-white/90 leading-relaxed">
+            <div class="flex flex-col gap-10 md:gap-12 font-sans text-[13px] md:text-sm tracking-[0.1em] uppercase text-white leading-relaxed">
                 <div><p>E: TRUYENTHONG@SUNJINVIETNAM.VN</p><p>P: 097 7279 066</p></div>
                 <div><p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p><p>CAU GIAY WARD, HA NOI,</p><p>VIETNAM</p></div>
             </div>
@@ -519,7 +546,7 @@
                 <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit">Careers</a>
             </div>
             <div class="flex justify-start md:justify-end items-start mt-8 md:mt-0">
-                <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 hover:text-white interactive transition-colors flex items-center gap-2 group">
+                <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white hover:text-white interactive transition-colors flex items-center gap-2 group">
                     BACK TO TOP <svg class="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path></svg>
                 </button>
             </div>
@@ -527,11 +554,11 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay:0.2s">
             <div class="lg:col-span-4 flex flex-col gap-8 lg:gap-16">
                 <a href="index.html" class="interactive"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
-                <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">&copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED</p>
+                <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white">&copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED</p>
             </div>
             <div class="lg:col-span-6 flex flex-col gap-10 lg:gap-16">
-                <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.</p>
-                <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
+                <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white leading-[1.8] max-w-xl">SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.</p>
+                <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white">
                     <a href="#" class="hover-underline interactive">LINKEDIN</a>
                     <a href="#" class="hover-underline interactive">PRIVACY POLICY</a>
                     <a href="#" class="hover-underline interactive">TERMS OF SERVICE</a>
