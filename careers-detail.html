@@ -56,13 +56,18 @@
         .content-list li { font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(245,245,245,0.65); line-height: 1.8; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; }
         .content-list li::before { content: '·'; position: absolute; left: 0; color: rgba(255,255,255,0.3); }
 
-        .apply-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.15); padding: 0.75rem 0; font-family: 'Outfit', sans-serif; font-size: 13px; color: white; outline: none; transition: border-color 0.25s ease; }
-        .apply-input::placeholder { color: rgba(255,255,255,0.3); }
-        .apply-input:focus { border-bottom-color: rgba(255,255,255,0.55); }
-        .upload-btn { display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 10px 18px; font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.25s ease; background: none; width: 100%; }
-        .upload-btn:hover { border-color: rgba(255,255,255,0.45); color: rgba(255,255,255,0.85); }
-        .submit-btn { width: 100%; background: white; color: #0a0a0a; border: none; padding: 14px 24px; font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 4px; transition: background 0.25s ease, opacity 0.25s ease; margin-top: 1.5rem; }
-        .submit-btn:hover { background: rgba(245,245,245,0.88); }
+        /* Apply form (shared style with careers page) */
+        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Outfit', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
+        .apply-field::placeholder { color: rgba(255,255,255,0.32); }
+        .apply-field:focus { border-bottom-color: rgba(255,255,255,0.6); }
+        select.apply-field { -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 2px center; padding-right: 28px; }
+        select.apply-field option { background: #141414; color: white; }
+        .apply-label { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
+        .dropzone:hover, .dropzone.dragover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
+        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
+        .apply-submit:hover { background: rgba(245,245,245,0.88); }
+        .apply-submit:disabled { cursor: default; }
 
         @media (max-width: 768px) {
             .detail-left { position: relative; width: 100%; height: 60vh; }
@@ -159,22 +164,34 @@
         <div class="mt-12 pt-10 border-t border-white/8">
             <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Apply for this position</p>
             <h2 class="font-display font-light text-white mb-8" style="font-size: clamp(1.5rem, 3vw, 2.2rem);">Send your application.</h2>
-            <form class="flex flex-col gap-5" onsubmit="handleSubmit(event)">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <input type="text" placeholder="Full Name (Required)" class="apply-input" required>
-                    <input type="email" placeholder="Email Address (Required)" class="apply-input" required>
+            <form id="apply-form" class="flex flex-col gap-6" onsubmit="submitApplication(event)">
+                <input id="af-name"  type="text"  class="apply-field" placeholder="Full Name *" required>
+                <input id="af-phone" type="tel"   class="apply-field" placeholder="Phone Number *" required>
+                <input id="af-email" type="email" class="apply-field" placeholder="Email *" required>
+
+                <div>
+                    <label class="apply-label" for="af-exp">Years of Experience</label>
+                    <select id="af-exp" class="apply-field">
+                        <option value="" disabled selected>— Select —</option>
+                        <option>Less than 1 year</option>
+                        <option>1–3 years</option>
+                        <option>3–5 years</option>
+                        <option>Over 5 years</option>
+                    </select>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <input type="tel" placeholder="Phone Number (Required)" class="apply-input" required>
-                    <input type="text" placeholder="Years of Experience" class="apply-input">
+
+                <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Message / Portfolio Link"></textarea>
+
+                <div>
+                    <label class="apply-label">CV / Portfolio</label>
+                    <label id="af-dropzone" class="dropzone block" for="af-cv">
+                        <span id="af-dropzone-label">📎 &nbsp;Drag and drop or click to upload (PDF · ≤20MB)</span>
+                    </label>
+                    <input id="af-cv" type="file" accept=".pdf" class="hidden">
                 </div>
-                <textarea placeholder="Tell us about yourself and why you're a good fit for this role..." rows="4" class="apply-input resize-none" style="padding-top: 0.75rem;"></textarea>
-                <label class="upload-btn" for="cv-upload">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                    <span id="upload-label">Upload CV / Portfolio (PDF, max 15MB)</span>
-                </label>
-                <input type="file" id="cv-upload" accept=".pdf,.jpg,.png" class="hidden" onchange="updateUploadLabel(this)">
-                <button type="submit" class="submit-btn">Submit Application</button>
+
+                <button type="submit" class="apply-submit mt-2">Submit Application →</button>
+                <p id="af-status" class="font-sans text-[12px] text-white/40 text-center min-h-[16px]"></p>
             </form>
             <p class="font-sans text-[10px] text-white/20 mt-5 leading-relaxed">
                 By submitting this form you agree to SUNJIN VIETNAM processing your personal data for recruitment purposes.
@@ -262,22 +279,74 @@
         if (firstChevron) firstChevron.style.transform = 'rotate(180deg)';
     });
 
-    // ── File upload label ─────────────────────────────────────────────
-    function updateUploadLabel(input) {
-        document.getElementById('upload-label').textContent = input.files[0]
-            ? input.files[0].name
-            : 'Upload CV / Portfolio (PDF, max 15MB)';
-    }
+    // ── CV drag-and-drop ──────────────────────────────────────────────
+    (function initApplyForm(){
+        const dz = document.getElementById('af-dropzone');
+        const input = document.getElementById('af-cv');
+        const label = document.getElementById('af-dropzone-label');
+        if (!dz || !input) return;
+
+        const setLabel = () => {
+            label.textContent = input.files[0]
+                ? '📎  ' + input.files[0].name
+                : '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+        };
+        input.addEventListener('change', setLabel);
+
+        ['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+        ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+        dz.addEventListener('drop', e => {
+            const f = e.dataTransfer.files[0];
+            if (f) { input.files = e.dataTransfer.files; setLabel(); }
+        });
+    })();
 
     // ── Form submit ───────────────────────────────────────────────────
-    function handleSubmit(e) {
+    async function submitApplication(e){
         e.preventDefault();
-        const btn = e.target.querySelector('.submit-btn');
-        btn.textContent = 'Application Sent ✓';
-        btn.style.background = 'rgba(255,255,255,0.15)';
-        btn.style.color = 'white';
-        btn.style.border = '1px solid rgba(255,255,255,0.3)';
+        const btn = e.target.querySelector('.apply-submit');
+        const status = document.getElementById('af-status');
+        const file = document.getElementById('af-cv').files[0];
+
+        if (file && file.size > 20 * 1024 * 1024) {
+            status.style.color = 'rgba(220,120,120,0.9)';
+            status.textContent = 'File too large — maximum 20MB.';
+            return;
+        }
+
+        const original = btn.textContent;
         btn.disabled = true;
+        btn.textContent = 'Sending…';
+        status.style.color = 'rgba(255,255,255,0.4)';
+        status.textContent = '';
+
+        const fd = new FormData();
+        fd.append('name',       document.getElementById('af-name').value.trim());
+        fd.append('phone',      document.getElementById('af-phone').value.trim());
+        fd.append('email',      document.getElementById('af-email').value.trim());
+        fd.append('experience', document.getElementById('af-exp').value);
+        fd.append('message',    document.getElementById('af-message').value.trim());
+        fd.append('jobId',      id);
+        fd.append('jobTitle',   (document.getElementById('job-title-h1').textContent || '').trim());
+        if (file) fd.append('cv', file);
+
+        try {
+            const res = await fetch('/api/careers/apply', { method: 'POST', body: fd });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to send');
+
+            e.target.reset();
+            document.getElementById('af-dropzone-label').textContent = '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+            btn.textContent = 'Application Sent ✓';
+            btn.style.background = 'rgba(255,255,255,0.15)';
+            btn.style.color = 'white';
+            status.style.color = 'rgba(255,255,255,0.55)';
+            status.textContent = 'Thank you — our team will respond within 5 business days.';
+        } catch (err) {
+            btn.disabled = false;
+            btn.textContent = original;
+            status.style.color = 'rgba(220,120,120,0.9)';
+            status.textContent = 'Something went wrong. Please try again or email hr@sunjinvietnam.vn';
+        }
     }
     </script>
 </body>

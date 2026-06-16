@@ -91,6 +91,20 @@
         .job-deadline { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
         .job-arrow-circle { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.14); border-radius: 50%; margin-top: 8px; transition: transform 0.35s ease, border-color 0.3s ease, background 0.3s ease; }
         .job-row:hover .job-arrow-circle { transform: translateX(5px); border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.05); }
+
+        /* Apply form */
+        .apply-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.16); padding: 0.7rem 0; font-family: 'Outfit', sans-serif; font-size: 14px; color: white; outline: none; transition: border-color 0.25s ease; }
+        .apply-field::placeholder { color: rgba(255,255,255,0.32); }
+        .apply-field:focus { border-bottom-color: rgba(255,255,255,0.6); }
+        select.apply-field { -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 2px center; padding-right: 28px; }
+        select.apply-field option { background: #141414; color: white; }
+        .apply-label { font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+        .dropzone { border: 1px dashed rgba(255,255,255,0.22); border-radius: 8px; padding: 1.5rem; text-align: center; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.25s ease; }
+        .dropzone:hover, .dropzone.dragover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
+        .apply-submit { width: 100%; background: white; color: #0a0a0a; border: none; padding: 15px 24px; font-family: 'Outfit', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; border-radius: 6px; transition: background 0.25s ease, opacity 0.25s ease; }
+        .apply-submit:hover { background: rgba(245,245,245,0.88); }
+        .apply-submit:disabled { cursor: default; }
+        .step-num { font-family: 'Jost', sans-serif; font-weight: 300; font-size: 2.2rem; line-height: 1; color: rgba(255,255,255,0.25); flex-shrink: 0; width: 3.5rem; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-dark">
@@ -98,39 +112,13 @@
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
-        <a href="index.html">
-            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+    <!-- Top Strip Header -->
+    <header class="fixed top-0 left-0 w-full bg-black z-50 px-5 md:px-10 py-2 flex justify-between items-center border-b border-white/10">
+        <a href="index.html" class="interactive flex items-center h-12 md:h-14 overflow-hidden">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-24 md:h-28 w-auto object-contain -my-6 md:-my-7" />
         </a>
-        <div class="flex items-center gap-6">
-            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()">Let's Discuss</button>
-            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Menu</button>
-        </div>
-    </nav>
-
-    <!-- Fullscreen Menu -->
-    <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
-        <div class="flex justify-between items-center">
-            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
-            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline">Close</button>
-        </div>
-        <div class="flex-1 flex items-center justify-center">
-            <ul class="text-center space-y-2 md:space-y-6">
-                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Home</a></li>
-                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">About</a></li>
-                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Projects</a></li>
-                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Blog</a></li>
-                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive">Careers</a></li>
-            </ul>
-        </div>
-        <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
-            <div><a href="#" class="hover:text-white interactive">LinkedIn</a></div>
-            <div class="text-right">
-                <p>TRUYENTHONG@SUNJINVIETNAM.VN</p>
-                <p>2ND FLOOR-3A, N07-B2, CAU GIAY</p>
-            </div>
-        </div>
+        <a href="#apply" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Apply Now</a>
+    </header>
     </div>
 
     <!-- Contact Modal -->
@@ -167,21 +155,27 @@
     </div>
 
     <!-- 1. Hero -->
-    <section class="relative min-h-screen flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
+    <section class="relative mt-[64px] md:mt-[76px] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-76px)] flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
         <div class="absolute inset-0 z-0">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80"
                  alt="Careers" class="w-full h-full object-cover opacity-25">
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/65 to-dark/20"></div>
         </div>
         <div class="relative z-10">
-            <p class="font-sans text-xs uppercase tracking-[0.3em] text-white/50 mb-6 reveal-fade">Join Our Team</p>
-            <h1 class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up">Careers</h1>
+            <h1 class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up mt-5">Careers</h1>
             <div class="w-full h-[1px] bg-white/20 mt-10 md:mt-16 mb-6 reveal-fade" style="transition-delay:0.3s"></div>
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 reveal-up" style="transition-delay:0.4s">
-                <p class="font-sans text-sm md:text-base text-white/70 max-w-xl leading-relaxed">
-                    We seek architects, designers, and thinkers who believe exceptional buildings emerge from rigorous ideas. Join a studio defined by craft, collaboration, and ambition.
-                </p>
-                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40"><span id="open-count">—</span> Open Positions</p>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 reveal-up" style="transition-delay:0.4s">
+                <div class="max-w-2xl">
+                    <p class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">The next blueprint bears your name.</p>
+                    <p class="font-sans text-sm md:text-base text-white/65 leading-relaxed mb-8">
+                        Sunjin Vietnam — a Korean-Vietnamese joint venture design consultancy with over 300 completed projects. We are seeking architects and engineers who want to leave their mark on the skyline.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Open Positions</a>
+                        <a href="#culture" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Why Sunjin?</a>
+                    </div>
+                </div>
+                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 flex-shrink-0"><span id="open-count">—</span> Open Positions</p>
             </div>
         </div>
     </section>
@@ -192,8 +186,16 @@
              alt="SUNJIN Studio" class="w-full h-full object-cover">
     </div>
 
+    <!-- 1c. Section Intro Strip -->
+    <div id="positions" class="bg-dark px-6 md:px-12 lg:px-16 py-16 md:py-20 scroll-mt-24">
+        <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Discover Your Role</p>
+        <h2 class="font-display font-light text-white leading-snug max-w-3xl reveal-up" style="font-size: clamp(1.5rem, 3.2vw, 2.6rem);">
+            From distinctive concept designs to fast-paced technical execution. Choose where you make an impact.
+        </h2>
+    </div>
+
     <!-- 2. Sticky Filter Bar -->
-    <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 py-6">
+    <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 pt-12 md:pt-16 pb-6">
         <div class="flex flex-col gap-2.5">
             <div class="flex items-center gap-2.5 flex-wrap">
                 <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/25 w-20 flex-shrink-0">Dept.</span>
@@ -243,6 +245,239 @@
         </div>
 
     </div>
+
+    <!-- Why Sunjin -->
+    <section id="culture" class="bg-dark px-6 md:px-12 lg:px-16 py-24 md:py-32 scroll-mt-24">
+        <div class="max-w-3xl mb-16 md:mb-20">
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Why Join Sunjin</p>
+            <h2 class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Where your craft is respected.</h2>
+            <p class="font-sans text-sm md:text-base text-white/60 leading-relaxed reveal-up" style="transition-delay:0.1s">
+                We believe top professionals need the right tools, meaningful projects, and the space to create.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
+
+            <!-- A1 -->
+            <div class="reveal-up">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Award-winning architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A1 &nbsp;|&nbsp; Impactful Projects</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you.
+                </p>
+            </div>
+
+            <!-- A2 -->
+            <div class="reveal-up" style="transition-delay:0.05s">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Design and modeling workstation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A2 &nbsp;|&nbsp; Fully Licensed Tools</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    Autodesk AEC Collection, CSI, BIM infrastructure, and internal AI workflows — so you can focus entirely on your craft, not on struggling with your tools.
+                </p>
+            </div>
+
+            <!-- A3 -->
+            <div class="reveal-up" style="transition-delay:0.1s">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A3 &nbsp;|&nbsp; Clear Career Path</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority.
+                </p>
+            </div>
+
+            <!-- A4 -->
+            <div class="reveal-up" style="transition-delay:0.15s">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="International team collaboration" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A4 &nbsp;|&nbsp; Continuous Learning</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    As a Korean-Vietnamese joint venture, we connect you with international experts in an environment that highly values diverse perspectives and critical thinking.
+                </p>
+            </div>
+
+            <!-- A5 -->
+            <div class="reveal-up" style="transition-delay:0.2s">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Modern workplace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A5 &nbsp;|&nbsp; Transparent Benefits</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies.
+                </p>
+            </div>
+
+            <!-- A6 -->
+            <div class="reveal-up" style="transition-delay:0.25s">
+                <div class="overflow-hidden rounded-lg mb-6 group" style="aspect-ratio:4/3;">
+                    <img src="https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Vietnamese cultural architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A6 &nbsp;|&nbsp; Vietnamese Identity</p>
+                <p class="font-sans text-sm text-white/65 leading-relaxed">
+                    We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Our Portfolio -->
+    <section class="bg-white px-6 md:px-12 lg:px-16 pb-24 md:pb-32 border-t border-black/10 pt-24 md:pt-32">
+        <div class="max-w-3xl mb-16 md:mb-20">
+            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Our Portfolio</p>
+            <h2 class="font-display font-light text-dark leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">What we build together.</h2>
+            <p class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up" style="transition-delay:0.1s">
+                A glimpse into our 300+ completed projects — and the starting point for what you will design next.
+            </p>
+        </div>
+
+        <!-- Asymmetric mosaic -->
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-3 md:gap-4 md:auto-rows-[clamp(240px,26vw,320px)]">
+
+            <!-- Education — large feature, tall -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-4 md:row-span-2 h-full min-h-[320px]">
+                <div class="flex-1 min-h-[140px] overflow-hidden">
+                    <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                         alt="Education facilities" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-dark p-6 md:p-8">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">01</p>
+                    <h3 class="font-display font-light text-white text-3xl md:text-4xl leading-none mb-3">Education</h3>
+                    <p class="font-sans text-sm text-white/60 leading-relaxed">
+                        Award-winning schools and educational facilities — from rural community schools to international campuses. Spaces engineered for light, acoustics, and the way a new generation learns.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Residential -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
+                <div class="flex-1 min-h-[110px] overflow-hidden">
+                    <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Residential complexes" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-dark p-6">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">02</p>
+                    <h3 class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Residential</h3>
+                    <p class="font-sans text-[13px] text-white/60 leading-relaxed">High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities.</p>
+                </div>
+            </a>
+
+            <!-- Office & Commercial -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col overflow-hidden rounded-lg md:col-span-2 h-full min-h-[260px]">
+                <div class="flex-1 min-h-[110px] overflow-hidden">
+                    <img src="https://images.pexels.com/photos/2462015/pexels-photo-2462015.jpeg?auto=compress&cs=tinysrgb&w=900"
+                         alt="Office and commercial buildings" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-dark p-6">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">03</p>
+                    <h3 class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Office &amp; Commercial</h3>
+                    <p class="font-sans text-[13px] text-white/60 leading-relaxed">Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them.</p>
+                </div>
+            </a>
+
+            <!-- Public & Civic — wide bottom banner -->
+            <a href="project.html" class="portfolio-card interactive flex flex-col md:flex-row overflow-hidden rounded-lg md:col-span-6 h-full min-h-[260px]">
+                <div class="flex-1 min-h-[160px] md:min-h-0 overflow-hidden">
+                    <img src="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                         alt="Public and civic complexes" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-dark p-7 md:p-9 md:w-[42%] md:flex md:flex-col md:justify-center flex-shrink-0">
+                    <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">04</p>
+                    <h3 class="font-display font-light text-white text-2xl md:text-4xl leading-none mb-3">Public &amp; Civic</h3>
+                    <p class="font-sans text-sm text-white/60 leading-relaxed">Large-scale administrative and civic complexes that serve entire provinces — architecture at the scale of public life, built to endure for generations.</p>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Apply in 3 Minutes -->
+    <section id="apply" class="bg-dark px-6 md:px-12 lg:px-16 py-24 md:py-32 border-t border-white/8 scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 max-w-6xl mx-auto">
+
+            <!-- Left: steps -->
+            <div>
+                <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Apply in 3 Minutes</p>
+                <h2 class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Show us how you think.</h2>
+                <p class="font-sans text-sm md:text-base text-white/60 leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
+                    Your portfolio speaks louder than any description.
+                </p>
+
+                <div class="flex flex-col gap-8">
+                    <div class="flex items-start gap-6 reveal-up">
+                        <span class="step-num">01</span>
+                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Enter your details and select your desired role.</p>
+                    </div>
+                    <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.08s">
+                        <span class="step-num">02</span>
+                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Attach your CV and portfolio (PDF, max 20MB).</p>
+                    </div>
+                    <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.16s">
+                        <span class="step-num">03</span>
+                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Our recruitment team will respond within 5 business days.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: form -->
+            <div class="reveal-up" style="transition-delay:0.1s">
+                <form id="apply-form" class="flex flex-col gap-6" onsubmit="submitApplication(event)">
+                    <input id="af-name"  type="text"  class="apply-field" placeholder="Full Name *" required>
+                    <input id="af-phone" type="tel"   class="apply-field" placeholder="Phone Number *" required>
+                    <input id="af-email" type="email" class="apply-field" placeholder="Email *" required>
+
+                    <div>
+                        <label class="apply-label" for="af-position">Position Applied For *</label>
+                        <select id="af-position" class="apply-field" required>
+                            <option value="" disabled selected>— Select Position —</option>
+                            <option>Lead Architect</option>
+                            <option>Architect</option>
+                            <option>Structural Engineer</option>
+                            <option>MEP Engineer</option>
+                            <option>Quantity Surveyor (QS)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="apply-label" for="af-exp">Years of Experience</label>
+                        <select id="af-exp" class="apply-field">
+                            <option value="" disabled selected>— Select —</option>
+                            <option>Less than 1 year</option>
+                            <option>1–3 years</option>
+                            <option>3–5 years</option>
+                            <option>Over 5 years</option>
+                        </select>
+                    </div>
+
+                    <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Message / Portfolio Link"></textarea>
+
+                    <div>
+                        <label class="apply-label">CV / Portfolio</label>
+                        <label id="af-dropzone" class="dropzone block" for="af-cv">
+                            <span id="af-dropzone-label">📎 &nbsp;Drag and drop or click to upload (PDF · ≤20MB)</span>
+                        </label>
+                        <input id="af-cv" type="file" accept=".pdf" class="hidden">
+                    </div>
+
+                    <button type="submit" class="apply-submit interactive mt-2">Submit Application →</button>
+                    <p id="af-status" class="font-sans text-[12px] text-white/40 text-center min-h-[16px]"></p>
+                </form>
+            </div>
+
+        </div>
+    </section>
 
     <!-- Culture Strip -->
     <div class="grid grid-cols-3 gap-px bg-white/[0.12]">
@@ -374,14 +609,6 @@
             applyFilters(data);
         })();
 
-        // Menu
-        const menuBtn=document.getElementById('menu-btn'), closeMenuBtn=document.getElementById('close-menu-btn'), menuOverlay=document.getElementById('menu-overlay'), mainNav=document.querySelector('nav');
-        menuBtn.addEventListener('click',()=>{menuOverlay.classList.add('open');document.body.style.overflow='hidden';mainNav.classList.add('nav-hidden');});
-        closeMenuBtn.addEventListener('click',()=>{menuOverlay.classList.remove('open');document.body.style.overflow='';mainNav.classList.remove('nav-hidden');});
-
-        let lastScrollY=0;
-        window.addEventListener('scroll',()=>{const y=window.scrollY;if(y>lastScrollY&&y>80)mainNav.classList.add('nav-hidden');else mainNav.classList.remove('nav-hidden');lastScrollY=y;},{passive:true});
-
         // Contact
         const contactModal=document.getElementById('contact-modal'),contactContent=document.getElementById('contact-content');
         function openContact(){contactModal.classList.remove('opacity-0','pointer-events-none');contactContent.classList.remove('translate-y-10');document.body.style.overflow='hidden';}
@@ -390,6 +617,74 @@
         function selectInterest(v){document.getElementById('interest-value').value=v;document.getElementById('interest-label').textContent=v;toggleInterestDropdown();}
         document.addEventListener('click',e=>{const w=document.getElementById('custom-select-wrapper');if(w&&!w.contains(e.target)){document.getElementById('interest-dropdown').classList.add('hidden');document.getElementById('interest-chevron').style.transform='';}});
         contactModal.addEventListener('click',e=>{if(e.target===contactModal)closeContact();});
+
+        // ── Application form (Apply in 3 Minutes) ──────────────────────────
+        (function initApplyForm(){
+            const dz = document.getElementById('af-dropzone');
+            const input = document.getElementById('af-cv');
+            const label = document.getElementById('af-dropzone-label');
+            if (!dz || !input) return;
+
+            const setLabel = () => {
+                label.textContent = input.files[0]
+                    ? '📎  ' + input.files[0].name
+                    : '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+            };
+            input.addEventListener('change', setLabel);
+
+            ['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+            ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+            dz.addEventListener('drop', e => {
+                const f = e.dataTransfer.files[0];
+                if (f) { input.files = e.dataTransfer.files; setLabel(); }
+            });
+        })();
+
+        async function submitApplication(e){
+            e.preventDefault();
+            const btn = e.target.querySelector('.apply-submit');
+            const status = document.getElementById('af-status');
+            const file = document.getElementById('af-cv').files[0];
+
+            if (file && file.size > 20 * 1024 * 1024) {
+                status.style.color = 'rgba(220,120,120,0.9)';
+                status.textContent = 'File too large — maximum 20MB.';
+                return;
+            }
+
+            const original = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Sending…';
+            status.style.color = 'rgba(255,255,255,0.4)';
+            status.textContent = '';
+
+            const fd = new FormData();
+            fd.append('name',       document.getElementById('af-name').value.trim());
+            fd.append('phone',      document.getElementById('af-phone').value.trim());
+            fd.append('email',      document.getElementById('af-email').value.trim());
+            fd.append('jobTitle',   document.getElementById('af-position').value);
+            fd.append('experience', document.getElementById('af-exp').value);
+            fd.append('message',    document.getElementById('af-message').value.trim());
+            if (file) fd.append('cv', file);
+
+            try {
+                const res = await fetch('/api/careers/apply', { method: 'POST', body: fd });
+                if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to send');
+
+                e.target.reset();
+                document.getElementById('af-dropzone-label').textContent = '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+                btn.textContent = 'Application Sent ✓';
+                btn.style.background = 'rgba(255,255,255,0.15)';
+                btn.style.color = 'white';
+                status.style.color = 'rgba(255,255,255,0.55)';
+                status.textContent = 'Thank you — our team will respond within 5 business days.';
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = original;
+                status.style.color = 'rgba(220,120,120,0.9)';
+                status.textContent = 'Something went wrong. Please try again or email hr@sunjinvietnam.vn';
+            }
+        }
     </script>
 </body>
 </html>
