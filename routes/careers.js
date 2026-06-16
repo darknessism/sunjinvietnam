@@ -5,7 +5,7 @@ const pool       = require('../db/connection');
 const router     = express.Router();
 
 // HR inbox that receives applications
-const HR_EMAIL = process.env.HR_EMAIL || 'daotuankhai@gmail.com';
+const HR_EMAIL = process.env.HR_EMAIL || 'thuhuong.mkttrangan@gmail.com';
 
 // Accept a single CV/portfolio file, kept in memory, max 20 MB
 const upload = multer({

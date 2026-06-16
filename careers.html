@@ -66,18 +66,18 @@
         .light-listing .job-row { border-bottom-color: rgba(0,0,0,0.07); }
         .light-listing .job-row:first-of-type { border-top-color: rgba(0,0,0,0.07); }
         .light-listing .job-row:hover { background: rgba(0,0,0,0.025); }
-        .light-listing .job-number { color: rgba(0,0,0,0.2); }
-        .light-listing .job-level-pill { color: rgba(0,0,0,0.45); border-color: rgba(0,0,0,0.15); }
+        .light-listing .job-number { color: rgba(0,0,0,0.6); }
+        .light-listing .job-level-pill { color: rgba(0,0,0,0.85); border-color: rgba(0,0,0,0.35); }
         .light-listing .job-title-text { color: #0a0a0a; }
-        .light-listing .job-meta { color: rgba(0,0,0,0.38); }
-        .light-listing .job-salary { color: rgba(0,0,0,0.38); }
-        .light-listing .job-deadline { color: rgba(0,0,0,0.38); }
-        .light-listing .job-arrow-circle { border-color: rgba(0,0,0,0.14); color: #0a0a0a; }
-        .light-listing .job-row:hover .job-arrow-circle { border-color: rgba(0,0,0,0.45); background: rgba(0,0,0,0.04); }
+        .light-listing .job-meta { color: rgba(0,0,0,0.75); }
+        .light-listing .job-salary { color: rgba(0,0,0,0.75); }
+        .light-listing .job-deadline { color: rgba(0,0,0,0.75); }
+        .light-listing .job-arrow-circle { border-color: rgba(0,0,0,0.35); color: #0a0a0a; }
+        .light-listing .job-row:hover .job-arrow-circle { border-color: rgba(0,0,0,0.6); background: rgba(0,0,0,0.04); }
 
         /* Light filter chips */
-        .filter-chip.light { color: rgba(0,0,0,0.45); border-color: rgba(0,0,0,0.14); }
-        .filter-chip.light:hover { color: rgba(0,0,0,0.8); border-color: rgba(0,0,0,0.35); }
+        .filter-chip.light { color: rgba(0,0,0,0.75); border-color: rgba(0,0,0,0.3); }
+        .filter-chip.light:hover { color: #0a0a0a; border-color: rgba(0,0,0,0.55); }
         .filter-chip.light.active { color: white; background: #0a0a0a; border-color: #0a0a0a; }
 
         .job-number { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; min-width: 2.5rem; flex-shrink: 0; }
@@ -114,9 +114,9 @@
 
     <!-- Top Strip Header -->
     <header class="fixed top-0 left-0 w-full bg-black z-50 px-5 md:px-10 py-2 flex justify-between items-center border-b border-white/10">
-        <a href="index.html" class="interactive flex items-center h-12 md:h-14 overflow-hidden">
+        <div class="flex items-center h-12 md:h-14 overflow-hidden">
             <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-24 md:h-28 w-auto object-contain -my-6 md:-my-7" />
-        </a>
+        </div>
         <a href="#apply" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Apply Now</a>
     </header>
     </div>
@@ -198,7 +198,7 @@
     <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 pt-12 md:pt-16 pb-6">
         <div class="flex flex-col gap-2.5">
             <div class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/25 w-20 flex-shrink-0">Dept.</span>
+                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Dept.</span>
                 <button class="filter-chip light active" data-group="dept" data-value="all">All</button>
                 <button class="filter-chip light" data-group="dept" data-value="design">Design</button>
                 <button class="filter-chip light" data-group="dept" data-value="interior">Interior</button>
@@ -207,7 +207,7 @@
                 <button class="filter-chip light" data-group="dept" data-value="general">General Affairs</button>
             </div>
             <div class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/25 w-20 flex-shrink-0">Location</span>
+                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Location</span>
                 <button class="filter-chip light active" data-group="location" data-value="all">All</button>
                 <button class="filter-chip light" data-group="location" data-value="hanoi">Hanoi</button>
                 <button class="filter-chip light" data-group="location" data-value="danang">Da Nang</button>
@@ -215,7 +215,7 @@
                 <button class="filter-chip light" data-group="location" data-value="phuquoc">Phu Quoc</button>
             </div>
             <div class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/25 w-20 flex-shrink-0">Level</span>
+                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Level</span>
                 <button class="filter-chip light active" data-group="level" data-value="all">All</button>
                 <button class="filter-chip light" data-group="level" data-value="entry">Entry</button>
                 <button class="filter-chip light" data-group="level" data-value="intermediate">Intermediate</button>
@@ -229,10 +229,10 @@
 
         <!-- Results header -->
         <div class="flex items-center justify-between py-5 border-b border-black/8">
-            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/30">
+            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/70">
                 <span id="job-count">—</span>&nbsp; Positions
             </span>
-            <button onclick="clearFilters()" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/22 hover:text-black/60 transition-colors interactive">Clear All</button>
+            <button onclick="clearFilters()" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/60 hover:text-black transition-colors interactive">Clear All</button>
         </div>
 
         <!-- Dynamic job rows rendered by JS -->
@@ -240,8 +240,8 @@
 
         <!-- No results message -->
         <div id="no-results" class="hidden py-20 text-center">
-            <p class="font-display font-light text-black/25 text-2xl">No positions match your filters.</p>
-            <button onclick="clearFilters()" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/35 hover:text-black/70 transition-colors underline underline-offset-4 interactive">Clear filters</button>
+            <p class="font-display font-light text-black/60 text-2xl">No positions match your filters.</p>
+            <button onclick="clearFilters()" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/70 hover:text-black transition-colors underline underline-offset-4 interactive">Clear filters</button>
         </div>
 
     </div>
