@@ -430,11 +430,6 @@
                         <label class="apply-label" for="af-position">Position Applied For *</label>
                         <select id="af-position" class="apply-field" required>
                             <option value="" disabled selected>— Select Position —</option>
-                            <option>Lead Architect</option>
-                            <option>Architect</option>
-                            <option>Structural Engineer</option>
-                            <option>MEP Engineer</option>
-                            <option>Quantity Surveyor (QS)</option>
                         </select>
                     </div>
 
@@ -614,6 +609,20 @@
             applyFilters(_careersCache);
         }
 
+        // Populate the "Position Applied For" dropdown from the open positions
+        function populatePositionDropdown(list) {
+            const sel = document.getElementById('af-position');
+            if (!sel) return;
+            const titles = [...new Set((list || []).map(c => c.title).filter(Boolean))]
+                .sort((a, b) => a.localeCompare(b));
+            sel.innerHTML = '<option value="" disabled selected>— Select Position —</option>'
+                + titles.map(t => `<option value="${carEsc(t)}">${carEsc(t)}</option>`).join('')
+                + '<option value="General / Open Application">General / Open Application</option>';
+            // Preselect when arriving from a specific position (?role=Title)
+            const role = new URLSearchParams(location.search).get('role');
+            if (role && titles.includes(role)) sel.value = role;
+        }
+
         // Initialize
         (async function initCareers(){
             const [data, tax] = await Promise.all([
@@ -621,6 +630,7 @@
                 fetch('/api/careers/taxonomies').then(r => r.json()).catch(() => ({})),
             ]);
             renderPublicFilters(tax);
+            populatePositionDropdown(data);
             const oc = document.getElementById('open-count');
             if (oc) oc.textContent = String(data.length).padStart(2,'0');
             applyFilters(data);
