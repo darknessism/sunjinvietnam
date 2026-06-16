@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="vi" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,6 +80,11 @@
         .filter-chip.light:hover { color: #0a0a0a; border-color: rgba(0,0,0,0.55); }
         .filter-chip.light.active { color: white; background: #0a0a0a; border-color: #0a0a0a; }
 
+        /* Language toggle */
+        .lang-btn { color: rgba(255,255,255,0.55); background: transparent; padding: 6px 11px; font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
+        .lang-btn:hover { color: rgba(255,255,255,0.9); }
+        .lang-btn.active { background: #fff; color: #0a0a0a; }
+
         .job-number { font-family: 'Outfit', sans-serif; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; min-width: 2.5rem; flex-shrink: 0; }
         .job-level-pill { display: inline-block; font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.16); padding: 3px 10px; border-radius: 12px; margin-bottom: 9px; }
         .job-title-text { font-family: 'Jost', sans-serif; font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 300; color: white; line-height: 1.2; margin-bottom: 7px; transition: letter-spacing 0.35s ease; }
@@ -117,7 +122,13 @@
         <div class="flex items-center h-12 md:h-14 overflow-hidden">
             <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-24 md:h-28 w-auto object-contain -my-6 md:-my-7" />
         </div>
-        <a href="#apply" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Apply Now</a>
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="flex items-center rounded border border-white/20 overflow-hidden">
+                <button type="button" data-lang-btn="vi" onclick="applyLang('vi')" class="lang-btn interactive">VI</button>
+                <button type="button" data-lang-btn="en" onclick="applyLang('en')" class="lang-btn interactive">EN</button>
+            </div>
+            <a href="#apply" data-en="Apply Now" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Ứng tuyển ngay</a>
+        </div>
     </header>
     </div>
 
@@ -127,29 +138,29 @@
             <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
-            <h2 class="font-display text-3xl md:text-5xl mb-8">Message us.</h2>
+            <h2 data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
             <form class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" placeholder="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
-                    <input type="email" placeholder="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Bắt buộc)" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="tel" placeholder="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                     <div class="relative w-full" id="custom-select-wrapper">
                         <input type="hidden" name="interest" id="interest-value">
                         <button type="button" id="interest-btn" class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center bg-transparent" onclick="toggleInterestDropdown()">
-                            <span id="interest-label">Your Interest</span>
+                            <span id="interest-label" data-en="Your Interest">Lĩnh vực quan tâm</span>
                             <svg class="w-4 h-4 text-white/40" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                         </button>
                         <ul id="interest-dropdown" class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Partnership</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Media</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">General</button></li>
+                            <li><button type="button" data-en="Partnership" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Hợp tác</button></li>
+                            <li><button type="button" data-en="Media" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Truyền thông</button></li>
+                            <li><button type="button" data-en="General" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">Chung</button></li>
                         </ul>
                     </div>
                 </div>
-                <textarea placeholder="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
-                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">Submit now</button>
+                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" data-en="Submit now" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">Gửi ngay</button>
             </form>
         </div>
     </div>
@@ -162,20 +173,20 @@
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/65 to-dark/20"></div>
         </div>
         <div class="relative z-10">
-            <h1 class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up mt-5">Careers</h1>
+            <h1 data-en="Careers" class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up mt-5">Tuyển dụng</h1>
             <div class="w-full h-[1px] bg-white/20 mt-10 md:mt-16 mb-6 reveal-fade" style="transition-delay:0.3s"></div>
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 reveal-up" style="transition-delay:0.4s">
                 <div class="max-w-2xl">
-                    <p class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">The next blueprint bears your name.</p>
-                    <p class="font-sans text-sm md:text-base text-white/65 leading-relaxed mb-8">
-                        Sunjin Vietnam — a Korean-Vietnamese joint venture design consultancy with over 300 completed projects. We are seeking architects and engineers who want to leave their mark on the skyline.
+                    <p data-en="The next blueprint bears your name." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">Bản thiết kế tiếp theo mang tên bạn.</p>
+                    <p data-en="Sunjin Vietnam — a Korean-Vietnamese joint venture design consultancy with over 300 completed projects. We are seeking architects and engineers who want to leave their mark on the skyline." class="font-sans text-sm md:text-base text-white/65 leading-relaxed mb-8">
+                        Sunjin Việt Nam — công ty tư vấn thiết kế liên doanh Hàn–Việt với hơn 300 dự án đã hoàn thành. Chúng tôi đang tìm kiếm những kiến trúc sư và kỹ sư mong muốn để lại dấu ấn trên đường chân trời thành phố.
                     </p>
                     <div class="flex flex-wrap items-center gap-4">
-                        <a href="#positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Open Positions</a>
-                        <a href="#culture" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Why Sunjin?</a>
+                        <a href="#positions" data-en="Open Positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Vị trí đang tuyển</a>
+                        <a href="#culture" data-en="Why Sunjin?" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Vì sao chọn Sunjin?</a>
                     </div>
                 </div>
-                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 flex-shrink-0"><span id="open-count">—</span> Open Positions</p>
+                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 flex-shrink-0"><span id="open-count">—</span> <span data-en="Open Positions">Vị trí đang tuyển</span></p>
             </div>
         </div>
     </section>
@@ -188,9 +199,9 @@
 
     <!-- 1c. Section Intro Strip -->
     <div id="positions" class="bg-dark px-6 md:px-12 lg:px-16 py-16 md:py-20 scroll-mt-24">
-        <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Discover Your Role</p>
-        <h2 class="font-display font-light text-white leading-snug max-w-3xl reveal-up" style="font-size: clamp(1.5rem, 3.2vw, 2.6rem);">
-            From distinctive concept designs to fast-paced technical execution. Choose where you make an impact.
+        <p data-en="Discover Your Role" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Khám phá vai trò của bạn</p>
+        <h2 data-en="From distinctive concept designs to fast-paced technical execution. Choose where you make an impact." class="font-display font-light text-white leading-snug max-w-3xl reveal-up" style="font-size: clamp(1.5rem, 3.2vw, 2.6rem);">
+            Từ những thiết kế ý tưởng độc đáo đến triển khai kỹ thuật nhịp độ cao. Hãy chọn nơi bạn tạo nên ảnh hưởng.
         </h2>
     </div>
 
@@ -198,15 +209,15 @@
     <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 pt-12 md:pt-16 pb-6">
         <div class="flex flex-col gap-2.5">
             <div id="pubf-dept" class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Dept.</span>
+                <span data-en="Dept." class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Phòng ban</span>
                 <button class="filter-chip light active" data-group="dept" data-value="all">All</button>
             </div>
             <div id="pubf-location" class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Location</span>
+                <span data-en="Location" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Địa điểm</span>
                 <button class="filter-chip light active" data-group="location" data-value="all">All</button>
             </div>
             <div id="pubf-level" class="flex items-center gap-2.5 flex-wrap">
-                <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Level</span>
+                <span data-en="Level" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Cấp bậc</span>
                 <button class="filter-chip light active" data-group="level" data-value="all">All</button>
             </div>
         </div>
@@ -218,9 +229,9 @@
         <!-- Results header -->
         <div class="flex items-center justify-between py-5 border-b border-black/8">
             <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/70">
-                <span id="job-count">—</span>&nbsp; Positions
+                <span id="job-count">—</span>&nbsp; <span data-en="Positions">Vị trí</span>
             </span>
-            <button onclick="clearFilters()" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/60 hover:text-black transition-colors interactive">Clear All</button>
+            <button onclick="clearFilters()" data-en="Clear All" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/60 hover:text-black transition-colors interactive">Xóa bộ lọc</button>
         </div>
 
         <!-- Dynamic job rows rendered by JS -->
@@ -228,8 +239,8 @@
 
         <!-- No results message -->
         <div id="no-results" class="hidden py-20 text-center">
-            <p class="font-display font-light text-black/60 text-2xl">No positions match your filters.</p>
-            <button onclick="clearFilters()" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/70 hover:text-black transition-colors underline underline-offset-4 interactive">Clear filters</button>
+            <p data-en="No positions match your filters." class="font-display font-light text-black/60 text-2xl">Không có vị trí nào phù hợp với bộ lọc.</p>
+            <button onclick="clearFilters()" data-en="Clear filters" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/70 hover:text-black transition-colors underline underline-offset-4 interactive">Xóa bộ lọc</button>
         </div>
 
     </div>
@@ -237,10 +248,10 @@
     <!-- Why Sunjin -->
     <section id="culture" class="bg-dark px-6 md:px-12 lg:px-16 py-24 md:py-32 scroll-mt-24">
         <div class="max-w-3xl mb-16 md:mb-20">
-            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Why Join Sunjin</p>
-            <h2 class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Where your craft is respected.</h2>
-            <p class="font-sans text-sm md:text-base text-white/60 leading-relaxed reveal-up" style="transition-delay:0.1s">
-                We believe top professionals need the right tools, meaningful projects, and the space to create.
+            <p data-en="Why Join Sunjin" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Vì sao gia nhập Sunjin</p>
+            <h2 data-en="Where your craft is respected." class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Nơi tay nghề của bạn được trân trọng.</h2>
+            <p data-en="We believe top professionals need the right tools, meaningful projects, and the space to create." class="font-sans text-sm md:text-base text-white/60 leading-relaxed reveal-up" style="transition-delay:0.1s">
+                Chúng tôi tin rằng những chuyên gia hàng đầu cần công cụ phù hợp, những dự án ý nghĩa và không gian để sáng tạo.
             </p>
         </div>
 
@@ -252,9 +263,9 @@
                     <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Award-winning architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A1 &nbsp;|&nbsp; Impactful Projects</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you.
+                <p data-en="A1 &nbsp;|&nbsp; Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A1 &nbsp;|&nbsp; Dự án giàu ảnh hưởng</p>
+                <p data-en="Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Trường học đoạt giải thưởng, khu phức hợp nhà ở, trụ sở quy mô lớn và các dự án phức hợp đa năng — một danh mục đa dạng đủ rộng để thử thách bạn.
                 </p>
             </div>
 
@@ -264,9 +275,9 @@
                     <img src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Design and modeling workstation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A2 &nbsp;|&nbsp; Fully Licensed Tools</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    Autodesk AEC Collection, CSI, BIM infrastructure, and internal AI workflows — so you can focus entirely on your craft, not on struggling with your tools.
+                <p data-en="A2 &nbsp;|&nbsp; Fully Licensed Tools" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A2 &nbsp;|&nbsp; Công cụ bản quyền đầy đủ</p>
+                <p data-en="Autodesk AEC Collection, CSI, BIM infrastructure, and internal AI workflows — so you can focus entirely on your craft, not on struggling with your tools." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Autodesk AEC Collection, CSI, hạ tầng BIM và quy trình AI nội bộ — để bạn toàn tâm cho chuyên môn, không phải vật lộn với công cụ.
                 </p>
             </div>
 
@@ -276,9 +287,9 @@
                     <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A3 &nbsp;|&nbsp; Clear Career Path</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority.
+                <p data-en="A3 &nbsp;|&nbsp; Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A3 &nbsp;|&nbsp; Lộ trình thăng tiến rõ ràng</p>
+                <p data-en="From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Từ triển khai kỹ thuật đến kiến trúc sư ý tưởng chủ trì. Chúng tôi ghi nhận năng lực và tưởng thưởng theo thực lực, không bị giới hạn bởi thâm niên.
                 </p>
             </div>
 
@@ -288,9 +299,9 @@
                     <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="International team collaboration" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A4 &nbsp;|&nbsp; Continuous Learning</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    As a Korean-Vietnamese joint venture, we connect you with international experts in an environment that highly values diverse perspectives and critical thinking.
+                <p data-en="A4 &nbsp;|&nbsp; Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A4 &nbsp;|&nbsp; Học hỏi không ngừng</p>
+                <p data-en="As a Korean-Vietnamese joint venture, we connect you with international experts in an environment that highly values diverse perspectives and critical thinking." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Là liên doanh Hàn–Việt, chúng tôi kết nối bạn với các chuyên gia quốc tế trong môi trường đề cao sự đa dạng góc nhìn và tư duy phản biện.
                 </p>
             </div>
 
@@ -300,9 +311,9 @@
                     <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Modern workplace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A5 &nbsp;|&nbsp; Transparent Benefits</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies.
+                <p data-en="A5 &nbsp;|&nbsp; Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A5 &nbsp;|&nbsp; Phúc lợi minh bạch</p>
+                <p data-en="Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Mức lương cạnh tranh, thưởng theo dự án, bảo hiểm toàn diện và chính sách nghỉ phép rõ ràng.
                 </p>
             </div>
 
@@ -312,9 +323,9 @@
                     <img src="https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Vietnamese cultural architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A6 &nbsp;|&nbsp; Vietnamese Identity</p>
-                <p class="font-sans text-sm text-white/65 leading-relaxed">
-                    We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation.
+                <p data-en="A6 &nbsp;|&nbsp; Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/40 mb-3">A6 &nbsp;|&nbsp; Bản sắc Việt Nam</p>
+                <p data-en="We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation." class="font-sans text-sm text-white/65 leading-relaxed">
+                    Chúng tôi theo đuổi những thiết kế ý tưởng bắt rễ sâu trong bản sắc văn hóa Việt — dẫn dắt bởi sáng tạo, không phải sao chép.
                 </p>
             </div>
 
@@ -324,10 +335,10 @@
     <!-- Our Portfolio -->
     <section class="bg-white px-6 md:px-12 lg:px-16 pb-24 md:pb-32 border-t border-black/10 pt-24 md:pt-32">
         <div class="max-w-3xl mb-16 md:mb-20">
-            <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Our Portfolio</p>
-            <h2 class="font-display font-light text-dark leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">What we build together.</h2>
-            <p class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up" style="transition-delay:0.1s">
-                A glimpse into our 300+ completed projects — and the starting point for what you will design next.
+            <p data-en="Our Portfolio" class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Danh mục dự án</p>
+            <h2 data-en="What we build together." class="font-display font-light text-dark leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Những gì chúng ta cùng kiến tạo.</h2>
+            <p data-en="A glimpse into our 300+ completed projects — and the starting point for what you will design next." class="font-sans text-sm md:text-base text-black/55 leading-relaxed reveal-up" style="transition-delay:0.1s">
+                Một thoáng nhìn vào hơn 300 dự án đã hoàn thành của chúng tôi — và là điểm khởi đầu cho những gì bạn sẽ thiết kế tiếp theo.
             </p>
         </div>
 
@@ -342,9 +353,9 @@
                 </div>
                 <div class="bg-dark p-6 md:p-8">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">01</p>
-                    <h3 class="font-display font-light text-white text-3xl md:text-4xl leading-none mb-3">Education</h3>
-                    <p class="font-sans text-sm text-white/60 leading-relaxed">
-                        Award-winning schools and educational facilities — from rural community schools to international campuses. Spaces engineered for light, acoustics, and the way a new generation learns.
+                    <h3 data-en="Education" class="font-display font-light text-white text-3xl md:text-4xl leading-none mb-3">Giáo dục</h3>
+                    <p data-en="Award-winning schools and educational facilities — from rural community schools to international campuses. Spaces engineered for light, acoustics, and the way a new generation learns." class="font-sans text-sm text-white/60 leading-relaxed">
+                        Trường học và cơ sở giáo dục đoạt giải — từ trường cộng đồng vùng nông thôn đến những khuôn viên quốc tế. Không gian được thiết kế cho ánh sáng, âm học và cách một thế hệ mới học tập.
                     </p>
                 </div>
             </a>
@@ -357,8 +368,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">02</p>
-                    <h3 class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Residential</h3>
-                    <p class="font-sans text-[13px] text-white/60 leading-relaxed">High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities.</p>
+                    <h3 data-en="Residential" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Nhà ở</h3>
+                    <p data-en="High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities." class="font-sans text-[13px] text-white/60 leading-relaxed">Căn hộ cao tầng và khu phức hợp đa năng — những cộng đồng theo chiều đứng định nghĩa lại cuộc sống đô thị tại các thành phố phát triển nhanh nhất Việt Nam.</p>
                 </div>
             </a>
 
@@ -370,8 +381,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">03</p>
-                    <h3 class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Office &amp; Commercial</h3>
-                    <p class="font-sans text-[13px] text-white/60 leading-relaxed">Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them.</p>
+                    <h3 data-en="Office &amp; Commercial" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Văn phòng &amp; Thương mại</h3>
+                    <p data-en="Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them." class="font-sans text-[13px] text-white/60 leading-relaxed">Trụ sở doanh nghiệp và những công trình thương mại biểu tượng — được thiết kế cho hiệu năng, bản sắc và những con người làm việc bên trong.</p>
                 </div>
             </a>
 
@@ -383,8 +394,8 @@
                 </div>
                 <div class="bg-dark p-7 md:p-9 md:w-[42%] md:flex md:flex-col md:justify-center flex-shrink-0">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white/40 mb-2">04</p>
-                    <h3 class="font-display font-light text-white text-2xl md:text-4xl leading-none mb-3">Public &amp; Civic</h3>
-                    <p class="font-sans text-sm text-white/60 leading-relaxed">Large-scale administrative and civic complexes that serve entire provinces — architecture at the scale of public life, built to endure for generations.</p>
+                    <h3 data-en="Public &amp; Civic" class="font-display font-light text-white text-2xl md:text-4xl leading-none mb-3">Công cộng &amp; Hành chính</h3>
+                    <p data-en="Large-scale administrative and civic complexes that serve entire provinces — architecture at the scale of public life, built to endure for generations." class="font-sans text-sm text-white/60 leading-relaxed">Những khu phức hợp hành chính và công cộng quy mô lớn phục vụ cả tỉnh — kiến trúc ở tầm vóc đời sống cộng đồng, được xây dựng để trường tồn qua nhiều thế hệ.</p>
                 </div>
             </a>
 
@@ -397,24 +408,24 @@
 
             <!-- Left: steps -->
             <div>
-                <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Apply in 3 Minutes</p>
-                <h2 class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Show us how you think.</h2>
-                <p class="font-sans text-sm md:text-base text-white/60 leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
-                    Your portfolio speaks louder than any description.
+                <p data-en="Apply in 3 Minutes" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5 reveal-fade">Ứng tuyển trong 3 phút</p>
+                <h2 data-en="Show us how you think." class="font-display font-light text-white leading-snug mb-6 reveal-up" style="font-size: clamp(1.8rem, 4vw, 3.2rem);">Cho chúng tôi thấy cách bạn tư duy.</h2>
+                <p data-en="Your portfolio speaks louder than any description." class="font-sans text-sm md:text-base text-white/60 leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
+                    Hồ sơ năng lực của bạn nói lên nhiều hơn mọi lời mô tả.
                 </p>
 
                 <div class="flex flex-col gap-8">
                     <div class="flex items-start gap-6 reveal-up">
                         <span class="step-num">01</span>
-                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Enter your details and select your desired role.</p>
+                        <p data-en="Enter your details and select your desired role." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Điền thông tin của bạn và chọn vị trí mong muốn.</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.08s">
                         <span class="step-num">02</span>
-                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Attach your CV and portfolio (PDF, max 20MB).</p>
+                        <p data-en="Attach your CV and portfolio (PDF, max 20MB)." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 20MB).</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.16s">
                         <span class="step-num">03</span>
-                        <p class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Our recruitment team will respond within 5 business days.</p>
+                        <p data-en="Our recruitment team will respond within 5 business days." class="font-sans text-sm md:text-base text-white/70 leading-relaxed pt-1">Đội ngũ tuyển dụng của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</p>
                     </div>
                 </div>
             </div>
@@ -422,39 +433,39 @@
             <!-- Right: form -->
             <div class="reveal-up" style="transition-delay:0.1s">
                 <form id="apply-form" class="flex flex-col gap-6" onsubmit="submitApplication(event)">
-                    <input id="af-name"  type="text"  class="apply-field" placeholder="Full Name *" required>
-                    <input id="af-phone" type="tel"   class="apply-field" placeholder="Phone Number *" required>
-                    <input id="af-email" type="email" class="apply-field" placeholder="Email *" required>
+                    <input id="af-name"  type="text"  class="apply-field" placeholder="Họ và tên *" data-en-ph="Full Name *" required>
+                    <input id="af-phone" type="tel"   class="apply-field" placeholder="Số điện thoại *" data-en-ph="Phone Number *" required>
+                    <input id="af-email" type="email" class="apply-field" placeholder="Email *" data-en-ph="Email *" required>
 
                     <div>
-                        <label class="apply-label" for="af-position">Position Applied For *</label>
+                        <label class="apply-label" for="af-position" data-en="Position Applied For *">Vị trí ứng tuyển *</label>
                         <select id="af-position" class="apply-field" required>
                             <option value="" disabled selected>— Select Position —</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="apply-label" for="af-exp">Years of Experience</label>
+                        <label class="apply-label" for="af-exp" data-en="Years of Experience">Số năm kinh nghiệm</label>
                         <select id="af-exp" class="apply-field">
-                            <option value="" disabled selected>— Select —</option>
-                            <option>Less than 1 year</option>
-                            <option>1–3 years</option>
-                            <option>3–5 years</option>
-                            <option>Over 5 years</option>
+                            <option value="" disabled selected data-en="— Select —">— Chọn —</option>
+                            <option data-en="Less than 1 year">Dưới 1 năm</option>
+                            <option data-en="1–3 years">1–3 năm</option>
+                            <option data-en="3–5 years">3–5 năm</option>
+                            <option data-en="Over 5 years">Trên 5 năm</option>
                         </select>
                     </div>
 
-                    <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Message / Portfolio Link"></textarea>
+                    <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Lời nhắn / Liên kết hồ sơ" data-en-ph="Message / Portfolio Link"></textarea>
 
                     <div>
-                        <label class="apply-label">CV / Portfolio</label>
+                        <label class="apply-label" data-en="CV / Portfolio">CV / Hồ sơ năng lực</label>
                         <label id="af-dropzone" class="dropzone block" for="af-cv">
-                            <span id="af-dropzone-label">📎 &nbsp;Drag and drop or click to upload (PDF · ≤20MB)</span>
+                            <span id="af-dropzone-label">📎 &nbsp;Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)</span>
                         </label>
                         <input id="af-cv" type="file" accept=".pdf" class="hidden">
                     </div>
 
-                    <button type="submit" class="apply-submit interactive mt-2">Submit Application →</button>
+                    <button type="submit" data-en="Submit Application →" class="apply-submit interactive mt-2">Gửi hồ sơ ứng tuyển →</button>
                     <p id="af-status" class="font-sans text-[12px] text-white/40 text-center min-h-[16px]"></p>
                 </form>
             </div>
@@ -469,8 +480,8 @@
                  alt="Design studio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Studio Culture</p>
-                <p class="font-display font-light text-white text-lg mt-1">Where ideas take shape</p>
+                <p data-en="Studio Culture" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Văn hóa studio</p>
+                <p data-en="Where ideas take shape" class="font-display font-light text-white text-lg mt-1">Nơi ý tưởng thành hình</p>
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
@@ -478,8 +489,8 @@
                  alt="Architecture team" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Collaboration</p>
-                <p class="font-display font-light text-white text-lg mt-1">Built on shared ambition</p>
+                <p data-en="Collaboration" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Hợp tác</p>
+                <p data-en="Built on shared ambition" class="font-display font-light text-white text-lg mt-1">Xây dựng trên khát vọng chung</p>
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
@@ -487,8 +498,8 @@
                  alt="Architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Our Work</p>
-                <p class="font-display font-light text-white text-lg mt-1">Craft that defines cities</p>
+                <p data-en="Our Work" class="font-sans text-[10px] uppercase tracking-[0.28em] text-white/70">Công việc của chúng tôi</p>
+                <p data-en="Craft that defines cities" class="font-display font-light text-white text-lg mt-1">Tay nghề định hình đô thị</p>
             </div>
         </div>
     </div>
@@ -539,13 +550,52 @@
         const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('active');observer.unobserve(e.target);} }),{threshold:0.08});
         document.querySelectorAll('.reveal-up,.reveal-fade').forEach(el=>observer.observe(el));
 
+        // ── i18n (Vietnamese default) ─────────────────────────────────────
+        let LANG = localStorage.getItem('sj_lang') || 'vi';
+
+        // UI strings used by JS-rendered content
+        const UI = {
+            vi: { all:'Tất cả', salary:'Lương', negotiating:'Thỏa thuận', openApp:'Đang nhận hồ sơ', closed:'Đã đóng', closesToday:'Đóng hôm nay', closesIn:n=>`Còn ${n} ngày`, selectPosition:'— Chọn vị trí —', generalApp:'Ứng tuyển chung', sending:'Đang gửi…', sent:'Đã gửi hồ sơ ✓', thanks:'Cảm ơn bạn — đội ngũ của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.', tooLarge:'Tệp quá lớn — tối đa 20MB.', error:'Đã có lỗi xảy ra. Vui lòng thử lại hoặc gửi email tới hr@sunjinvietnam.vn', dropzone:'📎  Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)' },
+            en: { all:'All', salary:'Salary', negotiating:'Negotiating', openApp:'Open Application', closed:'Closed', closesToday:'Closes Today', closesIn:n=>`Closes in ${n}D`, selectPosition:'— Select Position —', generalApp:'General / Open Application', sending:'Sending…', sent:'Application Sent ✓', thanks:'Thank you — our team will respond within 5 business days.', tooLarge:'File too large — maximum 20MB.', error:'Something went wrong. Please try again or email hr@sunjinvietnam.vn', dropzone:'📎  Drag and drop or click to upload (PDF · ≤20MB)' },
+        };
+        const t = k => (UI[LANG] || UI.vi)[k];
+
+        // Job-meta labels (division-style) per language; new taxonomy options fall back to their DB label
+        const META = {
+            vi: { department:{design:'Khối Thiết kế',interior:'Khối Thiết kế Nội thất',urbanplan:'Khối Quy hoạch Đô thị',construction:'Khối Xây dựng',general:'Hành chính Tổng hợp'}, location:{hanoi:'Hà Nội, Việt Nam',danang:'Đà Nẵng, Việt Nam',hcm:'TP. Hồ Chí Minh, Việt Nam',phuquoc:'Phú Quốc, Việt Nam'}, level:{entry:'Mới vào nghề',intermediate:'Trung cấp',expert:'Chuyên gia'} },
+            en: { department:{design:'Design Division',interior:'Interior Design Division',urbanplan:'Urban Plan Division',construction:'Construction Division',general:'General Affairs'}, location:{hanoi:'Hanoi, Vietnam',danang:'Da Nang, Vietnam',hcm:'Ho Chi Minh City, Vietnam',phuquoc:'Phu Quoc, Vietnam'}, level:{entry:'Entry',intermediate:'Intermediate',expert:'Expert'} },
+        };
+        const metaLabel = (kind, val) => ((META[LANG] || META.vi)[kind] || {})[val] || val;
+
+        // Swap all static [data-en] text + [data-en-ph] placeholders between VI and EN
+        function applyLang(lang) {
+            LANG = (lang === 'en') ? 'en' : 'vi';
+            localStorage.setItem('sj_lang', LANG);
+            document.documentElement.lang = LANG;
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (el.dataset.vi === undefined) el.dataset.vi = el.textContent;
+                el.textContent = (LANG === 'en') ? el.dataset.en : el.dataset.vi;
+            });
+            document.querySelectorAll('[data-en-ph]').forEach(el => {
+                if (el.dataset.viPh === undefined) el.dataset.viPh = el.getAttribute('placeholder') || '';
+                el.setAttribute('placeholder', (LANG === 'en') ? el.dataset.enPh : el.dataset.viPh);
+            });
+            document.querySelectorAll('[data-lang-btn]').forEach(b => b.classList.toggle('active', b.dataset.langBtn === LANG));
+            // Re-render JS-driven content in the new language (once data has loaded)
+            if (_careersCache && _careersCache.length) {
+                renderPublicFilters(_lastTax);
+                populatePositionDropdown(_careersCache);
+                applyFilters(_careersCache);
+            }
+            const dzl = document.getElementById('af-dropzone-label'), cv = document.getElementById('af-cv');
+            if (dzl && cv && !cv.files[0]) dzl.textContent = t('dropzone');
+        }
+
         // ── CMS: Careers Data ────────────────────────────────────────────
-        const DEPT_LABEL = {design:'Design Division',interior:'Interior Design Division',urbanplan:'Urban Plan Division',construction:'Construction Division',general:'General Affairs'};
-        const LOC_LABEL  = {hanoi:'Hanoi, Vietnam',danang:'Da Nang, Vietnam',hcm:'Ho Chi Minh City, Vietnam',phuquoc:'Phu Quoc, Vietnam'};
-        const LVL_LABEL  = {entry:'Entry',intermediate:'Intermediate',expert:'Expert'};
         function carEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-        function closesIn(dl){if(!dl)return'Open Application';const t=new Date();t.setHours(0,0,0,0);const d=new Date(dl);d.setHours(0,0,0,0);const diff=Math.round((d-t)/86400000);if(diff<0)return'Closed';if(diff===0)return'Closes Today';return`Closes in ${diff}D`;}
+        function closesIn(dl){if(!dl)return t('openApp');const now=new Date();now.setHours(0,0,0,0);const d=new Date(dl);d.setHours(0,0,0,0);const diff=Math.round((d-now)/86400000);if(diff<0)return t('closed');if(diff===0)return t('closesToday');return t('closesIn')(diff);}
         let _careersCache = [];
+        let _lastTax = {};
         async function loadCareers(){ _careersCache = await fetch('/api/careers').then(r => r.json()).catch(() => []); return _careersCache; }
 
         // Multi-filter
@@ -562,15 +612,16 @@
         // onto the listing label maps so newly-added options render correctly.
         function renderPublicFilters(tax) {
             tax = tax || {};
-            const LABEL_MAP = { department: DEPT_LABEL, location: LOC_LABEL, level: LVL_LABEL };
+            _lastTax = tax;
             PUB_GROUPS.forEach(({ id, group, kind }) => {
                 const el = document.getElementById(id);
                 if (!el) return;
                 const heading = el.querySelector('span');
                 const opts = tax[kind] || [];
-                opts.forEach(o => { if (!LABEL_MAP[kind][o.value]) LABEL_MAP[kind][o.value] = o.label; });
+                // For any taxonomy option we don't have a translation for, fall back to its DB label in both languages
+                opts.forEach(o => { if (!META.vi[kind][o.value]) META.vi[kind][o.value] = o.label; if (!META.en[kind][o.value]) META.en[kind][o.value] = o.label; });
                 el.innerHTML = (heading ? heading.outerHTML : '')
-                    + `<button class="filter-chip light${activeFilters[group] === 'all' ? ' active' : ''}" data-group="${group}" data-value="all">All</button>`
+                    + `<button class="filter-chip light${activeFilters[group] === 'all' ? ' active' : ''}" data-group="${group}" data-value="all">${carEsc(t('all'))}</button>`
                     + opts.map(o => `<button class="filter-chip light${activeFilters[group] === o.value ? ' active' : ''}" data-group="${group}" data-value="${carEsc(o.value)}">${carEsc(o.label)}</button>`).join('');
             });
         }
@@ -596,7 +647,7 @@
             document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
             const rows = document.getElementById('job-rows');
             if (!rows) return;
-            rows.innerHTML = filtered.map((c, i) => `<a href="careers-detail.html?id=${carEsc(c.id)}" class="job-row interactive" data-dept="${carEsc(c.department)}" data-location="${carEsc(c.location)}" data-level="${carEsc(c.level)}"><div class="flex items-start gap-5 md:gap-8 flex-1 min-w-0"><span class="job-number mt-1">${String(i+1).padStart(2,'0')}</span><div class="min-w-0"><span class="job-level-pill">${carEsc(LVL_LABEL[c.level]||c.level)}</span><h3 class="job-title-text">${carEsc(c.title)}</h3><p class="job-meta">${carEsc(DEPT_LABEL[c.department]||c.department)}&nbsp;·&nbsp;${carEsc(LOC_LABEL[c.location]||c.location)}</p></div></div><div class="job-right-info"><span class="job-salary hidden md:block">Salary: ${carEsc(c.salary||'Negotiating')}</span><span class="job-deadline">${carEsc(closesIn(c.deadline))}</span><div class="job-arrow-circle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>`).join('');
+            rows.innerHTML = filtered.map((c, i) => `<a href="careers-detail.html?id=${carEsc(c.id)}" class="job-row interactive" data-dept="${carEsc(c.department)}" data-location="${carEsc(c.location)}" data-level="${carEsc(c.level)}"><div class="flex items-start gap-5 md:gap-8 flex-1 min-w-0"><span class="job-number mt-1">${String(i+1).padStart(2,'0')}</span><div class="min-w-0"><span class="job-level-pill">${carEsc(metaLabel('level', c.level))}</span><h3 class="job-title-text">${carEsc(c.title)}</h3><p class="job-meta">${carEsc(metaLabel('department', c.department))}&nbsp;·&nbsp;${carEsc(metaLabel('location', c.location))}</p></div></div><div class="job-right-info"><span class="job-salary hidden md:block">${carEsc(t('salary'))}: ${carEsc(c.salary||t('negotiating'))}</span><span class="job-deadline">${carEsc(closesIn(c.deadline))}</span><div class="job-arrow-circle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>`).join('');
             document.querySelectorAll('.job-row').forEach(el => {
                 el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
                 el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
@@ -615,9 +666,9 @@
             if (!sel) return;
             const titles = [...new Set((list || []).map(c => c.title).filter(Boolean))]
                 .sort((a, b) => a.localeCompare(b));
-            sel.innerHTML = '<option value="" disabled selected>— Select Position —</option>'
-                + titles.map(t => `<option value="${carEsc(t)}">${carEsc(t)}</option>`).join('')
-                + '<option value="General / Open Application">General / Open Application</option>';
+            sel.innerHTML = `<option value="" disabled selected>${carEsc(t('selectPosition'))}</option>`
+                + titles.map(title => `<option value="${carEsc(title)}">${carEsc(title)}</option>`).join('')
+                + `<option value="General / Open Application">${carEsc(t('generalApp'))}</option>`;
             // Preselect when arriving from a specific position (?role=Title)
             const role = new URLSearchParams(location.search).get('role');
             if (role && titles.includes(role)) sel.value = role;
@@ -635,6 +686,9 @@
             if (oc) oc.textContent = String(data.length).padStart(2,'0');
             applyFilters(data);
         })();
+
+        // Apply the persisted language to static text + toggle state on load
+        applyLang(LANG);
 
         // Contact
         const contactModal=document.getElementById('contact-modal'),contactContent=document.getElementById('contact-content');
@@ -655,7 +709,7 @@
             const setLabel = () => {
                 label.textContent = input.files[0]
                     ? '📎  ' + input.files[0].name
-                    : '📎  Drag and drop or click to upload (PDF · ≤20MB)';
+                    : t('dropzone');
             };
             input.addEventListener('change', setLabel);
 
@@ -675,13 +729,13 @@
 
             if (file && file.size > 20 * 1024 * 1024) {
                 status.style.color = 'rgba(220,120,120,0.9)';
-                status.textContent = 'File too large — maximum 20MB.';
+                status.textContent = t('tooLarge');
                 return;
             }
 
             const original = btn.textContent;
             btn.disabled = true;
-            btn.textContent = 'Sending…';
+            btn.textContent = t('sending');
             status.style.color = 'rgba(255,255,255,0.4)';
             status.textContent = '';
 
@@ -699,17 +753,17 @@
                 if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to send');
 
                 e.target.reset();
-                document.getElementById('af-dropzone-label').textContent = '📎  Drag and drop or click to upload (PDF · ≤20MB)';
-                btn.textContent = 'Application Sent ✓';
+                document.getElementById('af-dropzone-label').textContent = t('dropzone');
+                btn.textContent = t('sent');
                 btn.style.background = 'rgba(255,255,255,0.15)';
                 btn.style.color = 'white';
                 status.style.color = 'rgba(255,255,255,0.55)';
-                status.textContent = 'Thank you — our team will respond within 5 business days.';
+                status.textContent = t('thanks');
             } catch (err) {
                 btn.disabled = false;
                 btn.textContent = original;
                 status.style.color = 'rgba(220,120,120,0.9)';
-                status.textContent = 'Something went wrong. Please try again or email hr@sunjinvietnam.vn';
+                status.textContent = t('error');
             }
         }
     </script>
