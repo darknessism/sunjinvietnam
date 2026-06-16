@@ -86,6 +86,31 @@ const tables = [
         created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
+    `CREATE TABLE IF NOT EXISTS career_taxonomies (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        kind       ENUM('department','location','level') NOT NULL,
+        value      VARCHAR(60)  NOT NULL,
+        label      VARCHAR(120) NOT NULL,
+        sort       INT DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_kind_value (kind, value)
+    )`,
+];
+
+// Default filter options, seeded only when career_taxonomies is empty.
+const TAXONOMY_SEED = [
+    ['department', 'design',       'Design',          1],
+    ['department', 'interior',     'Interior',        2],
+    ['department', 'urbanplan',    'Urban Plan',      3],
+    ['department', 'construction', 'Construction',    4],
+    ['department', 'general',      'General Affairs', 5],
+    ['location',   'hanoi',        'Hanoi',           1],
+    ['location',   'danang',       'Da Nang',         2],
+    ['location',   'hcm',          'Ho Chi Minh City',3],
+    ['location',   'phuquoc',      'Phu Quoc',        4],
+    ['level',      'entry',        'Entry',           1],
+    ['level',      'intermediate', 'Intermediate',    2],
+    ['level',      'expert',       'Expert',          3],
 ];
 
 (async () => {
@@ -98,6 +123,14 @@ const tables = [
     });
     for (const sql of tables) {
         await c.query(sql);
+    }
+    const [[{ n }]] = await c.query('SELECT COUNT(*) AS n FROM career_taxonomies');
+    if (!n) {
+        await c.query(
+            'INSERT INTO career_taxonomies (kind, value, label, sort) VALUES ?',
+            [TAXONOMY_SEED]
+        );
+        console.log(`Seeded ${TAXONOMY_SEED.length} career filter options.`);
     }
     const [rows] = await c.query('SHOW TABLES');
     console.log('Tables ready:', rows.map(t => Object.values(t)[0]).join(', '));

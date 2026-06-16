@@ -197,29 +197,17 @@
     <!-- 2. Sticky Filter Bar -->
     <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 pt-12 md:pt-16 pb-6">
         <div class="flex flex-col gap-2.5">
-            <div class="flex items-center gap-2.5 flex-wrap">
+            <div id="pubf-dept" class="flex items-center gap-2.5 flex-wrap">
                 <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Dept.</span>
                 <button class="filter-chip light active" data-group="dept" data-value="all">All</button>
-                <button class="filter-chip light" data-group="dept" data-value="design">Design</button>
-                <button class="filter-chip light" data-group="dept" data-value="interior">Interior</button>
-                <button class="filter-chip light" data-group="dept" data-value="urbanplan">Urban Plan</button>
-                <button class="filter-chip light" data-group="dept" data-value="construction">Construction</button>
-                <button class="filter-chip light" data-group="dept" data-value="general">General Affairs</button>
             </div>
-            <div class="flex items-center gap-2.5 flex-wrap">
+            <div id="pubf-location" class="flex items-center gap-2.5 flex-wrap">
                 <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Location</span>
                 <button class="filter-chip light active" data-group="location" data-value="all">All</button>
-                <button class="filter-chip light" data-group="location" data-value="hanoi">Hanoi</button>
-                <button class="filter-chip light" data-group="location" data-value="danang">Da Nang</button>
-                <button class="filter-chip light" data-group="location" data-value="hcm">Ho Chi Minh City</button>
-                <button class="filter-chip light" data-group="location" data-value="phuquoc">Phu Quoc</button>
             </div>
-            <div class="flex items-center gap-2.5 flex-wrap">
+            <div id="pubf-level" class="flex items-center gap-2.5 flex-wrap">
                 <span class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Level</span>
                 <button class="filter-chip light active" data-group="level" data-value="all">All</button>
-                <button class="filter-chip light" data-group="level" data-value="entry">Entry</button>
-                <button class="filter-chip light" data-group="level" data-value="intermediate">Intermediate</button>
-                <button class="filter-chip light" data-group="level" data-value="expert">Expert</button>
             </div>
         </div>
     </div>
@@ -568,14 +556,39 @@
         // Multi-filter
         let activeFilters = { dept: 'all', location: 'all', level: 'all' };
 
-        document.querySelectorAll('.filter-chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const group = btn.dataset.group, value = btn.dataset.value;
-                activeFilters[group] = value;
-                document.querySelectorAll(`.filter-chip[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                applyFilters(_careersCache);
+        // Group (chip) name -> taxonomy kind
+        const PUB_GROUPS = [
+            { id: 'pubf-dept',     group: 'dept',     kind: 'department' },
+            { id: 'pubf-location', group: 'location', kind: 'location'   },
+            { id: 'pubf-level',    group: 'level',    kind: 'level'      },
+        ];
+
+        // Build the filter chips from the taxonomy, and overlay any new labels
+        // onto the listing label maps so newly-added options render correctly.
+        function renderPublicFilters(tax) {
+            tax = tax || {};
+            const LABEL_MAP = { department: DEPT_LABEL, location: LOC_LABEL, level: LVL_LABEL };
+            PUB_GROUPS.forEach(({ id, group, kind }) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const heading = el.querySelector('span');
+                const opts = tax[kind] || [];
+                opts.forEach(o => { if (!LABEL_MAP[kind][o.value]) LABEL_MAP[kind][o.value] = o.label; });
+                el.innerHTML = (heading ? heading.outerHTML : '')
+                    + `<button class="filter-chip light${activeFilters[group] === 'all' ? ' active' : ''}" data-group="${group}" data-value="all">All</button>`
+                    + opts.map(o => `<button class="filter-chip light${activeFilters[group] === o.value ? ' active' : ''}" data-group="${group}" data-value="${carEsc(o.value)}">${carEsc(o.label)}</button>`).join('');
             });
+        }
+
+        // Delegated chip handling (works for dynamically rendered chips)
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.filter-chip');
+            if (!btn) return;
+            const group = btn.dataset.group, value = btn.dataset.value;
+            activeFilters[group] = value;
+            document.querySelectorAll(`.filter-chip[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters(_careersCache);
         });
 
         function applyFilters(all) {
@@ -603,7 +616,11 @@
 
         // Initialize
         (async function initCareers(){
-            const data = await loadCareers();
+            const [data, tax] = await Promise.all([
+                loadCareers(),
+                fetch('/api/careers/taxonomies').then(r => r.json()).catch(() => ({})),
+            ]);
+            renderPublicFilters(tax);
             const oc = document.getElementById('open-count');
             if (oc) oc.textContent = String(data.length).padStart(2,'0');
             applyFilters(data);

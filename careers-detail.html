@@ -248,9 +248,21 @@
 
     const id = new URLSearchParams(window.location.search).get('id') || '';
 
+    // Overlay admin-managed filter labels so newly-added options render nicely
+    async function loadTaxLabels() {
+        try {
+            const tax = await fetch('/api/careers/taxonomies').then(r => r.json());
+            const MAP = { department: DEPT_LABEL, location: LOC_LABEL, level: LVL_LABEL };
+            for (const kind in MAP) (tax[kind] || []).forEach(o => { if (!MAP[kind][o.value]) MAP[kind][o.value] = o.label; });
+        } catch (e) {}
+    }
+
     (async function loadJob() {
         try {
-            const meta = await fetch('/api/careers/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : null).catch(() => null);
+            const [meta] = await Promise.all([
+                fetch('/api/careers/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : null).catch(() => null),
+                loadTaxLabels(),
+            ]);
             if (meta) { populate(meta); return; }
         } catch(e) {}
         document.getElementById('job-title-h1').textContent = 'Position not found.';

@@ -253,6 +253,55 @@ router.delete('/careers/:id', async (req, res, next) => {
     } catch (e) { next(e); }
 });
 
+// ── Career filter options (Department / Location / Level) ──────────────────────
+
+const TAX_KINDS = ['department', 'location', 'level'];
+const slugify = s => String(s || '').toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '').slice(0, 60);
+
+router.get('/careers/taxonomies', async (req, res, next) => {
+    try {
+        const [rows] = await pool.query(
+            'SELECT id, kind, value, label FROM career_taxonomies ORDER BY kind, sort, label'
+        );
+        const out = { department: [], location: [], level: [] };
+        for (const r of rows) (out[r.kind] || (out[r.kind] = [])).push(r);
+        res.json(out);
+    } catch (e) { next(e); }
+});
+
+router.post('/careers/taxonomies', async (req, res, next) => {
+    try {
+        const { kind, label } = req.body || {};
+        if (!TAX_KINDS.includes(kind)) return res.status(400).json({ error: 'Invalid kind' });
+        const cleanLabel = String(label || '').trim();
+        if (!cleanLabel) return res.status(400).json({ error: 'Label is required' });
+        const value = slugify(req.body.value) || slugify(cleanLabel);
+        if (!value) return res.status(400).json({ error: 'Could not derive a value from the label' });
+
+        const [[{ maxSort }]] = await pool.query(
+            'SELECT COALESCE(MAX(sort), 0) AS maxSort FROM career_taxonomies WHERE kind = ?', [kind]
+        );
+        try {
+            const [r] = await pool.query(
+                'INSERT INTO career_taxonomies (kind, value, label, sort) VALUES (?, ?, ?, ?)',
+                [kind, value, cleanLabel, maxSort + 1]
+            );
+            res.status(201).json({ id: r.insertId, kind, value, label: cleanLabel });
+        } catch (e) {
+            if (e.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'That option already exists' });
+            throw e;
+        }
+    } catch (e) { next(e); }
+});
+
+router.delete('/careers/taxonomies/:id', async (req, res, next) => {
+    try {
+        await pool.query('DELETE FROM career_taxonomies WHERE id = ?', [req.params.id]);
+        res.json({ ok: true });
+    } catch (e) { next(e); }
+});
+
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
