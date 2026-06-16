@@ -100,3 +100,15 @@ CREATE TABLE IF NOT EXISTS careers (
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Filter options for the careers section (Department / Location / Level).
+-- Managed from the admin panel; drives the filter chips and form dropdowns.
+CREATE TABLE IF NOT EXISTS career_taxonomies (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    kind       ENUM('department','location','level') NOT NULL,
+    value      VARCHAR(60)  NOT NULL,
+    label      VARCHAR(120) NOT NULL,
+    sort       INT DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_kind_value (kind, value)
+);

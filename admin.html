@@ -339,30 +339,9 @@
                     <button class="chip" data-group="cs" data-val="draft" onclick="setChip(this,'cs')">Draft</button>
                 </div>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.28);width:56px;">Dept.</span>
-                <button class="chip active" data-group="cd" data-val="all" onclick="setChip(this,'cd')">All</button>
-                <button class="chip" data-group="cd" data-val="design" onclick="setChip(this,'cd')">Design</button>
-                <button class="chip" data-group="cd" data-val="interior" onclick="setChip(this,'cd')">Interior</button>
-                <button class="chip" data-group="cd" data-val="urbanplan" onclick="setChip(this,'cd')">Urban Plan</button>
-                <button class="chip" data-group="cd" data-val="construction" onclick="setChip(this,'cd')">Construction</button>
-                <button class="chip" data-group="cd" data-val="general" onclick="setChip(this,'cd')">General Affairs</button>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.28);width:56px;">Location</span>
-                <button class="chip active" data-group="cl" data-val="all" onclick="setChip(this,'cl')">All</button>
-                <button class="chip" data-group="cl" data-val="hanoi" onclick="setChip(this,'cl')">Hanoi</button>
-                <button class="chip" data-group="cl" data-val="danang" onclick="setChip(this,'cl')">Da Nang</button>
-                <button class="chip" data-group="cl" data-val="hcm" onclick="setChip(this,'cl')">Ho Chi Minh</button>
-                <button class="chip" data-group="cl" data-val="phuquoc" onclick="setChip(this,'cl')">Phu Quoc</button>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.28);width:56px;">Level</span>
-                <button class="chip active" data-group="cv" data-val="all" onclick="setChip(this,'cv')">All</button>
-                <button class="chip" data-group="cv" data-val="entry" onclick="setChip(this,'cv')">Entry</button>
-                <button class="chip" data-group="cv" data-val="intermediate" onclick="setChip(this,'cv')">Intermediate</button>
-                <button class="chip" data-group="cv" data-val="expert" onclick="setChip(this,'cv')">Expert</button>
-            </div>
+            <div id="car-filter-cd" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"></div>
+            <div id="car-filter-cl" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"></div>
+            <div id="car-filter-cv" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"></div>
         </div>
         <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;overflow:hidden;">
             <div class="tbl-head" style="grid-template-columns:42px 1fr 118px 128px 108px 108px 88px 96px;">
@@ -510,9 +489,118 @@ async function api(method, path, body) {
 }
 
 // ─── DATA LAYER ─────────────────────────────────────
-const _state = { projects: [], blog: [], careers: [] };
+const _state = { projects: [], blog: [], careers: [], tax: { department: [], location: [], level: [] } };
 function db(key) { return _state[key] || []; }
 function save(key, data) { _state[key] = data; }
+
+// ─── CAREER FILTER OPTIONS (taxonomies) ──────────────
+// Filter groups -> taxonomy kind. cd = Dept, cl = Location, cv = Level.
+const TAX_GROUPS = [
+    { group: 'cd', kind: 'department', heading: 'Dept.' },
+    { group: 'cl', kind: 'location',   heading: 'Location' },
+    { group: 'cv', kind: 'level',      heading: 'Level' },
+];
+const taxList  = kind => _state.tax[kind] || [];
+// [[value,label],...] for <select> building
+const taxOpts  = kind => taxList(kind).map(o => [o.value, o.label]);
+// value -> label lookup (falls back to the raw value)
+const taxLabel = (kind, val) => (taxList(kind).find(o => o.value === val) || {}).label || val || '—';
+
+async function loadTaxonomies() {
+    try { _state.tax = await api('GET', '/admin/careers/taxonomies') || _state.tax; }
+    catch (e) { console.error('loadTaxonomies error:', e); }
+}
+
+// Render the Dept / Location / Level filter chip rows (+ a Manage button)
+function renderCareerFilters() {
+    for (const { group, kind, heading } of TAX_GROUPS) {
+        const el = document.getElementById('car-filter-' + group);
+        if (!el) continue;
+        if (!['all', ...taxList(kind).map(o => o.value)].includes(F[group])) F[group] = 'all';
+        const chip = (val, label) =>
+            `<button class="chip${F[group] === val ? ' active' : ''}" data-group="${group}" data-val="${x(val)}" onclick="setChip(this,'${group}')">${x(label)}</button>`;
+        el.innerHTML =
+            `<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.22em;color:rgba(0,0,0,0.28);width:56px;">${heading}</span>`
+            + chip('all', 'All')
+            + taxList(kind).map(o => chip(o.value, o.label)).join('')
+            + `<button class="chip" style="border-style:dashed;color:rgba(0,0,0,0.4);" onclick="openTaxManager('${kind}')" title="Add or remove ${x(heading)} options">+ Manage</button>`;
+    }
+}
+
+// ─── MANAGE FILTER OPTIONS MODAL ─────────────────────
+const TAX_HEADING = { department: 'Department', location: 'Location', level: 'Level' };
+// careers field name matching each taxonomy kind
+const TAX_FIELD   = { department: 'department', location: 'location', level: 'level' };
+
+function taxUsageCount(kind, value) {
+    const f = TAX_FIELD[kind];
+    return db('careers').filter(c => c[f] === value).length;
+}
+
+function openTaxManager(kind) {
+    const heading = TAX_HEADING[kind] || kind;
+    const rows = taxList(kind).map(o => {
+        const used = taxUsageCount(kind, o.value);
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+            <span style="flex:1;font-size:13px;color:rgba(0,0,0,0.78);">${x(o.label)}</span>
+            <span style="font-size:10px;color:rgba(0,0,0,0.3);font-family:monospace;">${x(o.value)}</span>
+            <span style="font-size:10px;color:rgba(0,0,0,0.35);min-width:64px;text-align:right;">${used} in use</span>
+            <button class="act-btn del" onclick="deleteTax('${kind}', ${o.id}, '${xid(o.value)}', '${xid(o.label)}')" title="Remove option">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+        </div>`;
+    }).join('') || `<p style="color:rgba(0,0,0,0.3);font-size:12px;padding:10px 0;">No options yet — add one below.</p>`;
+
+    document.getElementById('modal-inner').innerHTML = `<div style="padding:26px;">
+        ${modalHeader('Manage ' + heading + ' Options')}
+        <p style="font-size:12px;color:rgba(0,0,0,0.45);margin:-12px 0 16px;line-height:1.5;">
+            These options drive the ${x(heading)} filter chips and the dropdown in the position editor — on both the admin panel and the public careers page.
+        </p>
+        <div>${rows}</div>
+        <div style="display:flex;gap:9px;align-items:flex-end;margin-top:18px;">
+            <div style="flex:1;">
+                <label class="field-label">New ${x(heading)} option</label>
+                <input id="tax-new-label" class="field-input" placeholder="e.g. ${kind === 'location' ? 'Can Tho' : kind === 'level' ? 'Senior' : 'Marketing'}"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();addTax('${kind}');}">
+            </div>
+            <button onclick="addTax('${kind}')" style="padding:10px 20px;background:#0a0a0a;color:white;border:none;border-radius:6px;font-family:'Outfit',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;cursor:pointer;">Add</button>
+        </div>
+        ${modalFooter('closeModal', 'Done')}
+    </div>`;
+    document.getElementById('modal-overlay').classList.add('open');
+    setTimeout(() => { const i = document.getElementById('tax-new-label'); if (i) i.focus(); }, 30);
+}
+
+async function addTax(kind) {
+    const input = document.getElementById('tax-new-label');
+    const label = (input.value || '').trim();
+    if (!label) { input.focus(); return; }
+    try {
+        const created = await api('POST', '/admin/careers/taxonomies', { kind, label });
+        if (created) {
+            _state.tax[kind] = [...taxList(kind), { id: created.id, value: created.value, label: created.label }];
+            openTaxManager(kind);
+            renderCareerFilters();
+            toast(TAX_HEADING[kind] + ' option added.');
+        }
+    } catch (e) { alert('Could not add option: ' + e.message); }
+}
+
+async function deleteTax(kind, id, value, label) {
+    const used = taxUsageCount(kind, value);
+    const warn = used
+        ? `\n\n${used} position(s) currently use "${label}". They will keep the value but it will no longer appear as a filter chip.`
+        : '';
+    if (!confirm(`Remove "${label}" from ${TAX_HEADING[kind]} options?${warn}`)) return;
+    try {
+        await api('DELETE', '/admin/careers/taxonomies/' + id);
+        _state.tax[kind] = taxList(kind).filter(o => o.id !== id);
+        openTaxManager(kind);
+        renderCareerFilters();
+        if (typeof renderCareers === 'function') renderCareers();
+        toast(TAX_HEADING[kind] + ' option removed.');
+    } catch (e) { alert('Could not remove option: ' + e.message); }
+}
 
 // ─── FILTER STATE ────────────────────────────────────
 const F = { pc:'all', ps:'all', bc:'all', bs:'all', cs:'all', cd:'all', cl:'all', cv:'all' };
@@ -595,7 +683,7 @@ function renderDashboard() {
         : empty;
 
     document.getElementById('dash-c').innerHTML = careers.length
-        ? careers.map((c, i) => mkRow(String(i+1).padStart(2,'0'), x(c.title), catPill(c.department), c.status)).join('')
+        ? careers.map((c, i) => mkRow(String(i+1).padStart(2,'0'), x(c.title), catPill(taxLabel('department', c.department)), c.status)).join('')
         : empty;
 }
 
@@ -668,6 +756,7 @@ function renderBlog() {
 
 // ─── CAREERS ─────────────────────────────────────────
 function renderCareers() {
+    renderCareerFilters();
     const data = db('careers');
     const q = (document.getElementById('car-search').value || '').toLowerCase();
     const filtered = data.filter(c =>
@@ -690,9 +779,9 @@ function renderCareers() {
                 <span style="font-size:13px;">${x(c.title)}</span>
                 <span style="font-size:10px;color:rgba(0,0,0,0.28);">${x(c.type||'Full-time')}</span>
             </div>
-            <div class="tbl-cell">${cbdg(c.department)}</div>
-            <div class="tbl-cell" style="font-size:12px;color:rgba(0,0,0,0.48);">${x(LOC[c.location]||c.location)}</div>
-            <div class="tbl-cell">${cbdg(c.level)}</div>
+            <div class="tbl-cell"><span class="cat-badge">${x(taxLabel('department', c.department))}</span></div>
+            <div class="tbl-cell" style="font-size:12px;color:rgba(0,0,0,0.48);">${x(taxLabel('location', c.location))}</div>
+            <div class="tbl-cell"><span class="cat-badge">${x(taxLabel('level', c.level))}</span></div>
             <div class="tbl-cell" style="font-size:12px;color:rgba(0,0,0,0.48);">${x(c.deadline||'—')}</div>
             <div class="tbl-cell">${bdg(c.status)}</div>
             <div class="tbl-cell" style="gap:5px;">
@@ -790,11 +879,11 @@ function carForm(c) {
     <div style="display:flex;flex-direction:column;gap:14px;">
         ${field('Position Title *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Senior Architect">`)}
         ${grid2(
-            field('Department *', `<select id="f-dept" class="field-select">${sel([['design','Design'],['interior','Interior'],['urbanplan','Urban Plan'],['construction','Construction'],['general','General Affairs']],v.department||'design')}</select>`),
-            field('Location *', `<select id="f-loc" class="field-select">${sel([['hanoi','Hanoi'],['danang','Da Nang'],['hcm','Ho Chi Minh City'],['phuquoc','Phu Quoc']],v.location||'hanoi')}</select>`)
+            field('Department *', `<select id="f-dept" class="field-select">${sel(taxOpts('department'), v.department||(taxOpts('department')[0]||[])[0])}</select>`),
+            field('Location *', `<select id="f-loc" class="field-select">${sel(taxOpts('location'), v.location||(taxOpts('location')[0]||[])[0])}</select>`)
         )}
         ${grid2(
-            field('Level *', `<select id="f-level" class="field-select">${sel([['entry','Entry'],['intermediate','Intermediate'],['expert','Expert']],v.level||'entry')}</select>`),
+            field('Level *', `<select id="f-level" class="field-select">${sel(taxOpts('level'), v.level||(taxOpts('level')[0]||[])[0])}</select>`),
             field('Type', `<select id="f-type" class="field-select">${sel([['Full-time','Full-time'],['Part-time','Part-time'],['Contract','Contract']],v.type||'Full-time')}</select>`)
         )}
         ${grid2(
@@ -1303,8 +1392,8 @@ function renderCareerEditBody(v) {
     document.getElementById('career-edit-body').innerHTML =
         ceCard('Overview', `<div style="display:flex;flex-direction:column;gap:14px;">
             ${field('Position Title *', `<input id="ce-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Senior Architect">`)}
-            ${grid2(field('Department *', `<select id="ce-dept" class="field-select">${sel([['design','Design'],['interior','Interior'],['urbanplan','Urban Plan'],['construction','Construction'],['general','General Affairs']],v.department||'design')}</select>`), field('Location *', `<select id="ce-loc" class="field-select">${sel([['hanoi','Hanoi'],['danang','Da Nang'],['hcm','Ho Chi Minh City'],['phuquoc','Phu Quoc']],v.location||'hanoi')}</select>`))}
-            ${grid2(field('Level *', `<select id="ce-level" class="field-select">${sel([['entry','Entry'],['intermediate','Intermediate'],['expert','Expert']],v.level||'entry')}</select>`), field('Type', `<select id="ce-type" class="field-select">${sel([['Full-time','Full-time'],['Part-time','Part-time'],['Contract','Contract']],v.type||'Full-time')}</select>`))}
+            ${grid2(field('Department *', `<select id="ce-dept" class="field-select">${sel(taxOpts('department'), v.department||(taxOpts('department')[0]||[])[0])}</select>`), field('Location *', `<select id="ce-loc" class="field-select">${sel(taxOpts('location'), v.location||(taxOpts('location')[0]||[])[0])}</select>`))}
+            ${grid2(field('Level *', `<select id="ce-level" class="field-select">${sel(taxOpts('level'), v.level||(taxOpts('level')[0]||[])[0])}</select>`), field('Type', `<select id="ce-type" class="field-select">${sel([['Full-time','Full-time'],['Part-time','Part-time'],['Contract','Contract']],v.type||'Full-time')}</select>`))}
             ${grid2(field('Salary', `<input id="ce-salary" class="field-input" value="${x(v.salary||'Negotiating')}" placeholder="e.g. Negotiating">`), field('Application Deadline', `<input id="ce-deadline" class="field-input" type="date" value="${x(v.deadline||'')}">`))}
             ${grid2(field('Status', `<select id="ce-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`), field('Cover Image URL', `<input id="ce-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`))}
         </div>`) +
@@ -1514,14 +1603,16 @@ async function saveBlogContent() {
 // ─── INIT ────────────────────────────────────────────
 async function initApp() {
     try {
-        const [projects, blog, careers] = await Promise.all([
+        const [projects, blog, careers, tax] = await Promise.all([
             api('GET', '/admin/projects'),
             api('GET', '/admin/blog'),
             api('GET', '/admin/careers'),
+            api('GET', '/admin/careers/taxonomies'),
         ]);
         _state.projects = projects || [];
         _state.blog     = blog     || [];
         _state.careers  = careers  || [];
+        if (tax) _state.tax = tax;
     } catch(e) {
         console.error('initApp error:', e);
     }

@@ -8,6 +8,9 @@ app.use(express.json({ limit: '5mb' }));
 // Serve all static HTML/CSS/JS/images from the project root
 app.use(express.static(path.join(__dirname)));
 
+// Ensure the careers filter-options table exists and is seeded
+require('./db/initCareerTax')().catch(e => console.error('career taxonomy init failed:', e.message));
+
 // API routes
 app.use('/api/auth',    require('./routes/auth'));
 app.use('/api/admin',   require('./routes/admin'));

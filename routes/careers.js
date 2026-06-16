@@ -86,6 +86,16 @@ router.get('/', async (req, res, next) => {
     } catch (e) { next(e); }
 });
 
+// Public: filter options (departments / locations / levels), grouped by kind
+router.get('/taxonomies', async (req, res, next) => {
+    try {
+        const [rows] = await pool.query(
+            'SELECT id, kind, value, label FROM career_taxonomies ORDER BY kind, sort, label'
+        );
+        res.json(groupTaxonomies(rows));
+    } catch (e) { next(e); }
+});
+
 // Public: single career
 router.get('/:id', async (req, res, next) => {
     try {
@@ -98,6 +108,15 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+// Shape flat taxonomy rows into { department:[{id,value,label}], location:[...], level:[...] }
+function groupTaxonomies(rows) {
+    const out = { department: [], location: [], level: [] };
+    for (const r of rows) {
+        (out[r.kind] || (out[r.kind] = [])).push({ id: r.id, value: r.value, label: r.label });
+    }
+    return out;
+}
 
 function toCareer(r) {
     const parse = v => { try { return typeof v === 'string' ? JSON.parse(v) : v; } catch { return v; } };
