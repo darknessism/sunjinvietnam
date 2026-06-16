@@ -15,7 +15,6 @@ const SLOTS = [
     { slot: 'careers-hero',        page: 'careers', label: 'Hero — ảnh nền đầu trang',           default: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80' },
     { slot: 'careers-banner',      page: 'careers', label: 'Banner đội ngũ (giữa trang)',        default: 'images/teamwork.jpg' },
     { slot: 'careers-a1',          page: 'careers', label: 'A1 · Dự án giàu ảnh hưởng',          default: '/images/sipaphin.jpg' },
-    { slot: 'careers-a2',          page: 'careers', label: 'A2 · Công cụ bản quyền',             default: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=900' },
     { slot: 'careers-a3',          page: 'careers', label: 'A3 · Lộ trình thăng tiến',           default: 'https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900' },
     { slot: 'careers-a4',          page: 'careers', label: 'A4 · Học hỏi không ngừng',           default: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900' },
     { slot: 'careers-a5',          page: 'careers', label: 'A5 · Phúc lợi minh bạch',            default: 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900' },
