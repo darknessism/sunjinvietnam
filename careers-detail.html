@@ -240,22 +240,30 @@
 
     function populate(meta) {
         _meta = meta;
-        document.title = (meta.title || '') + ' | Careers | SUNJIN VIETNAM';
+        // Show English content when EN is active and provided, else fall back to Vietnamese
+        const en = L() === 'en';
+        const title        = (en && meta.titleEn)        ? meta.titleEn        : meta.title;
+        const salary       = (en && meta.salaryEn)       ? meta.salaryEn       : meta.salary;
+        const description  = (en && meta.descriptionEn)  ? meta.descriptionEn  : meta.description;
+        const requirements = (en && meta.requirementsEn) ? meta.requirementsEn : meta.requirements;
+        const benefits     = (en && Array.isArray(meta.benefitsEn) && meta.benefitsEn.length) ? meta.benefitsEn : meta.benefits;
+
+        document.title = (title || '') + ' | Careers | SUNJIN VIETNAM';
 
         const img = document.getElementById('left-img');
-        if (meta.coverImage) { img.src = meta.coverImage; img.alt = meta.title || ''; }
+        if (meta.coverImage) { img.src = meta.coverImage; img.alt = title || ''; }
         else { img.style.display = 'none'; }
 
-        document.getElementById('job-title-h1').textContent = meta.title || '';
+        document.getElementById('job-title-h1').textContent = title || '';
         document.getElementById('meta-level').textContent    = metaLabel('level', meta.level);
-        document.getElementById('meta-salary').textContent   = meta.salary || tx('negotiating');
+        document.getElementById('meta-salary').textContent   = salary || tx('negotiating');
         document.getElementById('meta-deadline').textContent = meta.deadline || '';
         document.getElementById('meta-division').textContent = metaLabel('department', meta.department);
         document.getElementById('meta-location').textContent = metaLabel('location', meta.location);
 
-        document.getElementById('desc-content').innerHTML     = buildList(meta.description);
-        document.getElementById('req-content').innerHTML      = buildList(meta.requirements);
-        document.getElementById('benefits-content').innerHTML = buildBenefits(meta.benefits);
+        document.getElementById('desc-content').innerHTML     = buildList(description);
+        document.getElementById('req-content').innerHTML      = buildList(requirements);
+        document.getElementById('benefits-content').innerHTML = buildBenefits(benefits);
     }
 
     // Re-render dynamic labels when the language changes

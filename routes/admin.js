@@ -213,17 +213,24 @@ router.post('/careers', async (req, res, next) => {
         const c = req.body;
         await pool.query(
             `INSERT INTO careers (id, title, department, location, level, type, salary, deadline,
-             cover_image, description, requirements, benefits, status, created_at)
-             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+             cover_image, description, requirements, benefits,
+             title_en, salary_en, description_en, requirements_en, benefits_en, status, created_at)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
                title=VALUES(title), department=VALUES(department), location=VALUES(location),
                level=VALUES(level), type=VALUES(type), salary=VALUES(salary),
                deadline=VALUES(deadline), cover_image=VALUES(cover_image),
                description=VALUES(description), requirements=VALUES(requirements),
-               benefits=VALUES(benefits), status=VALUES(status)`,
+               benefits=VALUES(benefits),
+               title_en=VALUES(title_en), salary_en=VALUES(salary_en),
+               description_en=VALUES(description_en), requirements_en=VALUES(requirements_en),
+               benefits_en=VALUES(benefits_en), status=VALUES(status)`,
             [c.id, c.title, c.department, c.location, c.level, c.type, c.salary,
              c.deadline || null, c.coverImage, c.description, c.requirements,
-             JSON.stringify(c.benefits || []), c.status || 'draft',
+             JSON.stringify(c.benefits || []),
+             c.titleEn || null, c.salaryEn || null, c.descriptionEn || null,
+             c.requirementsEn || null, JSON.stringify(c.benefitsEn || []),
+             c.status || 'draft',
              c.createdAt || new Date().toISOString().slice(0, 10)]
         );
         const [[row]] = await pool.query('SELECT * FROM careers WHERE id = ?', [c.id]);
@@ -236,10 +243,15 @@ router.put('/careers/:id', async (req, res, next) => {
         const c = req.body;
         await pool.query(
             `UPDATE careers SET title=?, department=?, location=?, level=?, type=?, salary=?,
-             deadline=?, cover_image=?, description=?, requirements=?, benefits=?, status=? WHERE id=?`,
+             deadline=?, cover_image=?, description=?, requirements=?, benefits=?,
+             title_en=?, salary_en=?, description_en=?, requirements_en=?, benefits_en=?,
+             status=? WHERE id=?`,
             [c.title, c.department, c.location, c.level, c.type, c.salary,
              c.deadline || null, c.coverImage, c.description, c.requirements,
-             JSON.stringify(c.benefits || []), c.status, req.params.id]
+             JSON.stringify(c.benefits || []),
+             c.titleEn || null, c.salaryEn || null, c.descriptionEn || null,
+             c.requirementsEn || null, JSON.stringify(c.benefitsEn || []),
+             c.status, req.params.id]
         );
         const [[row]] = await pool.query('SELECT * FROM careers WHERE id = ?', [req.params.id]);
         res.json(toCareer(row));
@@ -392,6 +404,11 @@ function toCareer(r) {
         description:  r.description,
         requirements: r.requirements,
         benefits:     parse(r.benefits) || [],
+        titleEn:        r.title_en,
+        salaryEn:       r.salary_en,
+        descriptionEn:  r.description_en,
+        requirementsEn: r.requirements_en,
+        benefitsEn:     parse(r.benefits_en) || [],
         status:       r.status,
         createdAt:    r.created_at,
     };

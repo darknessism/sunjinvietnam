@@ -16,6 +16,9 @@ app.use(express.static(path.join(__dirname)));
 // Ensure the careers filter-options table exists and is seeded
 require('./db/initCareerTax')().catch(e => console.error('career taxonomy init failed:', e.message));
 
+// Ensure the careers table has the bilingual (English) content columns
+require('./db/initCareerI18n')().catch(e => console.error('career i18n init failed:', e.message));
+
 // Ensure the managed page-images table exists
 const pageImages = require('./routes/pageImages');
 pageImages.initPageImages().catch(e => console.error('page images init failed:', e.message));

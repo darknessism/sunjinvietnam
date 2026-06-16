@@ -225,6 +225,11 @@ function toCareer(r) {
         description:  r.description,
         requirements: r.requirements,
         benefits:     parse(r.benefits) || [],
+        titleEn:        r.title_en,
+        salaryEn:       r.salary_en,
+        descriptionEn:  r.description_en,
+        requirementsEn: r.requirements_en,
+        benefitsEn:     parse(r.benefits_en) || [],
         status:       r.status,
         createdAt:    r.created_at,
     };

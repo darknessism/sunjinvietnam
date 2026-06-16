@@ -1005,7 +1005,10 @@ function carForm(c) {
     return `<div style="padding:26px;">
     ${modalHeader(c ? 'Edit Position' : 'Add Position')}
     <div style="display:flex;flex-direction:column;gap:14px;">
-        ${field('Position Title *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Senior Architect">`)}
+        ${grid2(
+            field('Position Title (VI) *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="VD: Kiến trúc sư Concept">`),
+            field('Position Title (EN)', `<input id="f-title-en" class="field-input" value="${x(v.titleEn||'')}" placeholder="e.g. Concept Architect">`)
+        )}
         ${grid2(
             field('Department *', `<select id="f-dept" class="field-select">${sel(taxOpts('department'), v.department||(taxOpts('department')[0]||[])[0])}</select>`),
             field('Location *', `<select id="f-loc" class="field-select">${sel(taxOpts('location'), v.location||(taxOpts('location')[0]||[])[0])}</select>`)
@@ -1015,13 +1018,23 @@ function carForm(c) {
             field('Type', `<select id="f-type" class="field-select">${sel([['Full-time','Full-time'],['Part-time','Part-time'],['Contract','Contract']],v.type||'Full-time')}</select>`)
         )}
         ${grid2(
-            field('Salary', `<input id="f-salary" class="field-input" value="${x(v.salary||'Negotiating')}" placeholder="e.g. Negotiating">`),
-            field('Application Deadline', `<input id="f-deadline" class="field-input" type="date" value="${x(v.deadline||'')}">`)
+            field('Salary (VI)', `<input id="f-salary" class="field-input" value="${x(v.salary||'Thỏa thuận')}" placeholder="VD: Thỏa thuận">`),
+            field('Salary (EN)', `<input id="f-salary-en" class="field-input" value="${x(v.salaryEn||'')}" placeholder="e.g. Negotiating">`)
         )}
+        ${field('Application Deadline', `<input id="f-deadline" class="field-input" type="date" value="${x(v.deadline||'')}">`)}
         ${field('Cover Image URL', `<input id="f-car-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`)}
-        ${field('Job Description', `<textarea id="f-desc" class="field-textarea" placeholder="Role and responsibilities…">${x(v.description||'')}</textarea>`)}
-        ${field('Requirements', `<textarea id="f-req" class="field-textarea" placeholder="Experience, skills, qualifications…">${x(v.requirements||'')}</textarea>`)}
-        ${field('Benefits', `<textarea id="f-benefits" class="field-textarea" placeholder="One benefit per line…">${x(Array.isArray(v.benefits) ? v.benefits.join('\n') : (v.benefits||''))}</textarea>`)}
+        ${grid2(
+            field('Job Description (VI)', `<textarea id="f-desc" class="field-textarea" placeholder="Vai trò và trách nhiệm…">${x(v.description||'')}</textarea>`),
+            field('Job Description (EN)', `<textarea id="f-desc-en" class="field-textarea" placeholder="Role and responsibilities…">${x(v.descriptionEn||'')}</textarea>`)
+        )}
+        ${grid2(
+            field('Requirements (VI)', `<textarea id="f-req" class="field-textarea" placeholder="Kinh nghiệm, kỹ năng, bằng cấp…">${x(v.requirements||'')}</textarea>`),
+            field('Requirements (EN)', `<textarea id="f-req-en" class="field-textarea" placeholder="Experience, skills, qualifications…">${x(v.requirementsEn||'')}</textarea>`)
+        )}
+        ${grid2(
+            field('Benefits (VI — mỗi dòng một mục)', `<textarea id="f-benefits" class="field-textarea" placeholder="Mỗi dòng một phúc lợi…">${x(Array.isArray(v.benefits) ? v.benefits.join('\n') : (v.benefits||''))}</textarea>`),
+            field('Benefits (EN — one per line)', `<textarea id="f-benefits-en" class="field-textarea" placeholder="One benefit per line…">${x(Array.isArray(v.benefitsEn) ? v.benefitsEn.join('\n') : (v.benefitsEn||''))}</textarea>`)
+        )}
         ${field('Status', `<select id="f-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`)}
     </div>
     ${modalFooter('saveCareer', c ? 'Save Changes' : 'Add Position')}
@@ -1100,6 +1113,11 @@ async function saveCareer() {
         description: document.getElementById('f-desc').value.trim(),
         requirements: document.getElementById('f-req').value.trim(),
         benefits: document.getElementById('f-benefits').value.split('\n').filter(l => l.trim()).map(l => l.trim()),
+        titleEn: document.getElementById('f-title-en').value.trim(),
+        salaryEn: document.getElementById('f-salary-en').value.trim(),
+        descriptionEn: document.getElementById('f-desc-en').value.trim(),
+        requirementsEn: document.getElementById('f-req-en').value.trim(),
+        benefitsEn: document.getElementById('f-benefits-en').value.split('\n').filter(l => l.trim()).map(l => l.trim()),
         status: document.getElementById('f-status').value,
         createdAt: _id ? (careers.find(c => c.id === _id)?.createdAt || today()) : today(),
     };
@@ -1519,15 +1537,16 @@ function renderCareerEditBody(v) {
     const ceCard = (title, body) => `<div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;margin-bottom:16px;"><div style="padding:14px 20px;border-bottom:1px solid rgba(0,0,0,0.06);"><p style="font-size:9px;text-transform:uppercase;letter-spacing:0.28em;color:rgba(0,0,0,0.32);margin:0;">${title}</p></div><div style="padding:18px 20px;">${body}</div></div>`;
     document.getElementById('career-edit-body').innerHTML =
         ceCard('Overview', `<div style="display:flex;flex-direction:column;gap:14px;">
-            ${field('Position Title *', `<input id="ce-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Senior Architect">`)}
+            ${grid2(field('Position Title (VI) *', `<input id="ce-title" class="field-input" value="${x(v.title||'')}" placeholder="VD: Kiến trúc sư Concept">`), field('Position Title (EN)', `<input id="ce-title-en" class="field-input" value="${x(v.titleEn||'')}" placeholder="e.g. Concept Architect">`))}
             ${grid2(field('Department *', `<select id="ce-dept" class="field-select">${sel(taxOpts('department'), v.department||(taxOpts('department')[0]||[])[0])}</select>`), field('Location *', `<select id="ce-loc" class="field-select">${sel(taxOpts('location'), v.location||(taxOpts('location')[0]||[])[0])}</select>`))}
             ${grid2(field('Level *', `<select id="ce-level" class="field-select">${sel(taxOpts('level'), v.level||(taxOpts('level')[0]||[])[0])}</select>`), field('Type', `<select id="ce-type" class="field-select">${sel([['Full-time','Full-time'],['Part-time','Part-time'],['Contract','Contract']],v.type||'Full-time')}</select>`))}
-            ${grid2(field('Salary', `<input id="ce-salary" class="field-input" value="${x(v.salary||'Negotiating')}" placeholder="e.g. Negotiating">`), field('Application Deadline', `<input id="ce-deadline" class="field-input" type="date" value="${x(v.deadline||'')}">`))}
-            ${grid2(field('Status', `<select id="ce-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`), field('Cover Image URL', `<input id="ce-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`))}
+            ${grid2(field('Salary (VI)', `<input id="ce-salary" class="field-input" value="${x(v.salary||'Thỏa thuận')}" placeholder="VD: Thỏa thuận">`), field('Salary (EN)', `<input id="ce-salary-en" class="field-input" value="${x(v.salaryEn||'')}" placeholder="e.g. Negotiating">`))}
+            ${grid2(field('Application Deadline', `<input id="ce-deadline" class="field-input" type="date" value="${x(v.deadline||'')}">`), field('Status', `<select id="ce-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`))}
+            ${field('Cover Image URL', `<input id="ce-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`)}
         </div>`) +
-        ceCard('Job Description', field('Description', `<textarea id="ce-desc" class="field-textarea" style="min-height:180px;" placeholder="Role and responsibilities…">${x(v.description||'')}</textarea>`)) +
-        ceCard('Requirements', field('Requirements', `<textarea id="ce-req" class="field-textarea" style="min-height:140px;" placeholder="Experience, skills, qualifications…">${x(v.requirements||'')}</textarea>`)) +
-        ceCard('Benefits', field('Benefits (one per line)', `<textarea id="ce-benefits" class="field-textarea" style="min-height:120px;" placeholder="One benefit per line…">${x(Array.isArray(v.benefits) ? v.benefits.join('\n') : (v.benefits||''))}</textarea>`));
+        ceCard('Job Description', grid2(field('Tiếng Việt', `<textarea id="ce-desc" class="field-textarea" style="min-height:180px;" placeholder="Vai trò và trách nhiệm…">${x(v.description||'')}</textarea>`), field('English', `<textarea id="ce-desc-en" class="field-textarea" style="min-height:180px;" placeholder="Role and responsibilities…">${x(v.descriptionEn||'')}</textarea>`))) +
+        ceCard('Requirements', grid2(field('Tiếng Việt', `<textarea id="ce-req" class="field-textarea" style="min-height:140px;" placeholder="Kinh nghiệm, kỹ năng, bằng cấp…">${x(v.requirements||'')}</textarea>`), field('English', `<textarea id="ce-req-en" class="field-textarea" style="min-height:140px;" placeholder="Experience, skills, qualifications…">${x(v.requirementsEn||'')}</textarea>`))) +
+        ceCard('Benefits (one per line)', grid2(field('Tiếng Việt', `<textarea id="ce-benefits" class="field-textarea" style="min-height:120px;" placeholder="Mỗi dòng một phúc lợi…">${x(Array.isArray(v.benefits) ? v.benefits.join('\n') : (v.benefits||''))}</textarea>`), field('English', `<textarea id="ce-benefits-en" class="field-textarea" style="min-height:120px;" placeholder="One benefit per line…">${x(Array.isArray(v.benefitsEn) ? v.benefitsEn.join('\n') : (v.benefitsEn||''))}</textarea>`)));
 }
 
 async function saveCareerEdit() {
@@ -1547,6 +1566,11 @@ async function saveCareerEdit() {
         description:  document.getElementById('ce-desc').value.trim(),
         requirements: document.getElementById('ce-req').value.trim(),
         benefits:     document.getElementById('ce-benefits').value.split('\n').filter(l => l.trim()).map(l => l.trim()),
+        titleEn:        document.getElementById('ce-title-en').value.trim(),
+        salaryEn:       document.getElementById('ce-salary-en').value.trim(),
+        descriptionEn:  document.getElementById('ce-desc-en').value.trim(),
+        requirementsEn: document.getElementById('ce-req-en').value.trim(),
+        benefitsEn:     document.getElementById('ce-benefits-en').value.split('\n').filter(l => l.trim()).map(l => l.trim()),
         status:       document.getElementById('ce-status').value,
         createdAt:    existing.createdAt || today(),
     };

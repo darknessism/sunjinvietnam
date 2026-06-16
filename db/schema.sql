@@ -96,6 +96,12 @@ CREATE TABLE IF NOT EXISTS careers (
     description TEXT,
     requirements TEXT,
     benefits    JSON,
+    -- Bilingual: English versions of the free-text fields (Vietnamese is the default above)
+    title_en        VARCHAR(255),
+    salary_en       VARCHAR(120),
+    description_en  TEXT,
+    requirements_en TEXT,
+    benefits_en     JSON,
     status      ENUM('published','draft') DEFAULT 'draft',
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

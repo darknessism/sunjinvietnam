@@ -576,6 +576,10 @@
         };
         const metaLabel = (kind, val) => ((META[LANG] || META.vi)[kind] || {})[val] || val;
 
+        // Job free-text fields: show English when EN is active and provided, else fall back to Vietnamese
+        const jobTitleOf  = c => (LANG === 'en' && c.titleEn)  ? c.titleEn  : c.title;
+        const jobSalaryOf = c => (LANG === 'en' && c.salaryEn) ? c.salaryEn : c.salary;
+
         // Swap all static [data-en] text + [data-en-ph] placeholders between VI and EN
         function applyLang(lang) {
             LANG = (lang === 'en') ? 'en' : 'vi';
@@ -656,7 +660,7 @@
             document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
             const rows = document.getElementById('job-rows');
             if (!rows) return;
-            rows.innerHTML = filtered.map((c, i) => `<a href="careers-detail.html?id=${carEsc(c.id)}" class="job-row interactive" data-dept="${carEsc(c.department)}" data-location="${carEsc(c.location)}" data-level="${carEsc(c.level)}"><div class="flex items-start gap-5 md:gap-8 flex-1 min-w-0"><span class="job-number mt-1">${String(i+1).padStart(2,'0')}</span><div class="min-w-0"><span class="job-level-pill">${carEsc(metaLabel('level', c.level))}</span><h3 class="job-title-text">${carEsc(c.title)}</h3><p class="job-meta">${carEsc(metaLabel('department', c.department))}&nbsp;·&nbsp;${carEsc(metaLabel('location', c.location))}</p></div></div><div class="job-right-info"><span class="job-salary hidden md:block">${carEsc(t('salary'))}: ${carEsc(c.salary||t('negotiating'))}</span><span class="job-deadline">${carEsc(closesIn(c.deadline))}</span><div class="job-arrow-circle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>`).join('');
+            rows.innerHTML = filtered.map((c, i) => `<a href="careers-detail.html?id=${carEsc(c.id)}" class="job-row interactive" data-dept="${carEsc(c.department)}" data-location="${carEsc(c.location)}" data-level="${carEsc(c.level)}"><div class="flex items-start gap-5 md:gap-8 flex-1 min-w-0"><span class="job-number mt-1">${String(i+1).padStart(2,'0')}</span><div class="min-w-0"><span class="job-level-pill">${carEsc(metaLabel('level', c.level))}</span><h3 class="job-title-text">${carEsc(jobTitleOf(c))}</h3><p class="job-meta">${carEsc(metaLabel('department', c.department))}&nbsp;·&nbsp;${carEsc(metaLabel('location', c.location))}</p></div></div><div class="job-right-info"><span class="job-salary hidden md:block">${carEsc(t('salary'))}: ${carEsc(jobSalaryOf(c)||t('negotiating'))}</span><span class="job-deadline">${carEsc(closesIn(c.deadline))}</span><div class="job-arrow-circle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>`).join('');
             document.querySelectorAll('.job-row').forEach(el => {
                 el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
                 el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
@@ -673,7 +677,7 @@
         function populatePositionDropdown(list) {
             const sel = document.getElementById('af-position');
             if (!sel) return;
-            const titles = [...new Set((list || []).map(c => c.title).filter(Boolean))]
+            const titles = [...new Set((list || []).map(jobTitleOf).filter(Boolean))]
                 .sort((a, b) => a.localeCompare(b));
             sel.innerHTML = `<option value="" disabled selected>${carEsc(t('selectPosition'))}</option>`
                 + titles.map(title => `<option value="${carEsc(title)}">${carEsc(title)}</option>`).join('')
