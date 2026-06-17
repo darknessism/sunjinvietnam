@@ -250,10 +250,10 @@
         
         <div class="flex items-center gap-4 md:gap-6">
             <span data-lang-toggle></span>
-            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()" data-en="Let's Discuss">
+            <button class="hidden md:block bg-transparent border border-white text-white px-6 py-2.5 text-sm uppercase tracking-wide rounded-md font-medium hover:bg-white hover:text-black transition-colors duration-300 interactive" onclick="openContact()" data-tkey="home-t001" data-en="Let's Discuss">
                 Liên hệ
             </button>
-            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-en="Menu">Menu</button>
+            <button id="menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-tkey="home-t002" data-en="Menu">Menu</button>
         </div>
     </nav>
 
@@ -261,15 +261,15 @@
     <div id="menu-overlay" class="fixed inset-0 bg-black z-40 text-white flex flex-col justify-between p-6 md:p-10">
         <div class="flex justify-between items-center mix-blend-normal">
             <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
-            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-en="Close">Đóng</button>
+            <button id="close-menu-btn" class="font-display uppercase tracking-widest text-sm interactive hover-underline" data-tkey="home-t003" data-en="Close">Đóng</button>
         </div>
         <div class="flex-1 flex items-center justify-center">
             <ul class="text-center space-y-2 md:space-y-6">
-                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Home">Trang chủ</a></li>
-                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="About">Giới thiệu</a></li>
-                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Projects">Dự án</a></li>
-                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Blog">Blog</a></li>
-                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-en="Careers">Tuyển dụng</a></li>
+                <li><a href="index.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-tkey="home-t004" data-en="Home">Trang chủ</a></li>
+                <li><a href="about.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-tkey="home-t005" data-en="About">Giới thiệu</a></li>
+                <li><a href="project.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-tkey="home-t006" data-en="Projects">Dự án</a></li>
+                <li><a href="blog.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-tkey="home-t007" data-en="Blog">Blog</a></li>
+                <li><a href="careers.html" class="font-display text-xl md:text-4xl font-light hover:italic transition-all duration-300 interactive" data-tkey="home-t008" data-en="Careers">Tuyển dụng</a></li>
             </ul>
         </div>
         <div class="flex justify-between items-end text-xs md:text-sm text-white/50">
@@ -287,32 +287,32 @@
             <button onclick="closeContact()" class="absolute top-6 right-6 text-white/50 hover:text-white interactive">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
-            <h2 data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
+            <h2 data-tkey="home-t009" data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
             <form class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
-                    <input type="email" placeholder="Email (Bắt buộc)" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-tkey="home-t010" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Bắt buộc)" data-tkey="home-t011" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-tkey="home-t012" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                     <div class="relative w-full" id="custom-select-wrapper">
                         <input type="hidden" name="interest" id="interest-value" required>
                         <button type="button" id="interest-btn"
                             class="w-full border-b border-white/20 py-3 text-left text-sm text-white/50 flex justify-between items-center focus:outline-none focus:border-white transition-colors bg-transparent"
                             onclick="toggleInterestDropdown()">
-                            <span id="interest-label" data-en="Your Interest">Lĩnh vực quan tâm</span>
+                            <span id="interest-label" data-tkey="home-t013" data-en="Your Interest">Lĩnh vực quan tâm</span>
                             <svg class="w-4 h-4 text-white/40 transition-transform duration-200" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                         </button>
                         <ul id="interest-dropdown"
                             class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="Partnership" onclick="selectInterest('Partnership')">Hợp tác</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="Media" onclick="selectInterest('Media')">Truyền thông</button></li>
-                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-en="General" onclick="selectInterest('General')">Chung</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-tkey="home-t014" data-en="Partnership" onclick="selectInterest('Partnership')">Hợp tác</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-tkey="home-t015" data-en="Media" onclick="selectInterest('Media')">Truyền thông</button></li>
+                            <li><button type="button" class="w-full text-left px-4 py-3 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors" data-tkey="home-t016" data-en="General" onclick="selectInterest('General')">Chung</button></li>
                         </ul>
                     </div>
                 </div>
-                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
-                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto" data-en="Submit now">
+                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-tkey="home-t017" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto" data-tkey="home-t018" data-en="Submit now">
                     Gửi ngay
                 </button>
             </form>
@@ -377,11 +377,11 @@
                             </div>
                             <div class="w-full md:w-4/6">
                                 <p class="max-w-2xl text-left text-white/90 leading-relaxed md:pl-8">
-                                    <span data-en="Every land has its own story to tell. Architecture does not impose beauty upon a place; it discovers the masterpiece that the site already contains.">Mỗi vùng đất đều có câu chuyện riêng để kể. Kiến trúc không áp đặt vẻ đẹp lên một nơi chốn; nó khám phá kiệt tác mà nơi ấy vốn đã chứa đựng.</span>
+                                    <span data-tkey="home-t019" data-en="Every land has its own story to tell. Architecture does not impose beauty upon a place; it discovers the masterpiece that the site already contains.">Mỗi vùng đất đều có câu chuyện riêng để kể. Kiến trúc không áp đặt vẻ đẹp lên một nơi chốn; nó khám phá kiệt tác mà nơi ấy vốn đã chứa đựng.</span>
                                 </p>
                             </div>
                             <div class="w-full md:w-1/6 text-left md:text-right uppercase tracking-widest text-xs md:text-sm">
-                                <span data-en="Scroll to explore">Cuộn để khám phá</span>
+                                <span data-tkey="home-t020" data-en="Scroll to explore">Cuộn để khám phá</span>
                             </div>
                         </div>
                     </div>
@@ -390,10 +390,10 @@
                     <div id="slide1-content" class="absolute inset-0 z-20 w-full h-full flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 opacity-0 pointer-events-none">
                         <div class="w-full max-w-4xl text-center mb-4">
                             <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
-                                <span data-en="Tradition Guiding The Foundation Of Design">Truyền thống dẫn lối nền tảng thiết kế</span>
+                                <span data-tkey="home-t021" data-en="Tradition Guiding The Foundation Of Design">Truyền thống dẫn lối nền tảng thiết kế</span>
                             </h2>
                             <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
-                                <span data-en="SUNJIN VIETNAM begins by listening to the story of each place. Within every landscape live memories, emotions, and the traces of those who came before. By listening closely, the design is gently carved from the land itself, sculpted by the stories it wishes to tell and shaped into spaces that carry Vietnam's identity forward.">SUNJIN VIETNAM bắt đầu bằng việc lắng nghe câu chuyện của mỗi vùng đất. Trong mỗi cảnh quan đều có những ký ức, cảm xúc và dấu vết của những người đi trước. Bằng cách lắng nghe thật kỹ, thiết kế được nhẹ nhàng khắc tạc từ chính vùng đất ấy, được điêu khắc bởi những câu chuyện nó muốn kể và hình thành nên những không gian mang bản sắc Việt Nam tiến về phía trước.</span>
+                                <span data-tkey="home-t022" data-en="SUNJIN VIETNAM begins by listening to the story of each place. Within every landscape live memories, emotions, and the traces of those who came before. By listening closely, the design is gently carved from the land itself, sculpted by the stories it wishes to tell and shaped into spaces that carry Vietnam's identity forward.">SUNJIN VIETNAM bắt đầu bằng việc lắng nghe câu chuyện của mỗi vùng đất. Trong mỗi cảnh quan đều có những ký ức, cảm xúc và dấu vết của những người đi trước. Bằng cách lắng nghe thật kỹ, thiết kế được nhẹ nhàng khắc tạc từ chính vùng đất ấy, được điêu khắc bởi những câu chuyện nó muốn kể và hình thành nên những không gian mang bản sắc Việt Nam tiến về phía trước.</span>
                             </p>
                         </div>
 
@@ -417,10 +417,10 @@
                 <div class="w-[100vw] h-full relative flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 shrink-0 bg-white">
                     <div class="w-full max-w-4xl text-center mb-4">
                         <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
-                            <span data-en="Translating Heritage Into Living Contemporary Design">Chuyển hóa di sản thành thiết kế đương đại sống động</span>
+                            <span data-tkey="home-t023" data-en="Translating Heritage Into Living Contemporary Design">Chuyển hóa di sản thành thiết kế đương đại sống động</span>
                         </h2>
                         <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
-                            <span data-en="SUNJIN VIETNAM's designs live within the rhythm of its time. Social change, evolving ways of life, technology, and environmental responsibility shape each project. Though built in concrete or steel, the spaces remain alive. Their meaning continues to grow as the world around them changes.">Những thiết kế của SUNJIN VIETNAM sống trong nhịp điệu của thời đại mình. Sự đổi thay xã hội, lối sống biến chuyển, công nghệ và trách nhiệm với môi trường định hình mỗi dự án. Dù được dựng nên bằng bê tông hay thép, những không gian vẫn luôn sống động. Ý nghĩa của chúng tiếp tục lớn lên khi thế giới quanh chúng đổi thay.</span>
+                            <span data-tkey="home-t024" data-en="SUNJIN VIETNAM's designs live within the rhythm of its time. Social change, evolving ways of life, technology, and environmental responsibility shape each project. Though built in concrete or steel, the spaces remain alive. Their meaning continues to grow as the world around them changes.">Những thiết kế của SUNJIN VIETNAM sống trong nhịp điệu của thời đại mình. Sự đổi thay xã hội, lối sống biến chuyển, công nghệ và trách nhiệm với môi trường định hình mỗi dự án. Dù được dựng nên bằng bê tông hay thép, những không gian vẫn luôn sống động. Ý nghĩa của chúng tiếp tục lớn lên khi thế giới quanh chúng đổi thay.</span>
                         </p>
                     </div>
                     <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
@@ -440,17 +440,17 @@
                 <div class="w-[100vw] h-full relative flex flex-col items-center px-6 md:px-12 lg:px-16 pt-16 pb-20 shrink-0 bg-white">
                     <div class="w-full max-w-4xl text-center mb-4">
                         <h2 class="font-display text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-black mb-3">
-                            <span data-en="Celebrating Singular Vision Through Creative Design">Tôn vinh tầm nhìn riêng biệt qua thiết kế sáng tạo</span>
+                            <span data-tkey="home-t025" data-en="Celebrating Singular Vision Through Creative Design">Tôn vinh tầm nhìn riêng biệt qua thiết kế sáng tạo</span>
                         </h2>
                         <p class="text-xs md:text-sm text-gray-500 font-light leading-relaxed max-w-normal mx-auto">
-                            <span data-en="Creativity is the design force behind SUNJIN VIETNAM's methodology. Each project begins with a powerful idea that guides the entire vision. We explore new possibilities in space, form, and material. From this process emerges architecture that reflects identity and resonates with context, time, and emotion.">Sáng tạo là sức mạnh thiết kế đằng sau phương pháp của SUNJIN VIETNAM. Mỗi dự án khởi đầu bằng một ý tưởng mạnh mẽ dẫn dắt toàn bộ tầm nhìn. Chúng tôi khám phá những khả năng mới trong không gian, hình khối và vật liệu. Từ quá trình ấy nảy sinh nền kiến trúc phản ánh bản sắc và cộng hưởng với bối cảnh, thời gian và cảm xúc.</span>
+                            <span data-tkey="home-t026" data-en="Creativity is the design force behind SUNJIN VIETNAM's methodology. Each project begins with a powerful idea that guides the entire vision. We explore new possibilities in space, form, and material. From this process emerges architecture that reflects identity and resonates with context, time, and emotion.">Sáng tạo là sức mạnh thiết kế đằng sau phương pháp của SUNJIN VIETNAM. Mỗi dự án khởi đầu bằng một ý tưởng mạnh mẽ dẫn dắt toàn bộ tầm nhìn. Chúng tôi khám phá những khả năng mới trong không gian, hình khối và vật liệu. Từ quá trình ấy nảy sinh nền kiến trúc phản ánh bản sắc và cộng hưởng với bối cảnh, thời gian và cảm xúc.</span>
                         </p>
                     </div>
                     <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
                         <div class="w-full max-w-2xl aspect-[16/9] md:aspect-[21/9] rounded-[32px] overflow-hidden relative group">
                             <img data-img-slot="home-method-3" src="https://plus.unsplash.com/premium_photo-1661883964999-c1bcb57a7357?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Creative Building" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer">
-                                <span class="text-white uppercase tracking-widest text-sm"><span data-en="[Explore SUNJIN VIETNAM]">[Khám phá SUNJIN VIETNAM]</span></span>
+                                <span class="text-white uppercase tracking-widest text-sm"><span data-tkey="home-t027" data-en="[Explore SUNJIN VIETNAM]">[Khám phá SUNJIN VIETNAM]</span></span>
                             </div>
                         </div>
                     </div>
@@ -470,9 +470,9 @@
                     <!-- Scroll progress line -->
                     <div id="nav-progress-line" class="absolute top-[4px] left-0 h-[2px] bg-black w-0 will-change-[width]"></div>
                     <div class="grid grid-cols-3 gap-4">
-                        <div class="methodology-nav-item border-t-2 border-black text-black pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 -mt-[1px]" data-en="TRADITIONALLY">TRUYỀN THỐNG</div>
-                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-center -mt-[1px]" data-en="CONTEMPORARILY">ĐƯƠNG ĐẠI</div>
-                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-right -mt-[1px]" data-en="CREATIVELY">SÁNG TẠO</div>
+                        <div class="methodology-nav-item border-t-2 border-black text-black pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 -mt-[1px]" data-tkey="home-t028" data-en="TRADITIONALLY">TRUYỀN THỐNG</div>
+                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-center -mt-[1px]" data-tkey="home-t029" data-en="CONTEMPORARILY">ĐƯƠNG ĐẠI</div>
+                        <div class="methodology-nav-item border-t-2 border-transparent text-gray-400 pt-4 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 text-right -mt-[1px]" data-tkey="home-t030" data-en="CREATIVELY">SÁNG TẠO</div>
                     </div>
                 </div>
             </div>
@@ -510,7 +510,7 @@
 
             <!-- Top: Section label + Counter -->
             <div class="absolute top-8 md:top-10 left-8 md:left-16 z-30">
-                <span class="text-xs tracking-[0.2em] uppercase text-white/40"><span data-en="Selected Works">Công trình tiêu biểu</span></span>
+                <span class="text-xs tracking-[0.2em] uppercase text-white/40"><span data-tkey="home-t031" data-en="Selected Works">Công trình tiêu biểu</span></span>
             </div>
             <div class="absolute top-8 md:top-10 right-8 md:right-16 z-30">
                 <span id="proj-counter" class="font-display text-sm text-white/40 tabular-nums">01 / 05</span>
@@ -862,9 +862,9 @@
     <!-- Culture Section -->
     <section class="py-24 md:py-40 relative overflow-hidden">
         <div class="px-6 md:px-16 lg:px-24 max-w-4xl mb-12 reveal-up">
-            <h2 class="font-display text-3xl md:text-5xl font-medium mb-6"><span data-en="A Curious, Evolving and Connected Culture">Một văn hóa tò mò, không ngừng phát triển và gắn kết</span></h2>
+            <h2 class="font-display text-3xl md:text-5xl font-medium mb-6"><span data-tkey="home-t032" data-en="A Curious, Evolving and Connected Culture">Một văn hóa tò mò, không ngừng phát triển và gắn kết</span></h2>
             <p class="text-lg text-gray-400 font-light leading-relaxed">
-                <span data-en="At SUNJIN VIETNAM, leadership guides each individual beyond the familiar. Shared ambition builds trust, allowing teams to navigate challenges together and design with purpose.">Tại SUNJIN VIETNAM, sự lãnh đạo dẫn dắt mỗi cá nhân vượt ra ngoài những điều quen thuộc. Khát vọng chung xây dựng niềm tin, giúp các đội ngũ cùng nhau vượt qua thử thách và thiết kế với mục đích rõ ràng.</span>
+                <span data-tkey="home-t033" data-en="At SUNJIN VIETNAM, leadership guides each individual beyond the familiar. Shared ambition builds trust, allowing teams to navigate challenges together and design with purpose.">Tại SUNJIN VIETNAM, sự lãnh đạo dẫn dắt mỗi cá nhân vượt ra ngoài những điều quen thuộc. Khát vọng chung xây dựng niềm tin, giúp các đội ngũ cùng nhau vượt qua thử thách và thiết kế với mục đích rõ ràng.</span>
             </p>
         </div>
 
@@ -887,18 +887,18 @@
         <div class="px-6 md:px-16 lg:px-24 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 text-center md:text-left reveal-up" id="culture-boxes-container">
             <a href="careers.html" class="culture-box active border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
 
-                <h3 class="font-display text-3xl mb-8" data-en="Distinctive">Khác biệt</h3> <h6></h6> <span data-en="We champion original perspectives, diverse backgrounds, and bold creative risks. In our studio, your unique design voice is the catalyst for our next breakthrough project.">Chúng tôi đề cao những góc nhìn nguyên bản, nền tảng đa dạng và những thử nghiệm sáng tạo táo bạo. Trong studio của chúng tôi, tiếng nói thiết kế riêng của bạn là chất xúc tác cho dự án đột phá tiếp theo.</span><br>
-                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-en="Discover Jobs →">Khám phá việc làm →</span></span>
+                <h3 class="font-display text-3xl mb-8" data-tkey="home-t034" data-en="Distinctive">Khác biệt</h3> <h6></h6> <span data-tkey="home-t035" data-en="We champion original perspectives, diverse backgrounds, and bold creative risks. In our studio, your unique design voice is the catalyst for our next breakthrough project.">Chúng tôi đề cao những góc nhìn nguyên bản, nền tảng đa dạng và những thử nghiệm sáng tạo táo bạo. Trong studio của chúng tôi, tiếng nói thiết kế riêng của bạn là chất xúc tác cho dự án đột phá tiếp theo.</span><br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-tkey="home-t036" data-en="Discover Jobs →">Khám phá việc làm →</span></span>
             </a>
             <a href="careers.html" class="culture-box border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
 
-                <h3 class="font-display text-3xl mb-8" data-en="Supportive">Hỗ trợ</h3> <h6></h6> <span data-en="We foster a collaborative, ego-free studio culture rooted in continuous mentorship, well-being, and the collective resources you need to bring your biggest ideas to life.">Chúng tôi nuôi dưỡng một văn hóa studio hợp tác, không cái tôi, bắt rễ từ sự dìu dắt liên tục, sự an lành và những nguồn lực tập thể bạn cần để hiện thực hóa những ý tưởng lớn nhất của mình.</span><br>
-                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-en="Discover Jobs →">Khám phá việc làm →</span></span>
+                <h3 class="font-display text-3xl mb-8" data-tkey="home-t037" data-en="Supportive">Hỗ trợ</h3> <h6></h6> <span data-tkey="home-t038" data-en="We foster a collaborative, ego-free studio culture rooted in continuous mentorship, well-being, and the collective resources you need to bring your biggest ideas to life.">Chúng tôi nuôi dưỡng một văn hóa studio hợp tác, không cái tôi, bắt rễ từ sự dìu dắt liên tục, sự an lành và những nguồn lực tập thể bạn cần để hiện thực hóa những ý tưởng lớn nhất của mình.</span><br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-tkey="home-t039" data-en="Discover Jobs →">Khám phá việc làm →</span></span>
             </a>
             <a href="careers.html" class="culture-box border border-white/10 p-10 hover:bg-white hover:text-black transition-colors duration-500 group cursor-pointer interactive block text-current no-underline">
 
-                <h3 class="font-display text-3xl mb-8" data-en="Professional">Chuyên nghiệp</h3> <h6></h6> <span data-en="We hold ourselves to the highest standards of technical excellence, commercial acumen, and client trust, ensuring our visionary concepts are executed with flawless precision.">Chúng tôi giữ cho mình những tiêu chuẩn cao nhất về chuyên môn kỹ thuật, nhạy bén thương mại và niềm tin của khách hàng, đảm bảo những ý tưởng giàu tầm nhìn được thực thi với độ chính xác hoàn hảo.</span><br>
-                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-en="Discover Jobs →">Khám phá việc làm →</span></span>
+                <h3 class="font-display text-3xl mb-8" data-tkey="home-t040" data-en="Professional">Chuyên nghiệp</h3> <h6></h6> <span data-tkey="home-t041" data-en="We hold ourselves to the highest standards of technical excellence, commercial acumen, and client trust, ensuring our visionary concepts are executed with flawless precision.">Chúng tôi giữ cho mình những tiêu chuẩn cao nhất về chuyên môn kỹ thuật, nhạy bén thương mại và niềm tin của khách hàng, đảm bảo những ý tưởng giàu tầm nhìn được thực thi với độ chính xác hoàn hảo.</span><br>
+                <span class="box-link text-sm uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"><br><span data-tkey="home-t042" data-en="Discover Jobs →">Khám phá việc làm →</span></span>
             </a>
         </div>
     </section>
@@ -910,10 +910,10 @@
             <h2 class="font-display text-6xl md:text-8xl lg:text-[110px] font-normal leading-none tracking-tight">Blog</h2>
             <div class="flex flex-col items-start md:items-end gap-6">
                 <p class="text-base md:text-lg lg:text-xl text-gray-600 font-light leading-relaxed max-w-lg md:max-w-xl pb-2 md:pb-4">
-                    <span data-en="Visionary updates, design research, and project stories that advance Vietnam's architectural future through global standards and cultural insight.">Những cập nhật giàu tầm nhìn, nghiên cứu thiết kế và câu chuyện dự án góp phần thúc đẩy tương lai kiến trúc Việt Nam qua tiêu chuẩn toàn cầu và chiều sâu văn hóa.</span>
+                    <span data-tkey="home-t043" data-en="Visionary updates, design research, and project stories that advance Vietnam's architectural future through global standards and cultural insight.">Những cập nhật giàu tầm nhìn, nghiên cứu thiết kế và câu chuyện dự án góp phần thúc đẩy tương lai kiến trúc Việt Nam qua tiêu chuẩn toàn cầu và chiều sâu văn hóa.</span>
                 </p>
                 <a href="blog.html" class="inline-flex items-center gap-3 font-sans text-sm uppercase tracking-[0.2em] text-dark border-b border-dark pb-1 hover:opacity-60 transition-opacity interactive">
-                    <span data-en="See All Articles">Xem tất cả bài viết</span>
+                    <span data-tkey="home-t044" data-en="See All Articles">Xem tất cả bài viết</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
@@ -1040,17 +1040,17 @@
             
             <!-- Center: Navigation -->
             <div class="hidden md:flex flex-col items-start md:items-center gap-2">
-                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Home">Trang chủ</a>
-                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="About">Giới thiệu</a>
-                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Projects">Dự án</a>
-                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Blog">Blog</a>
-                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-en="Careers">Tuyển dụng</a>
+                <a href="index.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-tkey="home-t045" data-en="Home">Trang chủ</a>
+                <a href="about.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-tkey="home-t046" data-en="About">Giới thiệu</a>
+                <a href="project.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-tkey="home-t047" data-en="Projects">Dự án</a>
+                <a href="blog.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-tkey="home-t048" data-en="Blog">Blog</a>
+                <a href="careers.html" class="font-display text-4xl lg:text-[44px] font-light hover:italic transition-all interactive w-fit" data-tkey="home-t049" data-en="Careers">Tuyển dụng</a>
             </div>
 
             <!-- Right: Back to Top -->
             <div class="flex justify-start md:justify-end items-start mt-8 md:mt-0">
                 <button onclick="window.scrollTo(0,0)" class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 hover:text-white interactive transition-colors flex items-center gap-2 group">
-                    <span data-en="BACK TO TOP">VỀ ĐẦU TRANG</span> 
+                    <span data-tkey="home-t050" data-en="BACK TO TOP">VỀ ĐẦU TRANG</span> 
                     <svg class="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path></svg>
                 </button>
             </div>
@@ -1069,12 +1069,12 @@
             <!-- Center: Description & Horizontal Links -->
             <div class="lg:col-span-6 flex flex-col justify-between h-full gap-10 lg:gap-16">
                 <p class="font-sans text-[13px] md:text-sm uppercase tracking-[0.1em] text-white/90 leading-[1.8] max-w-xl">
-                    <span data-en="SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.">SUNJIN VIETNAM CAM KẾT MỖI DỰ ÁN ĐỀU PHẢN ÁNH TIÊU CHUẨN ĐẲNG CẤP QUỐC TẾ, ĐỒNG THỜI KIẾN TẠO MỘT DI SẢN KIẾN TRÚC TRƯỜNG TỒN.</span>
+                    <span data-tkey="home-t051" data-en="SUNJIN VIETNAM ENSURES EACH PROJECT REFLECTS WORLD-CLASS STANDARDS WHILE SHAPING A LASTING ARCHITECTURAL LEGACY.">SUNJIN VIETNAM CAM KẾT MỖI DỰ ÁN ĐỀU PHẢN ÁNH TIÊU CHUẨN ĐẲNG CẤP QUỐC TẾ, ĐỒNG THỜI KIẾN TẠO MỘT DI SẢN KIẾN TRÚC TRƯỜNG TỒN.</span>
                 </p>
                 <div class="flex flex-wrap gap-8 md:gap-12 font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
                     <a href="#" class="hover-underline interactive">LINKEDIN</a>
-                    <a href="#" class="hover-underline interactive" data-en="PRIVACY POLICY">CHÍNH SÁCH BẢO MẬT</a>
-                    <a href="#" class="hover-underline interactive" data-en="TERMS OF SERVICE">ĐIỀU KHOẢN DỊCH VỤ</a>
+                    <a href="#" class="hover-underline interactive" data-tkey="home-t052" data-en="PRIVACY POLICY">CHÍNH SÁCH BẢO MẬT</a>
+                    <a href="#" class="hover-underline interactive" data-tkey="home-t053" data-en="TERMS OF SERVICE">ĐIỀU KHOẢN DỊCH VỤ</a>
                 </div>
             </div>
 
@@ -1585,6 +1585,7 @@
         }
     </script>
     <script src="i18n.js" defer></script>
+    <script src="text-overrides.js" defer></script>
 
     <!-- ── Managed photos: swap in any admin-uploaded overrides ────────────── -->
     <script>

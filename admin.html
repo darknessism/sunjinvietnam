@@ -138,6 +138,10 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><line x1="7" y1="21" x2="17" y2="21"/></svg>
             Banners
         </button>
+        <button class="nav-item" data-view="text" onclick="showView('text')">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            Text Content
+        </button>
     </nav>
     <div style="height:1px;background:rgba(255,255,255,0.07);margin-bottom:6px;"></div>
     <div style="padding:10px 18px 18px;">
@@ -408,6 +412,34 @@
         </div>
         <div id="banners-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
         <div id="banners-empty" class="empty-state" style="display:none;">Loading banners…</div>
+    </div>
+
+    <!-- TEXT CONTENT -->
+    <div id="view-text" class="view">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+            <div>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Text Content</h1>
+                <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="text-lbl">Edit the static text on the public pages, in Vietnamese and English.</p>
+            </div>
+            <a id="text-view-link" href="index.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:8px 14px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <span id="text-view-label">View Page</span>
+            </a>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+            <button class="chip active" data-group="textpage" data-val="home"    onclick="switchTextPage('home', this)">Home</button>
+            <button class="chip"        data-group="textpage" data-val="about"   onclick="switchTextPage('about', this)">About</button>
+            <button class="chip"        data-group="textpage" data-val="careers" onclick="switchTextPage('careers', this)">Careers</button>
+            <div class="search-wrap" style="margin-left:auto;">
+                <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" class="search-input" id="text-search" placeholder="Search text…" oninput="renderTextList()">
+            </div>
+        </div>
+        <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5;">
+            Each row is one piece of text on the page. Edit the Vietnamese and/or English version and click <strong>Save</strong>; it updates the live site. <strong>Reset</strong> restores the original text. Dynamic content (projects, blog posts, job positions) is managed in its own section, not here.
+        </div>
+        <div id="text-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+        <div id="text-empty" class="empty-state" style="display:none;">Loading text…</div>
     </div>
 
     <!-- PROJECT DETAIL EDITOR -->
@@ -696,7 +728,7 @@ function showView(name) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
     document.querySelector(`.nav-item[data-view="${name}"]`).classList.add('active');
-    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos, banners: renderBanners }[name])();
+    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos, banners: renderBanners, text: renderText }[name])();
 }
 
 // ─── BANNERS (video clips) ───────────────────────────
@@ -781,6 +813,146 @@ async function resetBannerClip(slot) {
         await api('DELETE', '/banner-clips/admin/' + slot);
         toast('Reverted to original.');
         renderBanners();
+    } catch (e) {
+        toast('Reset failed: ' + e.message);
+    }
+}
+
+// ─── TEXT CONTENT (static page text, VI + EN) ────────
+// The editable strings come from parsing the live page HTML (elements tagged
+// with data-tkey); the server only stores VI/EN overrides per slot.
+let _textPage = 'home';
+let _textEntries = [];
+const TEXT_PAGE_FILE = { home: 'index.html', about: 'about.html', careers: 'careers.html' };
+const TEXT_PAGE_NAME = { home: 'Home', about: 'About', careers: 'Careers' };
+
+function switchTextPage(page, btn) {
+    _textPage = page;
+    document.querySelectorAll('.chip[data-group="textpage"]').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    const s = document.getElementById('text-search'); if (s) s.value = '';
+    renderText();
+}
+
+async function renderText() {
+    const list  = document.getElementById('text-list');
+    const empty = document.getElementById('text-empty');
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    empty.textContent = 'Loading text…';
+
+    const link = document.getElementById('text-view-link');
+    if (link) link.href = TEXT_PAGE_FILE[_textPage];
+    const vlabel = document.getElementById('text-view-label');
+    if (vlabel) vlabel.textContent = 'View ' + TEXT_PAGE_NAME[_textPage] + ' Page';
+
+    let html, overrides;
+    try {
+        [html, overrides] = await Promise.all([
+            fetch('/' + TEXT_PAGE_FILE[_textPage]).then(r => r.text()),
+            api('GET', '/text-content/overrides?page=' + _textPage),
+        ]);
+    } catch (e) {
+        empty.textContent = 'Could not load text: ' + e.message;
+        return;
+    }
+    overrides = overrides || {};
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    _textEntries = [];
+    doc.querySelectorAll('[data-tkey]').forEach(el => {
+        const slot = el.getAttribute('data-tkey');
+        let type, defVi, defEn;
+        if (el.hasAttribute('data-en'))            { type = 'text'; defVi = (el.textContent || '').trim();  defEn = el.getAttribute('data-en') || ''; }
+        else if (el.hasAttribute('data-en-ph'))    { type = 'ph';   defVi = el.getAttribute('placeholder') || ''; defEn = el.getAttribute('data-en-ph') || ''; }
+        else if (el.hasAttribute('data-en-html'))  { type = 'html'; defVi = (el.innerHTML || '').trim();   defEn = el.getAttribute('data-en-html') || ''; }
+        else return;
+        const ov = overrides[slot];
+        _textEntries.push({
+            slot, type, defVi, defEn,
+            vi: ov && ov.vi != null ? ov.vi : defVi,
+            en: ov && ov.en != null ? ov.en : defEn,
+            hasOverride: !!ov,
+        });
+    });
+    empty.style.display = _textEntries.length ? 'none' : 'block';
+    if (!_textEntries.length) empty.textContent = 'No editable text found on this page.';
+    renderTextList();
+}
+
+function renderTextList() {
+    const list = document.getElementById('text-list');
+    if (!list) return;
+    const q = (document.getElementById('text-search').value || '').toLowerCase().trim();
+    const items = _textEntries.filter(e =>
+        !q || e.vi.toLowerCase().includes(q) || e.en.toLowerCase().includes(q) ||
+        e.defVi.toLowerCase().includes(q) || e.defEn.toLowerCase().includes(q));
+
+    document.getElementById('text-lbl').textContent =
+        _textEntries.length + ' text items · ' + _textEntries.filter(e => e.hasOverride).length + ' edited'
+        + (q ? ' · ' + items.length + ' shown' : '');
+
+    const typeBadge = t => {
+        const map = { text: ['Text', 'rgba(0,0,0,0.3)'], ph: ['Placeholder', '#8a6d00'], html: ['Rich HTML', '#7a3ea1'] };
+        const [lbl, col] = map[t] || map.text;
+        return `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:${col};background:rgba(0,0,0,0.05);border-radius:4px;padding:2px 7px;">${lbl}</span>`;
+    };
+    const tag = e => e.type === 'html' ? 'textarea' : 'textarea';
+
+    list.innerHTML = items.map(e => `
+        <div style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+                <span style="font-size:11px;color:rgba(0,0,0,0.4);font-family:monospace;">${x(e.slot)}</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    ${typeBadge(e.type)}
+                    ${e.hasOverride ? '<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:#1c6b3f;background:rgba(28,107,63,0.1);border-radius:4px;padding:2px 7px;">Edited</span>' : ''}
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label class="field-label">Tiếng Việt</label>
+                    <textarea id="tc-vi-${x(e.slot)}" class="field-textarea" style="min-height:64px;font-size:13px;">${x(e.vi)}</textarea>
+                </div>
+                <div>
+                    <label class="field-label">English</label>
+                    <textarea id="tc-en-${x(e.slot)}" class="field-textarea" style="min-height:64px;font-size:13px;">${x(e.en)}</textarea>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+                <button onclick="saveText('${x(e.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:7px 16px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save</button>
+                ${e.hasOverride ? `<button onclick="resetText('${x(e.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.5);background:white;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:7px 14px;cursor:pointer;font-family:'Open Sans',sans-serif;">Reset</button>` : ''}
+            </div>
+        </div>`).join('');
+}
+
+async function saveText(slot) {
+    const entry = _textEntries.find(e => e.slot === slot);
+    if (!entry) return;
+    const vi = document.getElementById('tc-vi-' + slot).value;
+    const en = document.getElementById('tc-en-' + slot).value;
+    try {
+        const r = await api('PUT', '/text-content/admin/' + slot, { vi, en });
+        if (r && r.reset) {
+            entry.hasOverride = false; entry.vi = entry.defVi; entry.en = entry.defEn;
+            toast('Reverted to original (both fields were empty).');
+        } else {
+            entry.hasOverride = true; entry.vi = vi; entry.en = en;
+            toast('Text updated.');
+        }
+        renderTextList();
+    } catch (e) {
+        toast('Save failed: ' + e.message);
+    }
+}
+
+async function resetText(slot) {
+    const entry = _textEntries.find(e => e.slot === slot);
+    if (!entry) return;
+    if (!confirm('Restore the original text for this item?')) return;
+    try {
+        await api('DELETE', '/text-content/admin/' + slot);
+        entry.hasOverride = false; entry.vi = entry.defVi; entry.en = entry.defEn;
+        toast('Reverted to original.');
+        renderTextList();
     } catch (e) {
         toast('Reset failed: ' + e.message);
     }

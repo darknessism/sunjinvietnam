@@ -27,6 +27,10 @@ pageImages.initPageImages().catch(e => console.error('page images init failed:',
 const banners = require('./routes/banners');
 banners.initBanners().catch(e => console.error('banner clips init failed:', e.message));
 
+// Ensure the editable text-content table exists
+const textContent = require('./routes/textContent');
+textContent.initTextContent().catch(e => console.error('text content init failed:', e.message));
+
 // API routes
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/admin',       require('./routes/admin'));
@@ -35,6 +39,7 @@ app.use('/api/blog',        require('./routes/blog'));
 app.use('/api/careers',     require('./routes/careers'));
 app.use('/api/page-images', pageImages);
 app.use('/api/banner-clips', banners);
+app.use('/api/text-content', textContent);
 
 // Fallback: serve index.html for any unmatched route
 app.get('*', (req, res) => {

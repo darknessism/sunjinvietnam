@@ -127,7 +127,7 @@
                 <button type="button" data-lang-btn="vi" onclick="applyLang('vi')" class="lang-btn interactive">VI</button>
                 <button type="button" data-lang-btn="en" onclick="applyLang('en')" class="lang-btn interactive">EN</button>
             </div>
-            <a href="#apply" data-en="Apply Now" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Ứng tuyển ngay</a>
+            <a href="#apply" data-tkey="careers-t001" data-en="Apply Now" class="interactive inline-flex items-center gap-2 bg-black border border-white text-white font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] px-5 md:px-7 py-3 rounded hover:bg-white hover:text-black transition-colors">Ứng tuyển ngay</a>
         </div>
     </header>
     </div>
@@ -138,29 +138,29 @@
             <button onclick="closeContact()" class="absolute top-6 right-6 text-white hover:text-white interactive">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
-            <h2 data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
+            <h2 data-tkey="careers-t002" data-en="Message us." class="font-display text-3xl md:text-5xl mb-8">Liên hệ với chúng tôi.</h2>
             <form class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
-                    <input type="email" placeholder="Email (Bắt buộc)" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="text" placeholder="Họ tên (Bắt buộc)" data-tkey="careers-t003" data-en-ph="Name (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="email" placeholder="Email (Bắt buộc)" data-tkey="careers-t004" data-en-ph="Email (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
+                    <input type="tel" placeholder="Số điện thoại (Bắt buộc)" data-tkey="careers-t005" data-en-ph="Phone number (Required)" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm" required>
                     <div class="relative w-full" id="custom-select-wrapper">
                         <input type="hidden" name="interest" id="interest-value">
                         <button type="button" id="interest-btn" class="w-full border-b border-white/20 py-3 text-left text-sm text-white flex justify-between items-center bg-transparent" onclick="toggleInterestDropdown()">
-                            <span id="interest-label" data-en="Your Interest">Lĩnh vực quan tâm</span>
+                            <span id="interest-label" data-tkey="careers-t006" data-en="Your Interest">Lĩnh vực quan tâm</span>
                             <svg class="w-4 h-4 text-white" id="interest-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                         </button>
                         <ul id="interest-dropdown" class="absolute left-0 right-0 top-full z-50 bg-[#1a1a1a] border border-white/10 rounded-lg overflow-hidden shadow-2xl hidden mt-1">
-                            <li><button type="button" data-en="Partnership" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Hợp tác</button></li>
-                            <li><button type="button" data-en="Media" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Truyền thông</button></li>
-                            <li><button type="button" data-en="General" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">Chung</button></li>
+                            <li><button type="button" data-tkey="careers-t007" data-en="Partnership" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Partnership')">Hợp tác</button></li>
+                            <li><button type="button" data-tkey="careers-t008" data-en="Media" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('Media')">Truyền thông</button></li>
+                            <li><button type="button" data-tkey="careers-t009" data-en="General" class="w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 hover:text-white transition-colors" onclick="selectInterest('General')">Chung</button></li>
                         </ul>
                     </div>
                 </div>
-                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
-                <button type="submit" data-en="Submit now" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">Gửi ngay</button>
+                <textarea placeholder="Cho chúng tôi biết nhu cầu của bạn" data-tkey="careers-t010" data-en-ph="Tell us about what you need" rows="4" class="bg-transparent border-b border-white/20 py-3 w-full focus:outline-none focus:border-white transition-colors text-sm resize-none"></textarea>
+                <button type="submit" data-tkey="careers-t011" data-en="Submit now" class="border border-white/30 rounded-full px-8 py-3 text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 interactive w-full md:w-auto">Gửi ngay</button>
             </form>
         </div>
     </div>
@@ -173,23 +173,23 @@
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/65 to-dark/20"></div>
         </div>
         <div class="relative z-10">
-            <h1 data-en="Careers" class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up mt-5">Tuyển dụng</h1>
+            <h1 data-tkey="careers-t012" data-en="Careers" class="font-display text-7xl md:text-[130px] lg:text-[170px] font-light leading-none tracking-tight reveal-up mt-5">Tuyển dụng</h1>
             <div class="w-full h-[1px] bg-white/20 mt-10 md:mt-16 mb-6 reveal-fade" style="transition-delay:0.3s"></div>
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 reveal-up" style="transition-delay:0.4s">
                 <div class="max-w-2xl">
-                    <p data-en="Let the next blueprint carry your &quot;Signature&quot;." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">Hãy để bản vẽ tiếp theo mang "Signature" của bạn.</p>
-                    <p data-en="Architecture's dialogue with time will never come to a close, and Sunjin Vietnam always needs new voices to continue that journey with us. We are not merely looking for draftspeople who sketch out forms, but for partners ready to share a 'promise' with space and with people." class="font-sans text-sm md:text-base text-white leading-relaxed mb-4">
+                    <p data-tkey="careers-t013" data-en="Let the next blueprint carry your &quot;Signature&quot;." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-5">Hãy để bản vẽ tiếp theo mang "Signature" của bạn.</p>
+                    <p data-tkey="careers-t014" data-en="Architecture's dialogue with time will never come to a close, and Sunjin Vietnam always needs new voices to continue that journey with us. We are not merely looking for draftspeople who sketch out forms, but for partners ready to share a 'promise' with space and with people." class="font-sans text-sm md:text-base text-white leading-relaxed mb-4">
                         Cuộc đối thoại của kiến trúc với thời gian sẽ chẳng bao giờ khép lại, và Sunjin Việt Nam luôn cần những tiếng nói mới để cùng chúng tôi tiếp nối hành trình đó. Chúng tôi không đơn thuần tìm kiếm những người thợ phác họa nên các khối hình, mà tìm kiếm những người cộng sự sẵn sàng cùng chia sẻ 'lời hứa' với không gian và con người.
                     </p>
-                    <p data-en="If you carry the mindset of the 21st century, a desire to create green buildings that truly understand identity, and the courage to care about 'the day after tomorrow' rather than just today — then now is the moment to step into this dialogue. At Sunjin Vietnam, creative freedom is always nurtured and every perspective is heard. Come, and bring your faith in architecture. So that the author of the new schools and the living spaces of the future... is you." class="font-sans text-sm md:text-base text-white leading-relaxed mb-8">
+                    <p data-tkey="careers-t015" data-en="If you carry the mindset of the 21st century, a desire to create green buildings that truly understand identity, and the courage to care about 'the day after tomorrow' rather than just today — then now is the moment to step into this dialogue. At Sunjin Vietnam, creative freedom is always nurtured and every perspective is heard. Come, and bring your faith in architecture. So that the author of the new schools and the living spaces of the future... is you." class="font-sans text-sm md:text-base text-white leading-relaxed mb-8">
                         Nếu bạn mang trong mình tư duy của thế kỷ XXI, khao khát kiến tạo những công trình xanh thấu hiểu bản sắc, và dám trăn trở cho 'ngày kia' thay vì chỉ hôm nay — thì đây là lúc bạn bước vào cuộc đối thoại này. Ở Sunjin Việt Nam, sự tự do sáng tạo luôn được dung dưỡng và mọi góc nhìn đều được lắng nghe. Hãy đến, mang theo niềm tin của bạn vào kiến trúc. Để rồi, tác giả của những ngôi trường mới, những không gian sống tương lai... chính là bạn.
                     </p>
                     <div class="flex flex-wrap items-center gap-4">
-                        <a href="#positions" data-en="Open Positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Vị trí đang tuyển</a>
-                        <a href="#culture" data-en="Why Sunjin Vietnam?" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Vì sao chọn Sunjin Vietnam?</a>
+                        <a href="#positions" data-tkey="careers-t016" data-en="Open Positions" class="interactive inline-flex items-center gap-2 bg-white text-dark font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:bg-white/85 transition-colors">Vị trí đang tuyển</a>
+                        <a href="#culture" data-tkey="careers-t017" data-en="Why Sunjin Vietnam?" class="interactive inline-flex items-center gap-2 border border-white/30 text-white font-sans text-xs uppercase tracking-[0.2em] px-7 py-3.5 rounded hover:border-white/70 hover:bg-white/5 transition-colors">Vì sao chọn Sunjin Vietnam?</a>
                     </div>
                 </div>
-                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white flex-shrink-0"><span id="open-count">—</span> <span data-en="Open Positions">Vị trí đang tuyển</span></p>
+                <p class="font-sans text-xs uppercase tracking-[0.2em] text-white flex-shrink-0"><span id="open-count">—</span> <span data-tkey="careers-t018" data-en="Open Positions">Vị trí đang tuyển</span></p>
             </div>
         </div>
     </section>
@@ -202,24 +202,24 @@
 
     <!-- 1c. Section Intro Strip -->
     <div id="positions" class="bg-dark px-6 md:px-12 lg:px-16 py-16 md:py-20 scroll-mt-24">
-        <p data-en="Discover Your Role" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Khám phá vai trò của bạn</p>
-        <h2 data-en="More than just drawings — at Sunjin Vietnam, together we create real value." class="font-display font-light text-white text-2xl md:text-3xl leading-snug max-w-3xl mb-5 reveal-up">Hơn cả những bản vẽ, tại Sunjin Việt Nam, chúng ta cùng nhau kiến tạo giá trị thực.</h2>
-        <p data-en="From modern cities and green buildings to educational spaces and heritage landscapes, every mark you leave helps shape the future." class="font-sans text-sm md:text-base text-white leading-relaxed max-w-2xl reveal-up" style="transition-delay:0.1s">Từ đô thị hiện đại, công trình xanh, không gian giáo dục đến cảnh quan di sản – mỗi dấu ấn của bạn đều góp phần định hình tương lai.</p>
+        <p data-tkey="careers-t019" data-en="Discover Your Role" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Khám phá vai trò của bạn</p>
+        <h2 data-tkey="careers-t020" data-en="More than just drawings — at Sunjin Vietnam, together we create real value." class="font-display font-light text-white text-2xl md:text-3xl leading-snug max-w-3xl mb-5 reveal-up">Hơn cả những bản vẽ, tại Sunjin Việt Nam, chúng ta cùng nhau kiến tạo giá trị thực.</h2>
+        <p data-tkey="careers-t021" data-en="From modern cities and green buildings to educational spaces and heritage landscapes, every mark you leave helps shape the future." class="font-sans text-sm md:text-base text-white leading-relaxed max-w-2xl reveal-up" style="transition-delay:0.1s">Từ đô thị hiện đại, công trình xanh, không gian giáo dục đến cảnh quan di sản – mỗi dấu ấn của bạn đều góp phần định hình tương lai.</p>
     </div>
 
     <!-- 2. Sticky Filter Bar -->
     <div class="bg-white border-b border-black/10 px-6 md:px-12 lg:px-16 pt-12 md:pt-16 pb-6">
         <div class="flex flex-col gap-2.5">
             <div id="pubf-dept" class="flex items-center gap-2.5 flex-wrap">
-                <span data-en="Dept." class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Phòng ban</span>
+                <span data-tkey="careers-t022" data-en="Dept." class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Phòng ban</span>
                 <button class="filter-chip light active" data-group="dept" data-value="all">All</button>
             </div>
             <div id="pubf-location" class="flex items-center gap-2.5 flex-wrap">
-                <span data-en="Location" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Địa điểm</span>
+                <span data-tkey="careers-t023" data-en="Location" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Địa điểm</span>
                 <button class="filter-chip light active" data-group="location" data-value="all">All</button>
             </div>
             <div id="pubf-level" class="flex items-center gap-2.5 flex-wrap">
-                <span data-en="Level" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Cấp bậc</span>
+                <span data-tkey="careers-t024" data-en="Level" class="font-sans text-[9px] uppercase tracking-[0.28em] text-black/70 w-20 flex-shrink-0">Cấp bậc</span>
                 <button class="filter-chip light active" data-group="level" data-value="all">All</button>
             </div>
         </div>
@@ -231,9 +231,9 @@
         <!-- Results header -->
         <div class="flex items-center justify-between py-5 border-b border-black/8">
             <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/70">
-                <span id="job-count">—</span>&nbsp; <span data-en="Positions">Vị trí</span>
+                <span id="job-count">—</span>&nbsp; <span data-tkey="careers-t025" data-en="Positions">Vị trí</span>
             </span>
-            <button onclick="clearFilters()" data-en="Clear All" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/60 hover:text-black transition-colors interactive">Xóa bộ lọc</button>
+            <button onclick="clearFilters()" data-tkey="careers-t026" data-en="Clear All" class="font-sans text-[11px] uppercase tracking-[0.22em] text-black/60 hover:text-black transition-colors interactive">Xóa bộ lọc</button>
         </div>
 
         <!-- Dynamic job rows rendered by JS -->
@@ -241,8 +241,8 @@
 
         <!-- No results message -->
         <div id="no-results" class="hidden py-20 text-center">
-            <p data-en="No positions match your filters." class="font-display font-light text-black/60 text-2xl">Không có vị trí nào phù hợp với bộ lọc.</p>
-            <button onclick="clearFilters()" data-en="Clear filters" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/70 hover:text-black transition-colors underline underline-offset-4 interactive">Xóa bộ lọc</button>
+            <p data-tkey="careers-t027" data-en="No positions match your filters." class="font-display font-light text-black/60 text-2xl">Không có vị trí nào phù hợp với bộ lọc.</p>
+            <button onclick="clearFilters()" data-tkey="careers-t028" data-en="Clear filters" class="mt-6 font-sans text-xs uppercase tracking-[0.25em] text-black/70 hover:text-black transition-colors underline underline-offset-4 interactive">Xóa bộ lọc</button>
         </div>
 
     </div>
@@ -250,13 +250,13 @@
     <!-- Why Sunjin -->
     <section id="culture" class="bg-dark px-6 md:px-12 lg:px-16 py-24 md:py-32 scroll-mt-24">
         <div class="max-w-3xl mb-16 md:mb-20">
-            <p data-en="Why Join Sunjin" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Vì sao gia nhập Sunjin</p>
-            <h2 data-en="Your Space to Create" class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-6 reveal-up">Không gian kiến tạo của bạn.</h2>
+            <p data-tkey="careers-t029" data-en="Why Join Sunjin" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Vì sao gia nhập Sunjin</p>
+            <h2 data-tkey="careers-t030" data-en="Your Space to Create" class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-6 reveal-up">Không gian kiến tạo của bạn.</h2>
             <ul class="font-sans text-sm md:text-base text-white leading-relaxed reveal-up space-y-3" style="transition-delay:0.1s">
-                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Where craft speaks: a wide-open &quot;stage&quot; for you to freely show what you can do.">Nơi tay nghề lên tiếng: "Đất diễn" rộng mở để bạn thoải mái thể hiện năng lực.</span></li>
-                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Top-tier gear: we provide all the latest tools and technology so your ideas are never limited.">Đồ nghề cực xịn: Cung cấp đủ công cụ và công nghệ tiên tiến nhất để ý tưởng không bao giờ bị giới hạn.</span></li>
-                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Flexible operations: open processes that adapt fast — work smart instead of just working hard.">Vận hành linh hoạt: Quy trình mở, thích ứng nhanh, làm việc thông minh thay vì làm việc chăm chỉ.</span></li>
-                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-en="Top-notch teamwork: there are always teammates ready to support and back you up.">Teamwork "đỉnh nóc": Luôn có những người anh em đồng nghiệp hỗ trợ và "back-up" phía sau.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-tkey="careers-t031" data-en="Where craft speaks: a wide-open &quot;stage&quot; for you to freely show what you can do.">Nơi tay nghề lên tiếng: "Đất diễn" rộng mở để bạn thoải mái thể hiện năng lực.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-tkey="careers-t032" data-en="Top-tier gear: we provide all the latest tools and technology so your ideas are never limited.">Đồ nghề cực xịn: Cung cấp đủ công cụ và công nghệ tiên tiến nhất để ý tưởng không bao giờ bị giới hạn.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-tkey="careers-t033" data-en="Flexible operations: open processes that adapt fast — work smart instead of just working hard.">Vận hành linh hoạt: Quy trình mở, thích ứng nhanh, làm việc thông minh thay vì làm việc chăm chỉ.</span></li>
+                <li class="flex gap-3"><span class="text-white flex-shrink-0">•</span><span data-tkey="careers-t034" data-en="Top-notch teamwork: there are always teammates ready to support and back you up.">Teamwork "đỉnh nóc": Luôn có những người anh em đồng nghiệp hỗ trợ và "back-up" phía sau.</span></li>
             </ul>
         </div>
 
@@ -268,8 +268,8 @@
                     <img data-img-slot="careers-a1" src="/images/sipaphin.jpg"
                          alt="Award-winning architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Dự án giàu ảnh hưởng</p>
-                <p data-en="Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you." class="font-sans text-sm text-white leading-relaxed">
+                <p data-tkey="careers-t035" data-en="Impactful Projects" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Dự án giàu ảnh hưởng</p>
+                <p data-tkey="careers-t036" data-en="Award-winning schools, residential complexes, large-scale headquarters, and mixed-use developments — a diverse portfolio broad enough to challenge you." class="font-sans text-sm text-white leading-relaxed">
                     Trường học đoạt giải thưởng, khu phức hợp nhà ở, trụ sở quy mô lớn và các dự án phức hợp đa năng — một danh mục đa dạng đủ rộng để thử thách bạn.
                 </p>
             </div>
@@ -280,8 +280,8 @@
                     <img data-img-slot="careers-a3" src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Lộ trình thăng tiến rõ ràng</p>
-                <p data-en="From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority." class="font-sans text-sm text-white leading-relaxed">
+                <p data-tkey="careers-t037" data-en="Clear Career Path" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Lộ trình thăng tiến rõ ràng</p>
+                <p data-tkey="careers-t038" data-en="From technical execution to lead concept designer. We recognize capability and reward merit, unbounded by seniority." class="font-sans text-sm text-white leading-relaxed">
                     Từ triển khai kỹ thuật đến kiến trúc sư ý tưởng chủ trì. Chúng tôi ghi nhận năng lực và tưởng thưởng theo thực lực, không bị giới hạn bởi thâm niên.
                 </p>
             </div>
@@ -292,8 +292,8 @@
                     <img data-img-slot="careers-a4" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="International team collaboration" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Học hỏi không ngừng</p>
-                <p data-en="Sunjin Vietnam creates open arenas for direct dialogue with both domestic and international experts — a place where the freedom to challenge ideas and a diversity of perspectives always come first." class="font-sans text-sm text-white leading-relaxed">
+                <p data-tkey="careers-t039" data-en="Continuous Learning" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Học hỏi không ngừng</p>
+                <p data-tkey="careers-t040" data-en="Sunjin Vietnam creates open arenas for direct dialogue with both domestic and international experts — a place where the freedom to challenge ideas and a diversity of perspectives always come first." class="font-sans text-sm text-white leading-relaxed">
                     Sunjin Việt Nam mang đến những "sân chơi" đối thoại trực tiếp cùng chuyên gia trong nước và quốc tế – Nơi tự do phản biện và sự đa dạng góc nhìn luôn được đặt lên hàng đầu.
                 </p>
             </div>
@@ -304,8 +304,8 @@
                     <img data-img-slot="careers-a5" src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=900"
                          alt="Modern workplace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Phúc lợi minh bạch</p>
-                <p data-en="Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies." class="font-sans text-sm text-white leading-relaxed">
+                <p data-tkey="careers-t041" data-en="Transparent Benefits" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Phúc lợi minh bạch</p>
+                <p data-tkey="careers-t042" data-en="Competitive salaries, project-based bonuses, comprehensive insurance, and clear leave policies." class="font-sans text-sm text-white leading-relaxed">
                     Mức lương cạnh tranh, thưởng theo dự án, bảo hiểm toàn diện và chính sách nghỉ phép rõ ràng.
                 </p>
             </div>
@@ -316,8 +316,8 @@
                     <img data-img-slot="careers-a6" src="/images/sanbayphanthiet.jpg"
                          alt="Vietnamese cultural architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
-                <p data-en="Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Bản sắc Việt Nam</p>
-                <p data-en="We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation." class="font-sans text-sm text-white leading-relaxed">
+                <p data-tkey="careers-t043" data-en="Vietnamese Identity" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Bản sắc Việt Nam</p>
+                <p data-tkey="careers-t044" data-en="We pursue concept designs deeply rooted in Vietnamese cultural identity — driven by innovation, not imitation." class="font-sans text-sm text-white leading-relaxed">
                     Chúng tôi theo đuổi những thiết kế ý tưởng bắt rễ sâu trong bản sắc văn hóa Việt — dẫn dắt bởi sáng tạo, không phải sao chép.
                 </p>
             </div>
@@ -328,8 +328,8 @@
     <!-- Our Portfolio -->
     <section class="bg-white px-6 md:px-12 lg:px-16 pb-24 md:pb-32 border-t border-black/10 pt-24 md:pt-32">
         <div class="max-w-3xl mb-16 md:mb-20">
-            <p data-en="Our Portfolio" class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Danh mục dự án</p>
-            <h2 data-en="A glimpse into our 300+ projects — and the starting point for what you will leave your mark on next." class="font-display font-light text-dark text-2xl md:text-3xl leading-snug reveal-up">Một cái nhìn thoáng qua về hơn 300 dự án của chúng tôi và là điểm khởi đầu cho những gì bạn sẽ đặt dấu ấn tiếp theo.</h2>
+            <p data-tkey="careers-t045" data-en="Our Portfolio" class="font-sans text-[10px] uppercase tracking-[0.3em] text-black/40 mb-5 reveal-fade">Danh mục dự án</p>
+            <h2 data-tkey="careers-t046" data-en="A glimpse into our 300+ projects — and the starting point for what you will leave your mark on next." class="font-display font-light text-dark text-2xl md:text-3xl leading-snug reveal-up">Một cái nhìn thoáng qua về hơn 300 dự án của chúng tôi và là điểm khởi đầu cho những gì bạn sẽ đặt dấu ấn tiếp theo.</h2>
         </div>
 
         <!-- Asymmetric mosaic -->
@@ -343,8 +343,8 @@
                 </div>
                 <div class="bg-dark p-6 md:p-8">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">01</p>
-                    <h3 data-en="Planning" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Quy hoạch</h3>
-                    <p data-en="Masterplanning and urban development — shaping how cities grow while balancing people, space, and landscape." class="font-sans text-sm text-white leading-relaxed">
+                    <h3 data-tkey="careers-t047" data-en="Planning" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Quy hoạch</h3>
+                    <p data-tkey="careers-t048" data-en="Masterplanning and urban development — shaping how cities grow while balancing people, space, and landscape." class="font-sans text-sm text-white leading-relaxed">
                         Quy hoạch tổng thể và phát triển đô thị — định hình cách các thành phố lớn lên, cân bằng giữa con người, không gian và cảnh quan.
                     </p>
                 </div>
@@ -358,8 +358,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">02</p>
-                    <h3 data-en="Residential" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khu dân cư / Nhà ở</h3>
-                    <p data-en="High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities." class="font-sans text-sm text-white leading-relaxed">Căn hộ cao tầng và khu phức hợp đa năng — những cộng đồng theo chiều đứng định nghĩa lại cuộc sống đô thị tại các thành phố phát triển nhanh nhất Việt Nam.</p>
+                    <h3 data-tkey="careers-t049" data-en="Residential" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khu dân cư / Nhà ở</h3>
+                    <p data-tkey="careers-t050" data-en="High-rise apartments and mixed-use complexes — vertical communities that redefine urban living across Vietnam's fastest-growing cities." class="font-sans text-sm text-white leading-relaxed">Căn hộ cao tầng và khu phức hợp đa năng — những cộng đồng theo chiều đứng định nghĩa lại cuộc sống đô thị tại các thành phố phát triển nhanh nhất Việt Nam.</p>
                 </div>
             </div>
 
@@ -371,8 +371,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">03</p>
-                    <h3 data-en="School" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trường học</h3>
-                    <p data-en="Award-winning schools and educational facilities — from rural community schools to international campuses, engineered for light, acoustics, and the way a new generation learns." class="font-sans text-sm text-white leading-relaxed">Trường học và cơ sở giáo dục đoạt giải — từ trường cộng đồng vùng nông thôn đến những khuôn viên quốc tế, được thiết kế cho ánh sáng, âm học và cách một thế hệ mới học tập.</p>
+                    <h3 data-tkey="careers-t051" data-en="School" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trường học</h3>
+                    <p data-tkey="careers-t052" data-en="Award-winning schools and educational facilities — from rural community schools to international campuses, engineered for light, acoustics, and the way a new generation learns." class="font-sans text-sm text-white leading-relaxed">Trường học và cơ sở giáo dục đoạt giải — từ trường cộng đồng vùng nông thôn đến những khuôn viên quốc tế, được thiết kế cho ánh sáng, âm học và cách một thế hệ mới học tập.</p>
                 </div>
             </div>
 
@@ -384,8 +384,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">04</p>
-                    <h3 data-en="Hotel" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khách sạn</h3>
-                    <p data-en="Hotels and resorts — destinations rich in identity, where the stay experience blends with the culture of each place." class="font-sans text-sm text-white leading-relaxed">Khách sạn và khu nghỉ dưỡng — những điểm đến giàu bản sắc, nơi trải nghiệm lưu trú hòa quyện cùng văn hóa của mỗi vùng đất.</p>
+                    <h3 data-tkey="careers-t053" data-en="Hotel" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Khách sạn</h3>
+                    <p data-tkey="careers-t054" data-en="Hotels and resorts — destinations rich in identity, where the stay experience blends with the culture of each place." class="font-sans text-sm text-white leading-relaxed">Khách sạn và khu nghỉ dưỡng — những điểm đến giàu bản sắc, nơi trải nghiệm lưu trú hòa quyện cùng văn hóa của mỗi vùng đất.</p>
                 </div>
             </div>
 
@@ -397,8 +397,8 @@
                 </div>
                 <div class="bg-dark p-6">
                     <p class="font-sans text-[11px] tracking-[0.3em] text-white mb-2">05</p>
-                    <h3 data-en="Headquarters" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trụ sở</h3>
-                    <p data-en="Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them." class="font-sans text-sm text-white leading-relaxed">Trụ sở doanh nghiệp và những công trình thương mại biểu tượng — được thiết kế cho hiệu năng, bản sắc và những con người làm việc bên trong.</p>
+                    <h3 data-tkey="careers-t055" data-en="Headquarters" class="font-display font-light text-white text-2xl md:text-3xl leading-none mb-2">Trụ sở</h3>
+                    <p data-tkey="careers-t056" data-en="Corporate headquarters and commercial landmarks — engineered for performance, identity, and the people who work within them." class="font-sans text-sm text-white leading-relaxed">Trụ sở doanh nghiệp và những công trình thương mại biểu tượng — được thiết kế cho hiệu năng, bản sắc và những con người làm việc bên trong.</p>
                 </div>
             </div>
 
@@ -411,70 +411,70 @@
 
             <!-- Left: steps -->
             <div>
-                <p data-en="Apply in 3 Minutes" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Ứng tuyển trong 3 phút</p>
-                <h2 data-en="Show us how you think." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-6 reveal-up">Cho chúng tôi thấy cách bạn tư duy.</h2>
-                <p data-en="Your portfolio speaks louder than any description." class="font-sans text-sm md:text-base text-white leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
+                <p data-tkey="careers-t057" data-en="Apply in 3 Minutes" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-5 reveal-fade">Ứng tuyển trong 3 phút</p>
+                <h2 data-tkey="careers-t058" data-en="Show us how you think." class="font-display font-light text-white text-2xl md:text-3xl leading-snug mb-6 reveal-up">Cho chúng tôi thấy cách bạn tư duy.</h2>
+                <p data-tkey="careers-t059" data-en="Your portfolio speaks louder than any description." class="font-sans text-sm md:text-base text-white leading-relaxed mb-12 max-w-md reveal-up" style="transition-delay:0.1s">
                     Hồ sơ năng lực của bạn nói lên nhiều hơn mọi lời mô tả.
                 </p>
 
                 <div class="flex flex-col gap-8">
                     <div class="flex items-start gap-6 reveal-up">
                         <span class="step-num">01</span>
-                        <p data-en="Enter your details and select your desired role." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Điền thông tin của bạn và chọn vị trí mong muốn.</p>
+                        <p data-tkey="careers-t060" data-en="Enter your details and select your desired role." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Điền thông tin của bạn và chọn vị trí mong muốn.</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.08s">
                         <span class="step-num">02</span>
-                        <p data-en="Attach your CV and portfolio (PDF, max 5MB)." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 5MB).</p>
+                        <p data-tkey="careers-t061" data-en="Attach your CV and portfolio (PDF, max 5MB)." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 5MB).</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.16s">
                         <span class="step-num">03</span>
-                        <p data-en="Our recruitment team will respond within 5 business days." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đội ngũ tuyển dụng của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</p>
+                        <p data-tkey="careers-t062" data-en="Our recruitment team will respond within 5 business days." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đội ngũ tuyển dụng của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</p>
                     </div>
                 </div>
 
                 <div class="mt-12 pt-8 border-t border-white/10 reveal-up">
-                    <p data-en="Hotline" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Hotline</p>
+                    <p data-tkey="careers-t063" data-en="Hotline" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white mb-3">Hotline</p>
                     <a href="tel:0973653593" class="font-display font-light text-white text-2xl md:text-3xl hover:opacity-70 transition-opacity interactive">0973 653 593</a>
-                    <p data-en="Mrs. THUY – Head of HR &amp; Administration" class="font-sans text-sm text-white mt-1">Mrs. THỦY – Trưởng phòng Hành chính - Nhân sự</p>
+                    <p data-tkey="careers-t064" data-en="Mrs. THUY – Head of HR &amp; Administration" class="font-sans text-sm text-white mt-1">Mrs. THỦY – Trưởng phòng Hành chính - Nhân sự</p>
                 </div>
             </div>
 
             <!-- Right: form -->
             <div class="reveal-up" style="transition-delay:0.1s">
                 <form id="apply-form" class="flex flex-col gap-6" onsubmit="submitApplication(event)">
-                    <input id="af-name"  type="text"  class="apply-field" placeholder="Họ và tên *" data-en-ph="Full Name *" required>
-                    <input id="af-phone" type="tel"   class="apply-field" placeholder="Số điện thoại *" data-en-ph="Phone Number *" required>
-                    <input id="af-email" type="email" class="apply-field" placeholder="Email *" data-en-ph="Email *" required>
+                    <input id="af-name"  type="text"  class="apply-field" placeholder="Họ và tên *" data-tkey="careers-t065" data-en-ph="Full Name *" required>
+                    <input id="af-phone" type="tel"   class="apply-field" placeholder="Số điện thoại *" data-tkey="careers-t066" data-en-ph="Phone Number *" required>
+                    <input id="af-email" type="email" class="apply-field" placeholder="Email *" data-tkey="careers-t067" data-en-ph="Email *" required>
 
                     <div>
-                        <label class="apply-label" for="af-position" data-en="Position Applied For *">Vị trí ứng tuyển *</label>
+                        <label class="apply-label" for="af-position" data-tkey="careers-t068" data-en="Position Applied For *">Vị trí ứng tuyển *</label>
                         <select id="af-position" class="apply-field" required>
                             <option value="" disabled selected>— Select Position —</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="apply-label" for="af-exp" data-en="Years of Experience">Số năm kinh nghiệm</label>
+                        <label class="apply-label" for="af-exp" data-tkey="careers-t069" data-en="Years of Experience">Số năm kinh nghiệm</label>
                         <select id="af-exp" class="apply-field">
-                            <option value="" disabled selected data-en="— Select —">— Chọn —</option>
-                            <option data-en="Less than 1 year">Dưới 1 năm</option>
-                            <option data-en="1–3 years">1–3 năm</option>
-                            <option data-en="3–5 years">3–5 năm</option>
-                            <option data-en="Over 5 years">Trên 5 năm</option>
+                            <option value="" disabled selected data-tkey="careers-t070" data-en="— Select —">— Chọn —</option>
+                            <option data-tkey="careers-t071" data-en="Less than 1 year">Dưới 1 năm</option>
+                            <option data-tkey="careers-t072" data-en="1–3 years">1–3 năm</option>
+                            <option data-tkey="careers-t073" data-en="3–5 years">3–5 năm</option>
+                            <option data-tkey="careers-t074" data-en="Over 5 years">Trên 5 năm</option>
                         </select>
                     </div>
 
-                    <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Lời nhắn / Liên kết hồ sơ" data-en-ph="Message / Portfolio Link"></textarea>
+                    <textarea id="af-message" rows="3" class="apply-field resize-none" placeholder="Lời nhắn / Liên kết hồ sơ" data-tkey="careers-t075" data-en-ph="Message / Portfolio Link"></textarea>
 
                     <div>
-                        <label class="apply-label" data-en="CV / Portfolio">CV / Hồ sơ năng lực</label>
+                        <label class="apply-label" data-tkey="careers-t076" data-en="CV / Portfolio">CV / Hồ sơ năng lực</label>
                         <label id="af-dropzone" class="dropzone block" for="af-cv">
                             <span id="af-dropzone-label">📎 &nbsp;Kéo thả hoặc nhấp để tải lên (PDF · ≤5MB)</span>
                         </label>
                         <input id="af-cv" type="file" accept=".pdf" class="hidden">
                     </div>
 
-                    <button type="submit" data-en="Submit Application →" class="apply-submit interactive mt-2">Gửi hồ sơ ứng tuyển →</button>
+                    <button type="submit" data-tkey="careers-t077" data-en="Submit Application →" class="apply-submit interactive mt-2">Gửi hồ sơ ứng tuyển →</button>
                     <p id="af-status" class="font-sans text-[12px] text-white text-center min-h-[16px]"></p>
                 </form>
             </div>
@@ -489,8 +489,8 @@
                  alt="Design studio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Studio Culture" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Văn hóa studio</p>
-                <p data-en="Where ideas take shape" class="font-display font-light text-white text-lg mt-1">Nơi ý tưởng thành hình</p>
+                <p data-tkey="careers-t078" data-en="Studio Culture" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Văn hóa studio</p>
+                <p data-tkey="careers-t079" data-en="Where ideas take shape" class="font-display font-light text-white text-lg mt-1">Nơi ý tưởng thành hình</p>
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
@@ -498,8 +498,8 @@
                  alt="Architecture team" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Collaboration" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Hợp tác</p>
-                <p data-en="Built on shared ambition" class="font-display font-light text-white text-lg mt-1">Xây dựng trên khát vọng chung</p>
+                <p data-tkey="careers-t080" data-en="Collaboration" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Hợp tác</p>
+                <p data-tkey="careers-t081" data-en="Built on shared ambition" class="font-display font-light text-white text-lg mt-1">Xây dựng trên khát vọng chung</p>
             </div>
         </div>
         <div class="overflow-hidden relative group" style="height:48vh;">
@@ -507,8 +507,8 @@
                  alt="Architecture project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="absolute bottom-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="transition-delay:0.1s">
-                <p data-en="Our Work" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Công việc của chúng tôi</p>
-                <p data-en="Craft that defines cities" class="font-display font-light text-white text-lg mt-1">Tay nghề định hình đô thị</p>
+                <p data-tkey="careers-t082" data-en="Our Work" class="font-sans text-[10px] uppercase tracking-[0.3em] text-white">Công việc của chúng tôi</p>
+                <p data-tkey="careers-t083" data-en="Craft that defines cities" class="font-display font-light text-white text-lg mt-1">Tay nghề định hình đô thị</p>
             </div>
         </div>
     </div>
@@ -795,5 +795,6 @@
                 .catch(() => {}); // page keeps its default images if the API is unavailable
         })();
     </script>
+    <script src="text-overrides.js" defer></script>
 </body>
 </html>
