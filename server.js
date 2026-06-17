@@ -23,6 +23,10 @@ require('./db/initCareerI18n')().catch(e => console.error('career i18n init fail
 const pageImages = require('./routes/pageImages');
 pageImages.initPageImages().catch(e => console.error('page images init failed:', e.message));
 
+// Ensure the managed banner-clips table exists
+const banners = require('./routes/banners');
+banners.initBanners().catch(e => console.error('banner clips init failed:', e.message));
+
 // API routes
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/admin',       require('./routes/admin'));
@@ -30,6 +34,7 @@ app.use('/api/projects',    require('./routes/projects'));
 app.use('/api/blog',        require('./routes/blog'));
 app.use('/api/careers',     require('./routes/careers'));
 app.use('/api/page-images', pageImages);
+app.use('/api/banner-clips', banners);
 
 // Fallback: serve index.html for any unmatched route
 app.get('*', (req, res) => {

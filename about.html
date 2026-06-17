@@ -349,9 +349,9 @@
     <section class="relative overflow-hidden bg-dark" id="perspectives-section" style="height: 72vh; min-height: 520px;">
 
         <!-- Video backgrounds (one per perspective) -->
-        <video class="persp-vid active" src="https://videos.pexels.com/video-files/31366924/13385366_2560_1440_50fps.mp4" autoplay loop muted playsinline></video>
-        <video class="persp-vid" src="https://videos.pexels.com/video-files/32537471/13876144_2560_1440_24fps.mp4" autoplay loop muted playsinline></video>
-        <video class="persp-vid" src="https://videos.pexels.com/video-files/15439673/15439673-uhd_2558_1440_30fps.mp4" autoplay loop muted playsinline></video>
+        <video data-clip-slot="about-persp-clip-1" class="persp-vid active" src="https://videos.pexels.com/video-files/31366924/13385366_2560_1440_50fps.mp4" autoplay loop muted playsinline></video>
+        <video data-clip-slot="about-persp-clip-2" class="persp-vid" src="https://videos.pexels.com/video-files/32537471/13876144_2560_1440_24fps.mp4" autoplay loop muted playsinline></video>
+        <video data-clip-slot="about-persp-clip-3" class="persp-vid" src="https://videos.pexels.com/video-files/15439673/15439673-uhd_2558_1440_30fps.mp4" autoplay loop muted playsinline></video>
 
         <!-- Gradient overlay -->
         <div class="absolute inset-0 z-10" style="background: linear-gradient(to top, #0a0a0a 0%, rgba(10,10,10,0.55) 40%, rgba(10,10,10,0.25) 100%);"></div>
@@ -1424,6 +1424,25 @@
                     });
                 })
                 .catch(() => {}); // page keeps its default images if the API is unavailable
+        })();
+    </script>
+
+    <!-- ── Managed banner clips: swap in any admin-set video overrides ─────── -->
+    <script>
+        (function loadBannerClips(){
+            fetch('/api/banner-clips/overrides?page=about')
+                .then(r => r.ok ? r.json() : {})
+                .then(map => {
+                    document.querySelectorAll('video[data-clip-slot]').forEach(v => {
+                        const url = map[v.dataset.clipSlot];
+                        if (!url) return;
+                        v.src = url;
+                        v.load();
+                        const p = v.play();
+                        if (p && p.catch) p.catch(() => {});
+                    });
+                })
+                .catch(() => {}); // page keeps its default clips if the API is unavailable
         })();
     </script>
 </body>

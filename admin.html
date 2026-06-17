@@ -134,6 +134,10 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Page Photos
         </button>
+        <button class="nav-item" data-view="banners" onclick="showView('banners')">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><line x1="7" y1="21" x2="17" y2="21"/></svg>
+            Banners
+        </button>
     </nav>
     <div style="height:1px;background:rgba(255,255,255,0.07);margin-bottom:6px;"></div>
     <div style="padding:10px 18px 18px;">
@@ -381,6 +385,29 @@
         </div>
         <div id="photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;"></div>
         <div id="photos-empty" class="empty-state" style="display:none;">Loading photos…</div>
+    </div>
+
+    <!-- BANNERS -->
+    <div id="view-banners" class="view">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+            <div>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Banners</h1>
+                <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="banners-lbl">Manage the banner video clips shown on the public pages.</p>
+            </div>
+            <a id="banners-view-link" href="index.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:8px 14px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <span id="banners-view-label">View Page</span>
+            </a>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="chip active" data-group="bannerpage" data-val="home"  onclick="switchBannerPage('home', this)">Home</button>
+            <button class="chip"        data-group="bannerpage" data-val="about" onclick="switchBannerPage('about', this)">About</button>
+        </div>
+        <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5;">
+            Each box is one banner video clip. Paste a direct video URL (e.g. an <strong>.mp4</strong> link from Pexels, a CDN or Cloudinary) and click <strong>Save</strong> to replace it across the live site. Leave empty / click <strong>Reset</strong> to restore the original clip.
+        </div>
+        <div id="banners-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
+        <div id="banners-empty" class="empty-state" style="display:none;">Loading banners…</div>
     </div>
 
     <!-- PROJECT DETAIL EDITOR -->
@@ -669,7 +696,94 @@ function showView(name) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
     document.querySelector(`.nav-item[data-view="${name}"]`).classList.add('active');
-    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos }[name])();
+    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos, banners: renderBanners }[name])();
+}
+
+// ─── BANNERS (video clips) ───────────────────────────
+// Each banner <video> on a public page is a "slot". The server stores an
+// optional override URL in MySQL; the box shows the override if present, else the default.
+let _bannerPage = 'home';
+const BANNER_PAGE_FILE = { home: 'index.html', about: 'about.html' };
+const BANNER_PAGE_NAME = { home: 'Home', about: 'About' };
+
+function switchBannerPage(page, btn) {
+    _bannerPage = page;
+    document.querySelectorAll('.chip[data-group="bannerpage"]').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderBanners();
+}
+
+async function renderBanners() {
+    const grid  = document.getElementById('banners-grid');
+    const empty = document.getElementById('banners-empty');
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    empty.textContent = 'Loading banners…';
+
+    const link = document.getElementById('banners-view-link');
+    if (link) link.href = BANNER_PAGE_FILE[_bannerPage];
+    const vlabel = document.getElementById('banners-view-label');
+    if (vlabel) vlabel.textContent = 'View ' + BANNER_PAGE_NAME[_bannerPage] + ' Page';
+
+    let slots;
+    try {
+        slots = await api('GET', '/banner-clips/admin/list?page=' + _bannerPage);
+    } catch (e) {
+        empty.textContent = 'Could not load banners: ' + e.message;
+        return;
+    }
+    if (!slots || !slots.length) { empty.textContent = 'No banner clips found.'; return; }
+    empty.style.display = 'none';
+
+    document.getElementById('banners-lbl').textContent =
+        slots.length + ' clips · ' + slots.filter(s => s.hasOverride).length + ' replaced';
+
+    grid.innerHTML = slots.map(s => {
+        const effective = s.url || s.default;
+        const badge = s.hasOverride
+            ? `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:#1c6b3f;background:rgba(28,107,63,0.1);border-radius:4px;padding:2px 7px;">Replaced</span>`
+            : `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.32);background:rgba(0,0,0,0.05);border-radius:4px;padding:2px 7px;">Original</span>`;
+        return `
+        <div style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;">
+            <div style="aspect-ratio:16/9;background:#111;overflow:hidden;">
+                <video src="${x(effective)}" muted playsinline preload="metadata" controls style="width:100%;height:100%;object-fit:cover;background:#111;"></video>
+            </div>
+            <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;flex:1;">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+                    <span style="font-size:12.5px;color:rgba(0,0,0,0.78);font-weight:600;line-height:1.35;">${x(s.label)}</span>
+                    ${badge}
+                </div>
+                <input type="url" id="bn-url-${x(s.slot)}" class="field-input" value="${x(s.url || '')}" placeholder="${x(s.default)}" style="font-size:11px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <button onclick="saveBannerClip('${x(s.slot)}')" style="flex:1;font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save</button>
+                    ${s.hasOverride ? `<button onclick="resetBannerClip('${x(s.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.5);background:white;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Reset</button>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function saveBannerClip(slot) {
+    const url = (document.getElementById('bn-url-' + slot).value || '').trim();
+    if (url && !/^https?:\/\//i.test(url)) { toast('URL must start with http:// or https://'); return; }
+    try {
+        await api('PUT', '/banner-clips/admin/' + slot, { url });
+        toast(url ? 'Banner clip updated.' : 'Reverted to original.');
+        renderBanners();
+    } catch (e) {
+        toast('Save failed: ' + e.message);
+    }
+}
+
+async function resetBannerClip(slot) {
+    if (!confirm('Restore the original clip for this banner?')) return;
+    try {
+        await api('DELETE', '/banner-clips/admin/' + slot);
+        toast('Reverted to original.');
+        renderBanners();
+    } catch (e) {
+        toast('Reset failed: ' + e.message);
+    }
 }
 
 // ─── PAGE PHOTOS ─────────────────────────────────────
