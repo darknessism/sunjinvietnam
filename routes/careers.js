@@ -6,7 +6,7 @@ const pool       = require('../db/connection');
 const router     = express.Router();
 
 // HR inbox that receives applications
-const HR_EMAIL = process.env.HR_EMAIL || 'thuhuong.mkttrangan@gmail.com';
+const HR_EMAIL = process.env.HR_EMAIL || 'hr@sunjinvietnam.vn';
 
 // Mail transport selection: prefer Brevo's HTTPS API in production (cloud hosts
 // such as Railway block outbound SMTP), fall back to Gmail SMTP for local dev.
