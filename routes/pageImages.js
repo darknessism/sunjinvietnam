@@ -11,6 +11,7 @@ const router      = express.Router();
 // that is stored in MySQL (Railway's filesystem is ephemeral, so disk is not
 // durable). The page loads the default, then swaps in any override.
 // ──────────────────────────────────────────────────────────────────────────
+const STAFF_PH = 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27400%27%3E%3Crect width=%27300%27 height=%27400%27 fill=%27%23ececec%27/%3E%3Ccircle cx=%27150%27 cy=%27150%27 r=%2752%27 fill=%27%23cfcfcf%27/%3E%3Cpath d=%27M62 362c0-50 39-88 88-88s88 38 88 88z%27 fill=%27%23cfcfcf%27/%3E%3C/svg%3E';
 const SLOTS = [
     { slot: 'careers-hero',        page: 'careers', label: 'Hero — ảnh nền đầu trang',           default: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80' },
     { slot: 'careers-banner',      page: 'careers', label: 'Banner đội ngũ (giữa trang)',        default: 'images/teamwork.jpg' },
@@ -84,6 +85,22 @@ const SLOTS = [
     { slot: 'about-grid-3',     page: 'about', label: 'Lưới hình ảnh · Ảnh 3',              default: 'https://images.pexels.com/photos/2190283/pexels-photo-2190283.jpeg?auto=compress&cs=tinysrgb&w=1400' },
     { slot: 'about-grid-4',     page: 'about', label: 'Lưới hình ảnh · Ảnh 4',              default: 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1400' },
     { slot: 'about-cta',        page: 'about', label: 'Kêu gọi cuối trang — ảnh nền',       default: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
+    { slot: 'about-staff-1', page: 'about', label: 'Đội ngũ · Thành viên 1', default: STAFF_PH },
+    { slot: 'about-staff-2', page: 'about', label: 'Đội ngũ · Thành viên 2', default: STAFF_PH },
+    { slot: 'about-staff-3', page: 'about', label: 'Đội ngũ · Thành viên 3', default: STAFF_PH },
+    { slot: 'about-staff-4', page: 'about', label: 'Đội ngũ · Thành viên 4', default: STAFF_PH },
+    { slot: 'about-staff-5', page: 'about', label: 'Đội ngũ · Thành viên 5', default: STAFF_PH },
+    { slot: 'about-staff-6', page: 'about', label: 'Đội ngũ · Thành viên 6', default: STAFF_PH },
+    { slot: 'about-staff-7', page: 'about', label: 'Đội ngũ · Thành viên 7', default: STAFF_PH },
+    { slot: 'about-staff-8', page: 'about', label: 'Đội ngũ · Thành viên 8', default: STAFF_PH },
+    { slot: 'about-staff-9', page: 'about', label: 'Đội ngũ · Thành viên 9', default: STAFF_PH },
+    { slot: 'about-staff-10', page: 'about', label: 'Đội ngũ · Thành viên 10', default: STAFF_PH },
+    { slot: 'about-staff-11', page: 'about', label: 'Đội ngũ · Thành viên 11', default: STAFF_PH },
+    { slot: 'about-staff-12', page: 'about', label: 'Đội ngũ · Thành viên 12', default: STAFF_PH },
+    { slot: 'about-staff-13', page: 'about', label: 'Đội ngũ · Thành viên 13', default: STAFF_PH },
+    { slot: 'about-staff-14', page: 'about', label: 'Đội ngũ · Thành viên 14', default: STAFF_PH },
+    { slot: 'about-staff-15', page: 'about', label: 'Đội ngũ · Thành viên 15', default: STAFF_PH },
+    { slot: 'about-staff-16', page: 'about', label: 'Đội ngũ · Thành viên 16', default: STAFF_PH },
 ];
 const SLOT_MAP = new Map(SLOTS.map(s => [s.slot, s]));
 
