@@ -424,7 +424,7 @@
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.08s">
                         <span class="step-num">02</span>
-                        <p data-en="Attach your CV and portfolio (PDF, max 20MB)." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 20MB).</p>
+                        <p data-en="Attach your CV and portfolio (PDF, max 5MB)." class="font-sans text-sm md:text-base text-white leading-relaxed pt-1">Đính kèm CV và hồ sơ năng lực (PDF, tối đa 5MB).</p>
                     </div>
                     <div class="flex items-start gap-6 reveal-up" style="transition-delay:0.16s">
                         <span class="step-num">03</span>
@@ -469,7 +469,7 @@
                     <div>
                         <label class="apply-label" data-en="CV / Portfolio">CV / Hồ sơ năng lực</label>
                         <label id="af-dropzone" class="dropzone block" for="af-cv">
-                            <span id="af-dropzone-label">📎 &nbsp;Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)</span>
+                            <span id="af-dropzone-label">📎 &nbsp;Kéo thả hoặc nhấp để tải lên (PDF · ≤5MB)</span>
                         </label>
                         <input id="af-cv" type="file" accept=".pdf" class="hidden">
                     </div>
@@ -564,8 +564,8 @@
 
         // UI strings used by JS-rendered content
         const UI = {
-            vi: { all:'Tất cả', salary:'Lương', negotiating:'Thỏa thuận', openApp:'Đang nhận hồ sơ', closed:'Đã đóng', closesToday:'Đóng hôm nay', closesIn:n=>`Còn ${n} ngày`, selectPosition:'— Chọn vị trí —', generalApp:'Ứng tuyển chung', sending:'Đang gửi…', sent:'Đã gửi hồ sơ ✓', thanks:'Cảm ơn bạn — đội ngũ của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.', tooLarge:'Tệp quá lớn — tối đa 20MB.', error:'Đã có lỗi xảy ra. Vui lòng thử lại hoặc gửi email tới hr@sunjinvietnam.vn', dropzone:'📎  Kéo thả hoặc nhấp để tải lên (PDF · ≤20MB)' },
-            en: { all:'All', salary:'Salary', negotiating:'Negotiating', openApp:'Open Application', closed:'Closed', closesToday:'Closes Today', closesIn:n=>`Closes in ${n}D`, selectPosition:'— Select Position —', generalApp:'General / Open Application', sending:'Sending…', sent:'Application Sent ✓', thanks:'Thank you — our team will respond within 5 business days.', tooLarge:'File too large — maximum 20MB.', error:'Something went wrong. Please try again or email hr@sunjinvietnam.vn', dropzone:'📎  Drag and drop or click to upload (PDF · ≤20MB)' },
+            vi: { all:'Tất cả', salary:'Lương', negotiating:'Thỏa thuận', openApp:'Đang nhận hồ sơ', closed:'Đã đóng', closesToday:'Đóng hôm nay', closesIn:n=>`Còn ${n} ngày`, selectPosition:'— Chọn vị trí —', generalApp:'Ứng tuyển chung', sending:'Đang gửi…', sent:'Đã gửi hồ sơ ✓', thanks:'Cảm ơn bạn — đội ngũ của chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.', tooLarge:'Tệp quá lớn — tối đa 5MB.', error:'Đã có lỗi xảy ra. Vui lòng thử lại hoặc gửi email tới hr@sunjinvietnam.vn', dropzone:'📎  Kéo thả hoặc nhấp để tải lên (PDF · ≤5MB)' },
+            en: { all:'All', salary:'Salary', negotiating:'Negotiating', openApp:'Open Application', closed:'Closed', closesToday:'Closes Today', closesIn:n=>`Closes in ${n}D`, selectPosition:'— Select Position —', generalApp:'General / Open Application', sending:'Sending…', sent:'Application Sent ✓', thanks:'Thank you — our team will respond within 5 business days.', tooLarge:'File too large — maximum 5MB.', error:'Something went wrong. Please try again or email hr@sunjinvietnam.vn', dropzone:'📎  Drag and drop or click to upload (PDF · ≤5MB)' },
         };
         const t = k => (UI[LANG] || UI.vi)[k];
 
