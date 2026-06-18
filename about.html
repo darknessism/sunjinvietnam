@@ -246,9 +246,9 @@
     <div class="cursor-outline" id="cursor-outline"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
-        <a href="index.html">
-            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+    <nav class="fixed top-0 left-0 w-full px-6 md:px-10 py-2 md:py-3 flex justify-between items-center z-50 bg-black text-white border-b border-white/10">
+        <a href="index.html" class="flex items-center h-10 md:h-12 overflow-hidden">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-24 w-auto object-contain -my-5 md:-my-6" />
         </a>
         <div class="flex items-center gap-4 md:gap-6">
             <span data-lang-toggle></span>
@@ -461,6 +461,33 @@
         </div>
     </section>
 
+    <!-- Editable text for the JS-driven Perspectives & Stats sections.
+         These hidden tagged spans expose the strings to the admin Text Content module
+         and the VI/EN toggle; the section scripts read their live textContent
+         (see persp()/stats() below). Edit text here — not in the JS. -->
+    <div id="about-text-defs" hidden aria-hidden="true" style="display:none;">
+        <!-- Perspectives slides: title + description -->
+        <span data-tkey="about-t200" data-en="Traditionally">Truyền thống</span>
+        <span data-tkey="about-t201" data-en="Sunjin Vietnam overseeing architectural, interior, landscape, and planning projects across the country — collaborating with world-class international partners to deliver destinations that reflect the unique character and soul of each site.">Sunjin Việt Nam giám sát các dự án kiến trúc, nội thất, cảnh quan và quy hoạch trên khắp cả nước — hợp tác cùng các đối tác quốc tế đẳng cấp để kiến tạo những điểm đến phản ánh cá tính và tâm hồn riêng của mỗi vùng đất.</span>
+        <span data-tkey="about-t202" data-en="Contemporarily">Đương đại</span>
+        <span data-tkey="about-t203" data-en="Architecture evolves with its era. Sunjin Vietnam commits contemporary design to what endures — our projects embrace progress while remaining true to place, shaping spaces that evolve alongside their inhabitants and stand as honest expressions of the time in which they were made.">Kiến trúc tiến hóa cùng thời đại. Sunjin Việt Nam đưa thiết kế đương đại đến với những giá trị trường tồn — các công trình của chúng tôi đón nhận sự tiến bộ nhưng vẫn trung thành với địa điểm, tạo nên những không gian phát triển cùng người sử dụng và là biểu đạt chân thực của thời đại đã sinh ra chúng.</span>
+        <span data-tkey="about-t204" data-en="Creatively">Sáng tạo</span>
+        <span data-tkey="about-t205" data-en="Creativity grants soul to every project. Each design at Sunjin Vietnam stems from unique inspiration — shaped by emotion, memory, and the stories written into the land. We reinvent rather than repeat, granting each commission a distinctive spirit that cannot be replicated elsewhere.">Sự sáng tạo trao linh hồn cho mỗi dự án. Mỗi thiết kế tại Sunjin Việt Nam khởi nguồn từ cảm hứng riêng — được hình thành bởi cảm xúc, ký ức và những câu chuyện viết nên trên vùng đất ấy. Chúng tôi tái tạo thay vì lặp lại, trao cho mỗi công trình một tinh thần riêng biệt không thể sao chép.</span>
+        <!-- Stats: number · label · description · caption -->
+        <span data-tkey="about-t210" data-en="5+">5+</span>
+        <span data-tkey="about-t211" data-en="5+ OFFICES">5+ VĂN PHÒNG</span>
+        <span data-tkey="about-t212" data-en="Sunjin Vietnam operates through five offices across Northern, Central, and Southern Vietnam. This presence allows our teams to remain closely connected to the diverse landscapes, cultures, and rhythms of the regions we design for — ensuring every project responds thoughtfully to the land and the communities it serves.">Sunjin Việt Nam hoạt động qua năm văn phòng trải khắp miền Bắc, miền Trung và miền Nam Việt Nam. Sự hiện diện này giúp đội ngũ của chúng tôi luôn gắn bó mật thiết với cảnh quan, văn hóa và nhịp sống đa dạng của những vùng miền mà chúng tôi thiết kế — đảm bảo mỗi dự án đều đáp lại một cách thấu đáo với vùng đất và cộng đồng nơi đó.</span>
+        <span data-tkey="about-t213" data-en="ESTABLISHED">THÀNH LẬP</span>
+        <span data-tkey="about-t214" data-en="200+">200+</span>
+        <span data-tkey="about-t215" data-en="200+ GLOBAL PARTNERS">200+ ĐỐI TÁC TOÀN CẦU</span>
+        <span data-tkey="about-t216" data-en="These long-term partnerships bring international expertise, diverse perspectives, and world-class standards — facilitating the delivery of projects that meet global benchmarks while celebrating Vietnam's origins and honouring the spirit of every place we touch.">Những mối quan hệ hợp tác lâu dài này mang đến chuyên môn quốc tế, góc nhìn đa dạng và tiêu chuẩn đẳng cấp thế giới — giúp triển khai những dự án đạt chuẩn mực toàn cầu trong khi vẫn tôn vinh cội nguồn Việt Nam và tinh thần của mỗi vùng đất chúng tôi chạm tới.</span>
+        <span data-tkey="about-t217" data-en="WORLD-CLASS">ĐẲNG CẤP QUỐC TẾ</span>
+        <span data-tkey="about-t218" data-en="20+">20+</span>
+        <span data-tkey="about-t219" data-en="20+ YEARS OF OPERATION">20+ NĂM HOẠT ĐỘNG</span>
+        <span data-tkey="about-t220" data-en="Throughout our 20 years of operation, we are proud to be a design consulting firm that implements an innovative vision, delivering large-scale projects that contribute to ushering Vietnam into a new era with greater progress and stronger development.">Suốt 20 năm hoạt động, chúng tôi tự hào là một công ty tư vấn thiết kế hiện thực hóa tầm nhìn đổi mới, kiến tạo những dự án quy mô lớn góp phần đưa Việt Nam bước vào kỷ nguyên mới với nhiều tiến bộ và phát triển mạnh mẽ hơn.</span>
+        <span data-tkey="about-t221" data-en="MULTIDISCIPLINARY">ĐA NGÀNH</span>
+    </div>
+
     <!-- 4. Core Values — dark split: text left · photo right -->
     <section id="cv-section" style="height: 370vh;">
         <div id="cv-sticky" class="sticky top-0 overflow-hidden" style="height: 100vh;">
@@ -542,8 +569,8 @@
                 </p>
             </div>
 
-            <!-- 6-box grid: 3 columns × 2 rows -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.2s">
+            <!-- Leadership grid: responsive, single row on desktop -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.2s">
 
                 <!-- 1 -->
                 <div class="bg-white group overflow-hidden">
@@ -620,6 +647,19 @@
                     <div class="p-4 border-t border-[#0a0a0a]/8">
                         <h3 class="font-display text-sm font-light text-[#0a0a0a]">MR. PHAM THANH HUNG</h3>
                         <p class="font-sans text-[10px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed" data-tkey="about-t032" data-en-html="Deputy General Director<br>Architect, Top-tier Lead Designer">Phó Tổng Giám đốc<br>Kiến trúc sư, Chủ trì Thiết kế hạng cao nhất</p>
+                    </div>
+                </div>
+
+                <!-- 7 -->
+                <div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img data-img-slot="about-team-7" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27400%27%3E%3Crect width=%27300%27 height=%27400%27 fill=%27%23ececec%27/%3E%3Ccircle cx=%27150%27 cy=%27150%27 r=%2752%27 fill=%27%23cfcfcf%27/%3E%3Cpath d=%27M62 362c0-50 39-88 88-88s88 38 88 88z%27 fill=%27%23cfcfcf%27/%3E%3C/svg%3E"
+                             alt="New leader"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="p-4 border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display text-sm font-light text-[#0a0a0a]">MR. NEW MEMBER</h3>
+                        <p class="font-sans text-[10px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1.5 leading-relaxed" data-tkey="about-t130" data-en-html="Position<br>Department">Chức danh<br>Phòng ban</p>
                     </div>
                 </div>
 
@@ -765,15 +805,6 @@
                         <p class="font-sans text-[9px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1 leading-relaxed" data-tkey="about-t101" data-en="Position">Chức danh</p>
                     </div>
                 </div>
-                <div class="bg-white group overflow-hidden">
-                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
-                        <img data-img-slot="about-staff-16" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27400%27%3E%3Crect width=%27300%27 height=%27400%27 fill=%27%23ececec%27/%3E%3Ccircle cx=%27150%27 cy=%27150%27 r=%2752%27 fill=%27%23cfcfcf%27/%3E%3Cpath d=%27M62 362c0-50 39-88 88-88s88 38 88 88z%27 fill=%27%23cfcfcf%27/%3E%3C/svg%3E" alt="Team member 16" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                    </div>
-                    <div class="p-3 border-t border-[#0a0a0a]/8">
-                        <h3 class="font-display text-[13px] font-light text-[#0a0a0a]" data-tkey="about-t102" data-en="Full Name">Họ và tên</h3>
-                        <p class="font-sans text-[9px] uppercase tracking-[0.12em] text-[#0a0a0a]/40 mt-1 leading-relaxed" data-tkey="about-t103" data-en="Position">Chức danh</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -854,148 +885,9 @@
                 <h2 class="font-display font-light text-white leading-none" style="font-size:clamp(3rem,8vw,6.5rem);" data-tkey="about-t041" data-en="Awards">Giải thưởng</h2>
             </div>
 
-            <!-- Award list -->
-            <div class="divide-y divide-white/8">
-
-                <!-- 01 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">01</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Architecture Masterprize (AMP)</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            Pavilion Top 10 Awards
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t042" data-en="The project was built to serve as a showcase for the 2023 Top 10 Awards. The design strictly adheres to the motto &quot;Touching life, Architecture is nature,&quot; with the construction site located in Dien Hong Flower Garden, near the city's cultural and historical area.">Công trình được xây dựng làm tác phẩm trưng bày cho giải thưởng Top 10 Awards 2023. Thiết kế bám sát thông điệp "Chạm đến cuộc sống, Kiến trúc là thiên nhiên," với vị trí xây dựng tại Vườn hoa Diên Hồng, gần khu vực văn hóa và lịch sử của thành phố.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Nguyen Anh Duong · Tran Nguyen Quang · Dang Trung Hieu · Nguyen Tien Sy · Nguyen Xuan Hieu · Nguyen Duc Nam · Nguyen Viet Luan</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Dien Hong Flower Garden, Hoan Kiem District, Hanoi</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-1" src="https://sunjinvietnam.vn/wp-content/uploads/2024/10/pavilion_amp-scaled.jpg"
-                             alt="Pavilion Top 10 Awards" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-                <!-- 02 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.05s">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">02</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">A+ Awards for Architects</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            Dich Vong Hau Kindergarten
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t043" data-en="Outperforming hundreds of projects from 80 countries worldwide, the renovation project of Dich Vong Hau Kindergarten (Cau Giay District, Hanoi) was honored with the award, being the most voted-for project globally in the Kindergarten category.">Vượt qua hàng trăm dự án từ 80 quốc gia trên thế giới, dự án cải tạo Trường Mầm non Dịch Vọng Hậu (Quận Cầu Giấy, Hà Nội) đã vinh dự nhận giải, là công trình được bình chọn nhiều nhất toàn cầu ở hạng mục Trường Mầm non.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Dinh Van Thanh · Nguyen Quang Hai · Dinh Van Truong</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Dich Vong, Cau Giay District, Hanoi</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-2" src="https://sunjinvietnam.vn/wp-content/uploads/2024/06/z5523924862513_982735619bbef78e550b752285151da5.jpg"
-                             alt="Dich Vong Hau Kindergarten" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-                <!-- 03 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.1s">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">03</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Green Good Design Award</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2024</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            University of Commerce
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t044" data-en="The design of the central lecture hall building at the University of Commerce is honored to be among the winning projects in the Green Architecture category of the Green GOOD DESIGN Sustainability Awards 2024.">Thiết kế tòa giảng đường trung tâm của Trường Đại học Thương mại vinh dự nằm trong số các công trình đoạt giải ở hạng mục Kiến trúc Xanh của giải thưởng Green GOOD DESIGN Sustainability Awards 2024.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Dinh Van Thanh · Trinh Tuan Dung · Nguyen Tien Sy · Nguyen Xuan Hieu · Nguyen Thach Thao</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">79 Ho Tung Mau St., Mai Dich Ward, Cau Giay District, Hanoi</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-3" src="https://sunjinvietnam.vn/wp-content/uploads/2024/08/dhtm5.jpg"
-                             alt="University of Commerce" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-                <!-- 04 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.15s">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">04</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">Asia Architecture Award</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2023</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            GrandTourane Nha Trang
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t045" data-en="The Grand Tourane Nha Trang hotel project won the Best Hotel Architecture Award 2023 – Asia Design Awards.">Dự án khách sạn Grand Tourane Nha Trang đã giành giải Kiến trúc Khách sạn Xuất sắc nhất 2023 – Asia Design Awards.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Luong Van Thanh · Trinh Trung Hieu · Dinh Van Thanh</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Loc Tho Ward, Nha Trang City</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-4" src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Asian-7-up.jpg"
-                             alt="GrandTourane Nha Trang" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-                <!-- 05 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.2s">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">05</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">National Architecture Silver Award</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2021</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            Cau Giay Secondary School
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t046" data-en="The Cau Giay Secondary School project won the Silver Award at the 2021 National Architecture Awards.">Dự án Trường THCS Cầu Giấy đã giành Giải Bạc tại Giải thưởng Kiến trúc Quốc gia 2021.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Tran Nguyen Quang · Luong Van Thanh · Trinh Trung Hieu</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Quan Hoa Ward, Cau Giay District, Hanoi</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-5" src="https://sunjinvietnam.vn/wp-content/uploads/2024/01/Giai-Bac-KT-Quoc-Gia.jpg"
-                             alt="Cau Giay Secondary School" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-                <!-- 06 -->
-                <article class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start reveal-up" style="transition-delay:0.25s">
-                    <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">06</span>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                            <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">National Architecture Bronze Award</span>
-                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">2023</span>
-                        </div>
-                        <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">
-                            House CT11–12–13
-                        </h3>
-                        <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">
-                            <span data-tkey="about-t047" data-en="The CT11–12–13 high-rise apartment complex project won the Bronze Award at the National Architecture Awards 2022–2023.">Dự án tổ hợp chung cư cao tầng CT11–12–13 đã giành Giải Đồng tại Giải thưởng Kiến trúc Quốc gia 2022–2023.</span>
-                        </p>
-                        <p class="font-sans text-[11px] text-white/22 leading-relaxed">Arch. Le Van Hao · Pham Thanh Hung · Nguyen Quang Hai · Dinh Van Thanh</p>
-                        <p class="font-sans text-[11px] uppercase tracking-[0.18em] text-white/18 mt-2">Tu Hiep, Thanh Tri, Hanoi</p>
-                    </div>
-                    <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                        <img data-img-slot="about-award-6" src="https://sunjinvietnam.vn/wp-content/uploads/2023/12/Giai-dong-KT-Quoc-Gia-Ct11-12-13.jpg"
-                             alt="House CT11-12-13" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
-                    </div>
-                </article>
-
-            </div>
+            <!-- Award list — rendered from blog posts in the "awards" category (not hardcoded) -->
+            <div id="awards-list" class="divide-y divide-white/8"></div>
+            <p id="awards-empty" class="font-sans text-sm text-white/30 py-12" style="display:none;"></p>
         </div>
     </section>
 
@@ -1127,7 +1019,7 @@
                     <p>P: 097 7279 066</p>
                 </div>
                 <div>
-                    <p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p>
+                    <p>A: 2 - 3A FLOOR, N07-B2 BUILDING</p>
                     <p>CAU GIAY WARD, HA NOI,</p>
                     <p>VIETNAM</p>
                 </div>
@@ -1152,7 +1044,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay: 0.2s">
             <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
                 <a href="index.html" class="interactive">
-                    <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+                    <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-32 md:h-44 w-auto object-contain" />
                 </a>
                 <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
                     &copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED
@@ -1206,32 +1098,23 @@
         }, { threshold: 0.08 });
         revealEls.forEach(el => observer.observe(el));
 
-        // Perspectives — auto-cycling video section
-        const perspSlides = [
-            {
-                title: 'Traditionally',
-                desc: 'Sunjin Vietnam overseeing architectural, interior, landscape, and planning projects across the country — collaborating with world-class international partners to deliver destinations that reflect the unique character and soul of each site.',
-                counter: '01 / 03'
-            },
-            {
-                title: 'Contemporarily',
-                desc: 'Architecture evolves with its era. Sunjin Vietnam commits contemporary design to what endures — our projects embrace progress while remaining true to place, shaping spaces that evolve alongside their inhabitants and stand as honest expressions of the time in which they were made.',
-                counter: '02 / 03'
-            },
-            {
-                title: 'Creatively',
-                desc: 'Creativity grants soul to every project. Each design at Sunjin Vietnam stems from unique inspiration — shaped by emotion, memory, and the stories written into the land. We reinvent rather than repeat, granting each commission a distinctive spirit that cannot be replicated elsewhere.',
-                counter: '03 / 03'
-            }
-        ];
-
         const L = () => (window.getLang ? window.getLang() : 'vi');
-        const perspSlides_vi = [
-            { title: 'Truyền thống', desc: 'Sunjin Việt Nam giám sát các dự án kiến trúc, nội thất, cảnh quan và quy hoạch trên khắp cả nước — hợp tác cùng các đối tác quốc tế đẳng cấp để kiến tạo những điểm đến phản ánh cá tính và tâm hồn riêng của mỗi vùng đất.', counter: '01 / 03' },
-            { title: 'Đương đại', desc: 'Kiến trúc tiến hóa cùng thời đại. Sunjin Việt Nam đưa thiết kế đương đại đến với những giá trị trường tồn — các công trình của chúng tôi đón nhận sự tiến bộ nhưng vẫn trung thành với địa điểm, tạo nên những không gian phát triển cùng người sử dụng và là biểu đạt chân thực của thời đại đã sinh ra chúng.', counter: '02 / 03' },
-            { title: 'Sáng tạo', desc: 'Sự sáng tạo trao linh hồn cho mỗi dự án. Mỗi thiết kế tại Sunjin Việt Nam khởi nguồn từ cảm hứng riêng — được hình thành bởi cảm xúc, ký ức và những câu chuyện viết nên trên vùng đất ấy. Chúng tôi tái tạo thay vì lặp lại, trao cho mỗi công trình một tinh thần riêng biệt không thể sao chép.', counter: '03 / 03' }
-        ];
-        const persp = () => (L() === 'vi' ? perspSlides_vi : perspSlides);
+
+        // Editable text for the Perspectives & Stats sections is read live from the
+        // hidden #about-text-defs block (data-tkey spans). i18n.js keeps each span's
+        // textContent in the active language and applies admin overrides, so reading
+        // textContent here gives the right, override-aware string for the current language.
+        const dtext = (tkey) => {
+            const el = document.querySelector('#about-text-defs [data-tkey="' + tkey + '"]');
+            return el ? el.textContent.trim() : '';
+        };
+
+        // Perspectives — auto-cycling video section (counters are positional, not editable)
+        const persp = () => ([
+            { title: dtext('about-t200'), desc: dtext('about-t201'), counter: '01 / 03' },
+            { title: dtext('about-t202'), desc: dtext('about-t203'), counter: '02 / 03' },
+            { title: dtext('about-t204'), desc: dtext('about-t205'), counter: '03 / 03' }
+        ]);
 
         const perspVids    = document.querySelectorAll('.persp-vid');
         const perspDots    = document.querySelectorAll('.persp-dot');
@@ -1274,34 +1157,12 @@
         // Kick off auto-cycle
         perspTimer = setInterval(() => perspGoTo((perspCurrent + 1) % 3), PERSP_DURATION);
 
-        // ── Stats sticky scroll ──
-        const statsData = [
-            {
-                number:  '5+',
-                label:   '5+ OFFICES',
-                desc:    'Sunjin Vietnam operates through five offices across Northern, Central, and Southern Vietnam. This presence allows our teams to remain closely connected to the diverse landscapes, cultures, and rhythms of the regions we design for — ensuring every project responds thoughtfully to the land and the communities it serves.',
-                caption: 'ESTABLISHED'
-            },
-            {
-                number:  '200+',
-                label:   '200+ GLOBAL PARTNERS',
-                desc:    'These long-term partnerships bring international expertise, diverse perspectives, and world-class standards — facilitating the delivery of projects that meet global benchmarks while celebrating Vietnam\'s origins and honouring the spirit of every place we touch.',
-                caption: 'WORLD-CLASS'
-            },
-            {
-                number:  '20+',
-                label:   '20+ YEARS OF OPERATION',
-                desc:    'Throughout our 20 years of operation, we are proud to be a design consulting firm that implements  an innovative vision, delivering large-scale projects that contribute to ushering Vietnam into a new era with greater progress and stronger development.',
-                caption: 'MULTIDISCIPLINARY'
-            }
-        ];
-
-        const statsData_vi = [
-            { number: '5+',   label: '5+ VĂN PHÒNG', desc: 'Sunjin Việt Nam hoạt động qua năm văn phòng trải khắp miền Bắc, miền Trung và miền Nam Việt Nam. Sự hiện diện này giúp đội ngũ của chúng tôi luôn gắn bó mật thiết với cảnh quan, văn hóa và nhịp sống đa dạng của những vùng miền mà chúng tôi thiết kế — đảm bảo mỗi dự án đều đáp lại một cách thấu đáo với vùng đất và cộng đồng nơi đó.', caption: 'THÀNH LẬP' },
-            { number: '200+', label: '200+ ĐỐI TÁC TOÀN CẦU', desc: 'Những mối quan hệ hợp tác lâu dài này mang đến chuyên môn quốc tế, góc nhìn đa dạng và tiêu chuẩn đẳng cấp thế giới — giúp triển khai những dự án đạt chuẩn mực toàn cầu trong khi vẫn tôn vinh cội nguồn Việt Nam và tinh thần của mỗi vùng đất chúng tôi chạm tới.', caption: 'ĐẲNG CẤP QUỐC TẾ' },
-            { number: '20+',  label: '20+ NĂM HOẠT ĐỘNG', desc: 'Suốt 20 năm hoạt động, chúng tôi tự hào là một công ty tư vấn thiết kế hiện thực hóa tầm nhìn đổi mới, kiến tạo những dự án quy mô lớn góp phần đưa Việt Nam bước vào kỷ nguyên mới với nhiều tiến bộ và phát triển mạnh mẽ hơn.', caption: 'ĐA NGÀNH' }
-        ];
-        const stats = () => (L() === 'vi' ? statsData_vi : statsData);
+        // ── Stats sticky scroll ── (text read from #about-text-defs, edited via admin)
+        const stats = () => ([
+            { number: dtext('about-t210'), label: dtext('about-t211'), desc: dtext('about-t212'), caption: dtext('about-t213') },
+            { number: dtext('about-t214'), label: dtext('about-t215'), desc: dtext('about-t216'), caption: dtext('about-t217') },
+            { number: dtext('about-t218'), label: dtext('about-t219'), desc: dtext('about-t220'), caption: dtext('about-t221') }
+        ]);
 
         const snNum      = document.getElementById('sn-num');
         const snLabel    = document.getElementById('sn-label');
@@ -1512,18 +1373,6 @@
             mainNav.classList.remove('nav-hidden');
         });
 
-        // Nav hide / show on scroll
-        let lastScrollY = 0;
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY && currentScrollY > 80) {
-                mainNav.classList.add('nav-hidden');
-            } else {
-                mainNav.classList.remove('nav-hidden');
-            }
-            lastScrollY = currentScrollY;
-        }, { passive: true });
-
         // Contact Modal
         const contactModal   = document.getElementById('contact-modal');
         const contactContent = document.getElementById('contact-content');
@@ -1595,6 +1444,81 @@
                     });
                 })
                 .catch(() => {}); // page keeps its default clips if the API is unavailable
+        })();
+    </script>
+
+    <!-- ── Awards: rendered from blog posts in the "awards" category ─────── -->
+    <script>
+        (function renderAboutAwards(){
+            const L = () => (window.getLang ? window.getLang() : 'vi');
+            const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const list = document.getElementById('awards-list');
+            const empty = document.getElementById('awards-empty');
+            if (!list) return;
+            fetch('/api/blog').then(r => r.ok ? r.json() : []).then(posts => {
+                const items = (posts || []).filter(p => p.category === 'awards');
+                if (!items.length) {
+                    empty.style.display = 'block';
+                    empty.textContent = (L() === 'vi') ? 'Chưa có giải thưởng nào.' : 'No awards published yet.';
+                    return;
+                }
+                const more = (L() === 'vi') ? 'Đọc bài viết' : 'Read article';
+                const arrow = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+                const cardHTML = (a, idx) => {
+                    const num = String(idx + 1).padStart(2, '0');
+                    const d = new Date(a.date); const year = isNaN(d) ? '' : d.getFullYear();
+                    return `<a href="blog-detail.html?id=${esc(a.id)}" class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start interactive" style="text-decoration:none;">
+                        <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">${num}</span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
+                                <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">${esc(a.author||'')}</span>
+                                <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">${esc(year)}</span>
+                            </div>
+                            <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">${esc(a.title)}</h3>
+                            <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">${esc(a.excerpt||'')}</p>
+                            <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/30 inline-flex items-center gap-2 group-hover:text-white/70 transition-colors">${more} ${arrow}</span>
+                        </div>
+                        <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
+                            <img src="${esc(a.coverImage||'')}" alt="${esc(a.title)}" onerror="this.style.opacity=0" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                        </div>
+                    </a>`;
+                };
+
+                // ── Paginate in batches of 3 ──
+                const PAGE = 3;
+                const pageCount = Math.ceil(items.length / PAGE);
+                let page = 0;
+
+                // Build the nav bar once (prev / counter / next), shown only when needed.
+                const nav = document.createElement('div');
+                nav.className = 'flex items-center justify-between gap-6 pt-12 border-t border-white/8';
+                if (items.length <= PAGE) nav.style.display = 'none';
+                const btnCls = 'w-11 h-11 rounded-full border border-white/25 text-white/70 flex items-center justify-center transition-colors hover:border-white hover:text-white disabled:opacity-25 disabled:cursor-default disabled:hover:border-white/25 disabled:hover:text-white/70 interactive';
+                nav.innerHTML = `
+                    <span id="awards-counter" class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/35"></span>
+                    <div class="flex items-center gap-3">
+                        <button id="awards-prev" aria-label="Previous" class="${btnCls}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+                        <button id="awards-next" aria-label="Next" class="${btnCls}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                    </div>`;
+                list.parentNode.insertBefore(nav, empty);
+
+                const counter = nav.querySelector('#awards-counter');
+                const prevBtn = nav.querySelector('#awards-prev');
+                const nextBtn = nav.querySelector('#awards-next');
+
+                function render() {
+                    const start = page * PAGE;
+                    const slice = items.slice(start, start + PAGE);
+                    list.innerHTML = slice.map((a, j) => cardHTML(a, start + j)).join('');
+                    const from = start + 1, to = start + slice.length;
+                    counter.textContent = `${String(from).padStart(2,'0')}–${String(to).padStart(2,'0')} / ${String(items.length).padStart(2,'0')}`;
+                    prevBtn.disabled = page === 0;
+                    nextBtn.disabled = page >= pageCount - 1;
+                }
+                prevBtn.addEventListener('click', () => { if (page > 0) { page--; render(); } });
+                nextBtn.addEventListener('click', () => { if (page < pageCount - 1) { page++; render(); } });
+                render();
+            }).catch(() => { empty.style.display = 'block'; empty.textContent = ''; });
         })();
     </script>
 </body>

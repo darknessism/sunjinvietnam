@@ -87,9 +87,9 @@
     <div class="cursor-outline" id="cursor-outline"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
-        <a href="index.html">
-            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+    <nav class="fixed top-0 left-0 w-full px-6 md:px-10 py-2 md:py-3 flex justify-between items-center z-50 bg-black text-white border-b border-white/10">
+        <a href="index.html" class="flex items-center h-10 md:h-12 overflow-hidden">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-24 w-auto object-contain -my-5 md:-my-6" />
         </a>
         <div class="flex items-center gap-4 md:gap-6">
             <span data-lang-toggle></span>
@@ -183,11 +183,13 @@
             <button class="filter-btn flex-shrink-0" data-filter="press" data-en="Press Coverage">Báo chí</button>
             <button class="filter-btn flex-shrink-0" data-filter="ideas" data-en="Ideas">Ý tưởng</button>
             <button class="filter-btn flex-shrink-0" data-filter="community" data-en="Community Responsibility">Trách nhiệm cộng đồng</button>
+            <button class="filter-btn flex-shrink-0" data-filter="events" data-en="Events">Sự kiện</button>
+            <button class="filter-btn flex-shrink-0" data-filter="awards" data-en="Awards">Giải thưởng</button>
         </div>
     </div>
 
     <!-- 3. Blog Grid -->
-    <div id="blog-grid" class="grid grid-cols-12 gap-px bg-white/[0.12]">
+    <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.12]">
 
         <!-- Articles rendered dynamically from localStorage by renderBlogGrid() -->
 
@@ -203,7 +205,7 @@
                     <p>P: 097 7279 066</p>
                 </div>
                 <div>
-                    <p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p>
+                    <p>A: 2 - 3A FLOOR, N07-B2 BUILDING</p>
                     <p>CAU GIAY WARD, HA NOI,</p>
                     <p>VIETNAM</p>
                 </div>
@@ -224,7 +226,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay:0.2s">
             <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
                 <a href="index.html" class="interactive">
-                    <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" />
+                    <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-32 md:h-44 w-auto object-contain" />
                 </a>
                 <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">&copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED</p>
             </div>
@@ -274,13 +276,10 @@
         const L = () => (window.getLang ? window.getLang() : 'vi');
         const BTXT = { vi:{minRead:'phút đọc', readArticle:'Đọc bài', none:'Chưa có bài viết nào.'}, en:{minRead:'min read', readArticle:'Read Article', none:'No articles published yet.'} };
         const btx = k => (BTXT[L()]||BTXT.vi)[k];
-        const BCAT = { vi:{news:'Tin tức',press:'Báo chí',ideas:'Ý tưởng',community:'Trách nhiệm cộng đồng'}, en:{news:'News',press:'Press Coverage',ideas:'Ideas',community:'Community Responsibility'} };
+        const BCAT = { vi:{news:'Tin tức',press:'Báo chí',ideas:'Ý tưởng',community:'Trách nhiệm cộng đồng',events:'Sự kiện',awards:'Giải thưởng'}, en:{news:'News',press:'Press Coverage',ideas:'Ideas',community:'Community Responsibility',events:'Events',awards:'Awards'} };
         function blogEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
         function blogFmtDate(iso){try{return new Date(iso).toLocaleDateString(L()==='vi'?'vi-VN':'en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return iso||'';}}
         function blogCatLbl(c){return (BCAT[L()]||BCAT.vi)[c]||c;}
-        function blogColCls(n){if(n>=12)return'col-span-12';if(n>=7)return'col-span-12 md:col-span-7';if(n>=5)return'col-span-12 md:col-span-5';return'col-span-12 sm:col-span-6 md:col-span-4';}
-        function blogCardH(n,i){if(n>=12)return i===0?'70vh':'64vh';if(n>=5)return i<3?'54vh':'52vh';return'58vh';}
-        function blogTitleFs(n){if(n>=12)return'clamp(1.8rem,4vw,3.8rem)';if(n>=7)return'clamp(1.3rem,2.8vw,2.4rem)';if(n>=5)return'clamp(1.2rem,2.5vw,2.2rem)';return'clamp(1.1rem,2.2vw,1.9rem)';}
         let _blogData = null;
         async function renderBlogGrid() {
             if (_blogData === null) _blogData = await fetch('/api/blog').then(r => r.json()).catch(() => []);
@@ -290,9 +289,8 @@
             const grid = document.getElementById('blog-grid');
             if (!grid) return;
             if (!data.length) { grid.innerHTML = `<div style="grid-column:1/-1;padding:80px 20px;text-align:center;color:rgba(255,255,255,0.3);">${blogEsc(btx('none'))}</div>`; return; }
-            grid.innerHTML = data.map((a, i) => {
-                const cols = a.cols || 4;
-                return `<a href="blog-detail.html?id=${blogEsc(a.id)}" class="blog-card blog-article ${blogEsc(blogColCls(cols))}" data-cat="${blogEsc(a.category)}" style="height:${blogCardH(cols,i)};"><img src="${blogEsc(a.coverImage||'')}" alt="${blogEsc(a.title)}" onerror="this.style.opacity=0"><div class="blog-overlay"></div><span class="blog-cat-tag">${blogEsc(blogCatLbl(a.category))}</span><div class="blog-info"><span class="blog-date">${blogEsc(blogFmtDate(a.date))}&nbsp;·&nbsp;${blogEsc(a.readTime)} ${blogEsc(btx('minRead'))}</span><h2 class="blog-title" style="font-size:${blogTitleFs(cols)};">${blogEsc(a.title)}</h2><p class="blog-excerpt">${blogEsc(a.excerpt)}</p><span class="blog-read-more">${blogEsc(btx('readArticle'))} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></a>`;
+            grid.innerHTML = data.map((a) => {
+                return `<a href="blog-detail.html?id=${blogEsc(a.id)}" class="blog-card blog-article" data-cat="${blogEsc(a.category)}" style="aspect-ratio:4/5;"><img src="${blogEsc(a.coverImage||'')}" alt="${blogEsc(a.title)}" onerror="this.style.opacity=0"><div class="blog-overlay"></div><span class="blog-cat-tag">${blogEsc(blogCatLbl(a.category))}</span><div class="blog-info"><span class="blog-date">${blogEsc(blogFmtDate(a.date))}&nbsp;·&nbsp;${blogEsc(a.readTime)} ${blogEsc(btx('minRead'))}</span><h2 class="blog-title" style="font-size:clamp(1.2rem,1.7vw,1.7rem);">${blogEsc(a.title)}</h2><p class="blog-excerpt">${blogEsc(a.excerpt)}</p><span class="blog-read-more">${blogEsc(btx('readArticle'))} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></a>`;
             }).join('');
             const af = document.querySelector('.filter-btn.active');
             if (af) applyBlogFilter(af.dataset.filter);
@@ -311,13 +309,6 @@
         const mainNav = document.querySelector('nav');
         menuBtn.addEventListener('click', () => { menuOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; mainNav.classList.add('nav-hidden'); });
         closeMenuBtn.addEventListener('click', () => { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; mainNav.classList.remove('nav-hidden'); });
-
-        let lastScrollY = 0;
-        window.addEventListener('scroll', () => {
-            const y = window.scrollY;
-            if (y > lastScrollY && y > 80) mainNav.classList.add('nav-hidden'); else mainNav.classList.remove('nav-hidden');
-            lastScrollY = y;
-        }, { passive: true });
 
         // Contact
         const contactModal = document.getElementById('contact-modal');

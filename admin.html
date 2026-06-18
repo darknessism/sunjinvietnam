@@ -305,6 +305,8 @@
                 <button class="chip" data-group="bc" data-val="press" onclick="setChip(this,'bc')">Press</button>
                 <button class="chip" data-group="bc" data-val="ideas" onclick="setChip(this,'bc')">Ideas</button>
                 <button class="chip" data-group="bc" data-val="community" onclick="setChip(this,'bc')">Community</button>
+                <button class="chip" data-group="bc" data-val="events" onclick="setChip(this,'bc')">Events</button>
+                <button class="chip" data-group="bc" data-val="awards" onclick="setChip(this,'bc')">Awards</button>
             </div>
             <div class="divider"></div>
             <div style="display:flex;align-items:center;gap:6px;">
@@ -702,7 +704,7 @@ function setChip(btn, group) {
 }
 
 // ─── HELPERS ─────────────────────────────────────────
-const CAT = { planning:'Planning', housing:'Housing', school:'School', hotel:'Hotel', headquarters:'HQ', news:'News', press:'Press', ideas:'Ideas', community:'Community', design:'Design', interior:'Interior', urbanplan:'Urban Plan', construction:'Construction', general:'General Affairs' };
+const CAT = { planning:'Planning', housing:'Housing', school:'School', hotel:'Hotel', headquarters:'HQ', news:'News', press:'Press', ideas:'Ideas', community:'Community', events:'Events', awards:'Awards', design:'Design', interior:'Interior', urbanplan:'Urban Plan', construction:'Construction', general:'General Affairs' };
 const LOC = { hanoi:'Hanoi', danang:'Da Nang', hcm:'Ho Chi Minh', phuquoc:'Phu Quoc' };
 
 function x(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -860,6 +862,8 @@ async function renderText() {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     _textEntries = [];
     doc.querySelectorAll('[data-tkey]').forEach(el => {
+        // Header and footer text is fixed across the site — don't expose it for editing.
+        if (el.closest('nav, header, footer')) return;
         const slot = el.getAttribute('data-tkey');
         let type, defVi, defEn;
         if (el.hasAttribute('data-en'))            { type = 'text'; defVi = (el.textContent || '').trim();  defEn = el.getAttribute('data-en') || ''; }
@@ -1076,7 +1080,7 @@ function renderDashboard() {
     document.getElementById('stat-c').textContent = pubCar;
     document.getElementById('stat-c-sub').textContent = (careers.length - pubCar) + ' draft';
 
-    const CAT_LABEL = { hotel:'Hotel', school:'School', headquarters:'HQ', social:'Social', university:'University', bridge:'Bridge', residential:'Residential', cultural:'Cultural', park:'Park', office:'Office', news:'News', ideas:'Ideas', press:'Press', community:'Community', design:'Design', interior:'Interior', urbanplan:'Urban Plan', construction:'Construction', general:'General' };
+    const CAT_LABEL = { hotel:'Hotel', school:'School', headquarters:'HQ', social:'Social', university:'University', bridge:'Bridge', residential:'Residential', cultural:'Cultural', park:'Park', office:'Office', news:'News', ideas:'Ideas', press:'Press', community:'Community', events:'Events', awards:'Awards', design:'Design', interior:'Interior', urbanplan:'Urban Plan', construction:'Construction', general:'General' };
     const catPill = v => `<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,0,0,0.38);background:rgba(0,0,0,0.05);border-radius:4px;padding:2px 7px;white-space:nowrap;flex-shrink:0;">${x(CAT_LABEL[v]||v||'—')}</span>`;
     const empty = '<p style="color:rgba(0,0,0,0.25);font-size:12px;padding:12px 0;">None yet.</p>';
 
@@ -1271,7 +1275,7 @@ function blogForm(b) {
     <div style="display:flex;flex-direction:column;gap:14px;">
         ${field('Article Title *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="Article headline">`)}
         ${grid2(
-            field('Category *', `<select id="f-cat" class="field-select">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility']],v.category||'news')}</select>`),
+            field('Category *', `<select id="f-cat" class="field-select">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility'],['events','Events'],['awards','Awards']],v.category||'news')}</select>`),
             field('Date', `<input id="f-date" class="field-input" type="date" value="${x(v.date||new Date().toISOString().slice(0,10))}">`)
         )}
         ${grid2(
@@ -1890,7 +1894,7 @@ function buildBlogContentHTML(d) {
     const metaSec = bcCard('Article Info', `
         ${fld('Article Title *', inp('bc-meta-title', vm.title||'', 'Article headline'))}
         ${row2(
-            fld('Category *', `<select id="bc-meta-cat" class="field-input" style="cursor:pointer;">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility']],vm.category||'news')}</select>`),
+            fld('Category *', `<select id="bc-meta-cat" class="field-input" style="cursor:pointer;">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility'],['events','Events'],['awards','Awards']],vm.category||'news')}</select>`),
             fld('Date', `<input id="bc-meta-date" class="field-input" type="date" value="${x(vm.date||new Date().toISOString().slice(0,10))}">`)
         )}
         ${row2(

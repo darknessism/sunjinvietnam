@@ -50,6 +50,28 @@ const SLOTS = [
     { slot: 'home-feature-5', page: 'home', label: 'Điểm nhấn · National Award',    default: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80' },
     { slot: 'home-feature-6', page: 'home', label: 'Điểm nhấn · Public Space',      default: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=80' },
 
+    // ── HOME · Đối tác (partner logos) ──────────────────────────────────────
+    { slot: 'home-partner-1',  page: 'home', label: 'Đối tác · Logo 01 (Gensler)',              default: 'https://logo.clearbit.com/gensler.com' },
+    { slot: 'home-partner-2',  page: 'home', label: 'Đối tác · Logo 02 (Foster + Partners)',    default: 'https://logo.clearbit.com/fosterandpartners.com' },
+    { slot: 'home-partner-3',  page: 'home', label: 'Đối tác · Logo 03 (Zaha Hadid Architects)', default: 'https://logo.clearbit.com/zaha-hadid.com' },
+    { slot: 'home-partner-4',  page: 'home', label: 'Đối tác · Logo 04 (SOM)',                  default: 'https://logo.clearbit.com/som.com' },
+    { slot: 'home-partner-5',  page: 'home', label: 'Đối tác · Logo 05 (AECOM)',                default: 'https://logo.clearbit.com/aecom.com' },
+    { slot: 'home-partner-6',  page: 'home', label: 'Đối tác · Logo 06 (HOK)',                  default: 'https://logo.clearbit.com/hok.com' },
+    { slot: 'home-partner-7',  page: 'home', label: 'Đối tác · Logo 07 (Perkins&Will)',         default: 'https://logo.clearbit.com/perkinswill.com' },
+    { slot: 'home-partner-8',  page: 'home', label: 'Đối tác · Logo 08 (HDR)',                  default: 'https://logo.clearbit.com/hdrinc.com' },
+    { slot: 'home-partner-9',  page: 'home', label: 'Đối tác · Logo 09 (Nikken Sekkei)',        default: 'https://logo.clearbit.com/nikken.co.jp' },
+    { slot: 'home-partner-10', page: 'home', label: 'Đối tác · Logo 10 (Aedas)',                default: 'https://logo.clearbit.com/aedas.com' },
+    { slot: 'home-partner-11', page: 'home', label: 'Đối tác · Logo 11 (KPF)',                  default: 'https://logo.clearbit.com/kpf.com' },
+    { slot: 'home-partner-12', page: 'home', label: 'Đối tác · Logo 12 (Snøhetta)',             default: 'https://logo.clearbit.com/snohetta.com' },
+    { slot: 'home-partner-13', page: 'home', label: 'Đối tác · Logo 13 (BIG)',                  default: 'https://logo.clearbit.com/big.dk' },
+    { slot: 'home-partner-14', page: 'home', label: 'Đối tác · Logo 14 (Herzog & de Meuron)',   default: 'https://logo.clearbit.com/herzogdemeuron.com' },
+    { slot: 'home-partner-15', page: 'home', label: 'Đối tác · Logo 15 (OMA)',                  default: 'https://logo.clearbit.com/oma.com' },
+    { slot: 'home-partner-16', page: 'home', label: 'Đối tác · Logo 16 (Stantec)',              default: 'https://logo.clearbit.com/stantec.com' },
+    { slot: 'home-partner-17', page: 'home', label: 'Đối tác · Logo 17 (NBBJ)',                 default: 'https://logo.clearbit.com/nbbj.com' },
+    { slot: 'home-partner-18', page: 'home', label: 'Đối tác · Logo 18 (Populous)',             default: 'https://logo.clearbit.com/populous.com' },
+    { slot: 'home-partner-19', page: 'home', label: 'Đối tác · Logo 19 (Heerim)',               default: 'https://logo.clearbit.com/heerim.com' },
+    { slot: 'home-partner-20', page: 'home', label: 'Đối tác · Logo 20 (Sasaki)',               default: 'https://logo.clearbit.com/sasaki.com' },
+
     // ── ABOUT (about.html) ─────────────────────────────────────────────────
     { slot: 'about-hero',       page: 'about', label: 'Hero — ảnh nền đầu trang',          default: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
     { slot: 'about-collage-1',  page: 'about', label: 'Ảnh ghép giới thiệu · 1',            default: 'https://images.unsplash.com/photo-1558449070-b4ddd1f29f6f?auto=format&fit=crop&w=1400&q=80' },
@@ -71,15 +93,11 @@ const SLOTS = [
     { slot: 'about-team-4',     page: 'about', label: 'Ban lãnh đạo · Mr. Công',            default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Cong-325x401-up.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
     { slot: 'about-team-5',     page: 'about', label: 'Ban lãnh đạo · Mr. Sỹ',              default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/02/E-Sy-KT2-up.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
     { slot: 'about-team-6',     page: 'about', label: 'Ban lãnh đạo · Mr. Hùng',            default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/01/Mr-Hung-UP.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { slot: 'about-team-7',     page: 'about', label: 'Ban lãnh đạo · Thành viên mới (7)',   default: STAFF_PH },
     { slot: 'about-fp-1',       page: 'about', label: 'Nguyên tắc nền tảng · Ảnh nền 1',    default: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80' },
     { slot: 'about-fp-2',       page: 'about', label: 'Nguyên tắc nền tảng · Ảnh nền 2',    default: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80' },
     { slot: 'about-fp-3',       page: 'about', label: 'Nguyên tắc nền tảng · Ảnh nền 3',    default: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80' },
-    { slot: 'about-award-1',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 1',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/10/pavilion_amp-scaled.jpg' },
-    { slot: 'about-award-2',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 2',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/06/z5523924862513_982735619bbef78e550b752285151da5.jpg' },
-    { slot: 'about-award-3',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 3',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/08/dhtm5.jpg' },
-    { slot: 'about-award-4',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 4',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/01/Asian-7-up.jpg' },
-    { slot: 'about-award-5',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 5',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2024/01/Giai-Bac-KT-Quoc-Gia.jpg' },
-    { slot: 'about-award-6',    page: 'about', label: 'Thành tựu / Giải thưởng · Ảnh 6',    default: 'https://sunjinvietnam.vn/wp-content/uploads/2023/12/Giai-dong-KT-Quoc-Gia-Ct11-12-13.jpg' },
+    // (Award images now come from each "awards" blog post's cover image, managed in the Blog module.)
     { slot: 'about-grid-1',     page: 'about', label: 'Lưới hình ảnh · Ảnh 1',              default: 'https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1400' },
     { slot: 'about-grid-2',     page: 'about', label: 'Lưới hình ảnh · Ảnh 2',              default: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1400' },
     { slot: 'about-grid-3',     page: 'about', label: 'Lưới hình ảnh · Ảnh 3',              default: 'https://images.pexels.com/photos/2190283/pexels-photo-2190283.jpeg?auto=compress&cs=tinysrgb&w=1400' },
@@ -100,7 +118,6 @@ const SLOTS = [
     { slot: 'about-staff-13', page: 'about', label: 'Đội ngũ · Thành viên 13', default: STAFF_PH },
     { slot: 'about-staff-14', page: 'about', label: 'Đội ngũ · Thành viên 14', default: STAFF_PH },
     { slot: 'about-staff-15', page: 'about', label: 'Đội ngũ · Thành viên 15', default: STAFF_PH },
-    { slot: 'about-staff-16', page: 'about', label: 'Đội ngũ · Thành viên 16', default: STAFF_PH },
 ];
 const SLOT_MAP = new Map(SLOTS.map(s => [s.slot, s]));
 

@@ -29,13 +29,26 @@ router.get('/:id', async (req, res, next) => {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// DATE columns come back from mysql2 as JS Date objects; String(date) yields
+// "Mon Jan 01 2024 …" whose .slice(0,10) drops the year. Normalise to YYYY-MM-DD.
+function fmtDate(d) {
+    if (!d) return null;
+    if (d instanceof Date) {
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+    return String(d).slice(0, 10);
+}
+
 function toPost(r) {
     return {
         id:         r.id,
         title:      r.title,
         category:   r.category,
         author:     r.author,
-        date:       r.post_date ? String(r.post_date).slice(0, 10) : null,
+        date:       fmtDate(r.post_date),
         readTime:   r.read_time,
         excerpt:    r.excerpt,
         coverImage: r.cover_image,

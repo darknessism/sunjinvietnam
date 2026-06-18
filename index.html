@@ -32,11 +32,23 @@
 
     <style>
         /* Custom Styles & Animations */
+        /* Fixed-header height — content is offset by this so the header never overlaps it. */
+        :root { --hdr-h: 56px; }
+        @media (min-width: 768px) { :root { --hdr-h: 72px; } }
+
         body {
             background-color: #0a0a0a;
             color: #f5f5f5;
             cursor: none; /* Custom cursor */
             overflow-x: hidden;
+            padding-top: var(--hdr-h); /* start page content below the fixed header */
+        }
+
+        /* Full-screen pinned sections stick *below* the header instead of under it. */
+        .sticky-below-hdr {
+            position: sticky;
+            top: var(--hdr-h);
+            height: calc(100vh - var(--hdr-h));
         }
 
         /* Custom Cursor */
@@ -122,7 +134,7 @@
             vertical-align: bottom;
             height: 1.2em;
         }
-        .word-cycler span {
+        .word-cycler > span {
             display: flex;
             align-items: center;
             position: absolute;
@@ -132,11 +144,11 @@
             transition: top 0.5s cubic-bezier(0.65, 0, 0.35, 1);
             opacity: 0;
         }
-        .word-cycler span.active {
+        .word-cycler > span.active {
             top: 0;
             opacity: 1;
         }
-        .word-cycler span.prev {
+        .word-cycler > span.prev {
             top: -100%;
             opacity: 0;
         }
@@ -245,8 +257,8 @@
     <div class="cursor-outline" id="cursor-outline"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
-        <a href="#"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+    <nav class="fixed top-0 left-0 w-full px-6 md:px-10 py-2 md:py-3 flex justify-between items-center z-50 bg-black text-white border-b border-white/10">
+        <a href="#" class="flex items-center h-10 md:h-12 overflow-hidden"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-24 w-auto object-contain -my-5 md:-my-6" /></a>
         
         <div class="flex items-center gap-4 md:gap-6">
             <span data-lang-toggle></span>
@@ -321,7 +333,7 @@
 
     <!-- Mega Section (Hero + Methodology) -->
     <section id="mega-section" class="relative bg-white text-dark w-full" style="height: 1000vh;">
-        <div class="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+        <div class="sticky-below-hdr w-full overflow-hidden flex flex-col justify-between">
             
             <!-- Horizontal Track -->
             <div id="horizontal-track" class="flex w-[300vw] h-full will-change-transform">
@@ -342,22 +354,22 @@
                     <!-- HERO TEXT (Fades Out on scroll) -->
                     <div id="hero-text-content" class="absolute inset-0 z-10 flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-16 md:pb-28 w-full h-full">
                         <h1 class="font-display text-3xl md:text-7xl lg:text-[70px] font-normal leading-[1.1] tracking-tight reveal-up text-white">
-                            Architecture<br/>
+                            <span data-tkey="home-t055" data-en="Architecture">Architecture</span><br/>
                             <div id="hero-words" class="word-cycler w-full h-[2.6em] md:h-[1.2em] relative align-bottom">
                                 <span class="active text-white text-base md:text-[inherit] lg:text-[40px]">
-                                    is not about space but about time. — Vito Acconci
+                                    <span data-tkey="home-t056" data-en="is not about space but about time. — Vito Acconci">is not about space but about time. — Vito Acconci</span>
                                     <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
                                     </svg>
                                 </span>
                                 <span class="text-white text-base md:text-[inherit] lg:text-[40px]">
-                                    is the will of an epoch translated into space. — Ludwig Mies
+                                    <span data-tkey="home-t057" data-en="is the will of an epoch translated into space. — Ludwig Mies">is the will of an epoch translated into space. — Ludwig Mies</span>
                                     <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
                                     </svg>
                                 </span>
                                 <span class="text-white text-base md:text-[inherit] lg:text-[40px]">
-                                    is a visual art, and the buildings speak for themselves. — Julia Morgan
+                                    <span data-tkey="home-t058" data-en="is a visual art, and the buildings speak for themselves. — Julia Morgan">is a visual art, and the buildings speak for themselves. — Julia Morgan</span>
                                     <svg class="w-10 h-10 md:w-14 md:h-14 ml-4 spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z" fill="currentColor"/>
                                     </svg>
@@ -482,7 +494,7 @@
 
     <!-- Projects Scroll Section -->
     <section id="projects-section" class="relative" style="height: 700vh;">
-        <div class="sticky top-0 h-screen overflow-hidden bg-black">
+        <div class="sticky-below-hdr overflow-hidden bg-black">
 
             <!-- Full-screen Backgrounds (crossfade) -->
             <div class="absolute inset-0 z-0">
@@ -903,6 +915,99 @@
         </div>
     </section>
 
+    <!-- Partners Section -->
+    <style>
+        .partners-marquee { width: 100%; overflow: hidden; }
+        .partners-track {
+            display: flex;
+            width: max-content;
+            animation: partners-scroll 55s linear infinite;
+        }
+        .partners-track:hover { animation-play-state: paused; }
+        .partner-item {
+            flex: 0 0 auto;
+            margin: 0 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .partner-box {
+            width: 170px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 16px 20px;
+        }
+        .partner-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .partner-name {
+            margin-top: 12px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            white-space: nowrap;
+        }
+        @keyframes partners-scroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+        @media (max-width: 768px) {
+            .partner-item { margin: 0 10px; }
+            .partner-box { width: 130px; height: 70px; }
+            .partner-name { font-size: 10px; margin-top: 9px; }
+        }
+    </style>
+    <section class="bg-black py-12 md:py-16">
+        <div class="px-6 md:px-16 lg:px-24 mb-10 md:mb-14">
+            <h2 class="font-display text-4xl md:text-6xl font-normal leading-none tracking-tight text-white" data-tkey="home-t054" data-en="Partners">Đối tác</h2>
+        </div>
+        <div class="partners-marquee">
+            <!-- Logos are managed in the admin Photo module (slots home-partner-1..20);
+                 names are editable in the admin Text Content module (Home tab).
+                 The set is duplicated at runtime for a seamless right-to-left loop. -->
+            <div class="partners-track" id="partners-track">
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-1"  src="https://logo.clearbit.com/gensler.com" alt="Gensler"></div><div class="partner-name" data-tkey="home-partner-name-1"  data-en="Gensler">Gensler</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-2"  src="https://logo.clearbit.com/fosterandpartners.com" alt="Foster + Partners"></div><div class="partner-name" data-tkey="home-partner-name-2"  data-en="Foster + Partners">Foster + Partners</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-3"  src="https://logo.clearbit.com/zaha-hadid.com" alt="Zaha Hadid Architects"></div><div class="partner-name" data-tkey="home-partner-name-3"  data-en="Zaha Hadid Architects">Zaha Hadid Architects</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-4"  src="https://logo.clearbit.com/som.com" alt="SOM"></div><div class="partner-name" data-tkey="home-partner-name-4"  data-en="SOM">SOM</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-5"  src="https://logo.clearbit.com/aecom.com" alt="AECOM"></div><div class="partner-name" data-tkey="home-partner-name-5"  data-en="AECOM">AECOM</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-6"  src="https://logo.clearbit.com/hok.com" alt="HOK"></div><div class="partner-name" data-tkey="home-partner-name-6"  data-en="HOK">HOK</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-7"  src="https://logo.clearbit.com/perkinswill.com" alt="Perkins&amp;Will"></div><div class="partner-name" data-tkey="home-partner-name-7"  data-en="Perkins&amp;Will">Perkins&amp;Will</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-8"  src="https://logo.clearbit.com/hdrinc.com" alt="HDR"></div><div class="partner-name" data-tkey="home-partner-name-8"  data-en="HDR">HDR</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-9"  src="https://logo.clearbit.com/nikken.co.jp" alt="Nikken Sekkei"></div><div class="partner-name" data-tkey="home-partner-name-9"  data-en="Nikken Sekkei">Nikken Sekkei</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-10" src="https://logo.clearbit.com/aedas.com" alt="Aedas"></div><div class="partner-name" data-tkey="home-partner-name-10" data-en="Aedas">Aedas</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-11" src="https://logo.clearbit.com/kpf.com" alt="KPF"></div><div class="partner-name" data-tkey="home-partner-name-11" data-en="KPF">KPF</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-12" src="https://logo.clearbit.com/snohetta.com" alt="Snøhetta"></div><div class="partner-name" data-tkey="home-partner-name-12" data-en="Snøhetta">Snøhetta</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-13" src="https://logo.clearbit.com/big.dk" alt="BIG"></div><div class="partner-name" data-tkey="home-partner-name-13" data-en="BIG — Bjarke Ingels Group">BIG — Bjarke Ingels Group</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-14" src="https://logo.clearbit.com/herzogdemeuron.com" alt="Herzog &amp; de Meuron"></div><div class="partner-name" data-tkey="home-partner-name-14" data-en="Herzog &amp; de Meuron">Herzog &amp; de Meuron</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-15" src="https://logo.clearbit.com/oma.com" alt="OMA"></div><div class="partner-name" data-tkey="home-partner-name-15" data-en="OMA">OMA</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-16" src="https://logo.clearbit.com/stantec.com" alt="Stantec"></div><div class="partner-name" data-tkey="home-partner-name-16" data-en="Stantec">Stantec</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-17" src="https://logo.clearbit.com/nbbj.com" alt="NBBJ"></div><div class="partner-name" data-tkey="home-partner-name-17" data-en="NBBJ">NBBJ</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-18" src="https://logo.clearbit.com/populous.com" alt="Populous"></div><div class="partner-name" data-tkey="home-partner-name-18" data-en="Populous">Populous</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-19" src="https://logo.clearbit.com/heerim.com" alt="Heerim"></div><div class="partner-name" data-tkey="home-partner-name-19" data-en="Heerim">Heerim</div></div>
+                <div class="partner-item"><div class="partner-box"><img data-img-slot="home-partner-20" src="https://logo.clearbit.com/sasaki.com" alt="Sasaki"></div><div class="partner-name" data-tkey="home-partner-name-20" data-en="Sasaki">Sasaki</div></div>
+            </div>
+        </div>
+    </section>
+    <script>
+        // Duplicate the 20 partner boxes once so the marquee loops seamlessly (translateX -50%).
+        (function () {
+            var track = document.getElementById('partners-track');
+            if (track) track.innerHTML += track.innerHTML;
+        })();
+    </script>
+
     <!-- Blog Section -->
     <section class="py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white text-dark">
         <!-- Header -->
@@ -1032,7 +1137,7 @@
                     <p>P: 097 7279 066</p>
                 </div>
                 <div>
-                    <p>A: 2ND FLOOR - 3A, N07-B2 BUILDING</p>
+                    <p>A: 2 - 3A FLOOR, N07-B2 BUILDING</p>
                     <p>CAU GIAY WARD, HA NOI,</p>
                     <p>VIETNAM</p>
                 </div>
@@ -1060,7 +1165,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end reveal-up" style="transition-delay: 0.2s">
             <!-- Left: Logo & Copyright -->
             <div class="lg:col-span-4 flex flex-col justify-between h-full gap-8 lg:gap-16">
-                <a href="#" class="interactive"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-20 md:h-28 w-auto object-contain" /></a>
+                <a href="#" class="interactive"><img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="Sunjin Vietnam" class="h-32 md:h-44 w-auto object-contain" /></a>
                 <p class="font-sans text-[11px] md:text-xs uppercase tracking-[0.1em] text-white/90">
                     &copy; 2026 SUNJIN VIETNAM. ALL RIGHTS RESERVED
                 </p>
@@ -1145,7 +1250,7 @@
         const progressBar = document.getElementById('hero-progress');
 
         if (videos.length > 0 && heroWordsContainer && heroCounter && progressBar) {
-            const spans = heroWordsContainer.querySelectorAll('span');
+            const spans = heroWordsContainer.querySelectorAll(':scope > span');
             let currentSlide = 0;
             const totalSlides = spans.length;
             const slideDuration = 6000; // 6 seconds per slide
@@ -1474,18 +1579,8 @@
             });
         }
 
-        // Nav hide on scroll down, show on scroll up
+        // Nav reference (used by the fullscreen menu logic to hide/show the bar)
         const mainNav = document.querySelector('nav');
-        let lastScrollY = 0;
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY && currentScrollY > 80) {
-                mainNav.classList.add('nav-hidden');
-            } else {
-                mainNav.classList.remove('nav-hidden');
-            }
-            lastScrollY = currentScrollY;
-        }, { passive: true });
 
         // Contact Modal Logic
         const contactModal = document.getElementById('contact-modal');
