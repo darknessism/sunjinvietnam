@@ -78,6 +78,9 @@
         .blog-read-more { display: inline-flex; align-items: center; gap: 6px; font-family: 'Open Sans', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.38); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.35s ease 0.18s, transform 0.35s ease 0.18s; }
         .blog-card:hover .blog-read-more { opacity: 1; transform: translateY(0); }
         .blog-card.hidden-card { display: none; }
+        .pg-arrow { width: 44px; height: 44px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.28); color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; background: none; cursor: pointer; transition: border-color 0.25s ease, color 0.25s ease; }
+        .pg-arrow:hover:not(:disabled) { border-color: #fff; color: #fff; }
+        .pg-arrow:disabled { opacity: 0.25; cursor: default; }
     </style>
     <script src="gate.js"></script>
 </head>
@@ -189,12 +192,14 @@
     </div>
 
     <!-- 3. Blog Grid -->
-    <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.12]">
+    <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
 
         <!-- Articles rendered dynamically from localStorage by renderBlogGrid() -->
 
 
     </div>
+    <!-- Pagination (10 per page) -->
+    <div id="blog-pagination" class="px-6 md:px-12 lg:px-16 pb-4"></div>
 
     <!-- Footer -->
     <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
@@ -258,17 +263,18 @@
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal-up, .reveal-fade').forEach(el => observer.observe(el));
 
-        // Blog filter
-        function applyBlogFilter(f) {
-            document.querySelectorAll('.blog-article').forEach(c => c.classList.toggle('hidden-card', f !== 'all' && c.dataset.cat !== f));
-        }
+        // Blog filter + pagination state
+        const BLOG_PER_PAGE = 10;
+        let _blogFilter = 'all';
+        let _blogPage = 0;
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                const filter = btn.dataset.filter;
+                _blogFilter = btn.dataset.filter;
+                _blogPage = 0;
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                applyBlogFilter(filter);
+                renderBlogGrid();
             });
         });
 
@@ -281,19 +287,45 @@
         function blogFmtDate(iso){try{return new Date(iso).toLocaleDateString(L()==='vi'?'vi-VN':'en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return iso||'';}}
         function blogCatLbl(c){return (BCAT[L()]||BCAT.vi)[c]||c;}
         let _blogData = null;
+        window.blogSetPage = function (p) {
+            _blogPage = p;
+            renderBlogGrid();
+            const grid = document.getElementById('blog-grid');
+            if (grid) window.scrollTo({ top: grid.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+        };
+        function blogPager(page, pageCount) {
+            if (pageCount <= 1) return '';
+            const prev = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
+            const next = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+            return `<div class="flex items-center justify-center gap-8 mt-14 md:mt-20">
+                <button class="pg-arrow" ${page === 0 ? 'disabled' : ''} onclick="blogSetPage(${page - 1})" aria-label="Previous">${prev}</button>
+                <span class="font-sans text-[11px] uppercase tracking-[0.28em] text-white/50">${String(page + 1).padStart(2, '0')} / ${String(pageCount).padStart(2, '0')}</span>
+                <button class="pg-arrow" ${page === pageCount - 1 ? 'disabled' : ''} onclick="blogSetPage(${page + 1})" aria-label="Next">${next}</button>
+            </div>`;
+        }
         async function renderBlogGrid() {
             if (_blogData === null) _blogData = await fetch('/api/blog').then(r => r.json()).catch(() => []);
-            const data = _blogData;
-            const ct = document.getElementById('art-count');
-            if (ct) ct.textContent = String(data.length).padStart(2,'0');
-            const grid = document.getElementById('blog-grid');
+            const grid  = document.getElementById('blog-grid');
+            const pager = document.getElementById('blog-pagination');
             if (!grid) return;
-            if (!data.length) { grid.innerHTML = `<div style="grid-column:1/-1;padding:80px 20px;text-align:center;color:rgba(255,255,255,0.3);">${blogEsc(btx('none'))}</div>`; return; }
-            grid.innerHTML = data.map((a) => {
+            const ct = document.getElementById('art-count');
+            if (ct) ct.textContent = String(_blogData.length).padStart(2, '0');
+
+            const items = _blogFilter === 'all' ? _blogData : _blogData.filter(a => a.category === _blogFilter);
+            const pageCount = Math.max(1, Math.ceil(items.length / BLOG_PER_PAGE));
+            if (_blogPage >= pageCount) _blogPage = pageCount - 1;
+            if (_blogPage < 0) _blogPage = 0;
+
+            if (!items.length) {
+                grid.innerHTML = `<div style="grid-column:1/-1;padding:80px 20px;text-align:center;color:rgba(255,255,255,0.3);">${blogEsc(btx('none'))}</div>`;
+                if (pager) pager.innerHTML = '';
+                return;
+            }
+            const start = _blogPage * BLOG_PER_PAGE;
+            grid.innerHTML = items.slice(start, start + BLOG_PER_PAGE).map((a) => {
                 return `<a href="blog-detail.html?id=${blogEsc(a.id)}" class="blog-card blog-article" data-cat="${blogEsc(a.category)}" style="aspect-ratio:4/5;"><img src="${blogEsc(a.coverImage||'')}" alt="${blogEsc(a.title)}" onerror="this.style.opacity=0"><div class="blog-overlay"></div><span class="blog-cat-tag">${blogEsc(blogCatLbl(a.category))}</span><div class="blog-info"><span class="blog-date">${blogEsc(blogFmtDate(a.date))}&nbsp;·&nbsp;${blogEsc(a.readTime)} ${blogEsc(btx('minRead'))}</span><h2 class="blog-title" style="font-size:clamp(1.2rem,1.7vw,1.7rem);">${blogEsc(a.title)}</h2><p class="blog-excerpt">${blogEsc(a.excerpt)}</p><span class="blog-read-more">${blogEsc(btx('readArticle'))} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></a>`;
             }).join('');
-            const af = document.querySelector('.filter-btn.active');
-            if (af) applyBlogFilter(af.dataset.filter);
+            if (pager) pager.innerHTML = blogPager(_blogPage, pageCount);
             document.querySelectorAll('.blog-article').forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                 el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));

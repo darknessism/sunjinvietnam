@@ -1505,9 +1505,6 @@ function blankDetail(title) {
         narrative1: [''],
         narrative2: [''],
         highlights: [''],
-        specs: [{ k: '', v: '' }],
-        credits: [{ r: '', n: '' }],
-        awards: [{ a: '', d: '' }],
     };
 }
 
@@ -1657,46 +1654,7 @@ function buildDetailHTML(d) {
         <button onclick="addItem('highlights')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Highlight</button>
     `);
 
-    // SPECS
-    const specRows = (d.specs || [{k:'',v:''}]).map((s, i) => `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;align-items:center;">
-            ${inp('d-sk-' + i, s.k, 'Key (e.g. Total Built Area)')}
-            ${inp('d-sv-' + i, s.v, 'Value (e.g. 18,400 sqm)')}
-            <button onclick="removeItem('specs',${i})" style="background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>`).join('');
-    const specs = card('Technical Data (accordion)', `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Label</span><span class="field-label">Value</span><span></span></div>
-        <div id="spec-wrap">${specRows}</div>
-        <button onclick="addItem('specs')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Row</button>
-    `);
-
-    // CREDITS
-    const creditRows = (d.credits || [{r:'',n:''}]).map((c, i) => `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;align-items:center;">
-            ${inp('d-cr-' + i, c.r, 'Role (e.g. Principal in Charge)')}
-            ${inp('d-cn-' + i, c.n, 'Name')}
-            <button onclick="removeItem('credits',${i})" style="background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>`).join('');
-    const credits = card('Design Team (accordion)', `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Role</span><span class="field-label">Name</span><span></span></div>
-        <div id="credit-wrap">${creditRows}</div>
-        <button onclick="addItem('credits')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Member</button>
-    `);
-
-    // AWARDS
-    const awardRows = (d.awards || [{a:'',d:''}]).map((a, i) => `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;align-items:center;">
-            ${inp('d-aa-' + i, a.a, 'Award name')}
-            ${inp('d-ad-' + i, a.d, 'Description / category')}
-            <button onclick="removeItem('awards',${i})" style="background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>`).join('');
-    const awards = card('Awards & Recognition (accordion)', `
-        <div style="display:grid;grid-template-columns:1fr 1fr 28px;gap:8px;margin-bottom:8px;"><span class="field-label">Award</span><span class="field-label">Description</span><span></span></div>
-        <div id="award-wrap">${awardRows}</div>
-        <button onclick="addItem('awards')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Award</button>
-    `);
-
-    return identity + gallery + leadSec + narrative + highlights + specs + credits + awards;
+    return identity + gallery + leadSec + narrative + highlights;
 }
 
 // ─── COLLECT VALUES ───────────────────────────────────
@@ -1730,9 +1688,6 @@ function collectDetail() {
     _dd.narrative1 = (_dd.narrative1||['']).map((_, i) => { const el = document.getElementById('d-n1-' + i); return el ? el.value : _dd.narrative1[i]; });
     _dd.narrative2 = (_dd.narrative2||['']).map((_, i) => { const el = document.getElementById('d-n2-' + i); return el ? el.value : _dd.narrative2[i]; });
     _dd.highlights = (_dd.highlights||['']).map((_, i) => { const el = document.getElementById('d-hl-' + i); return el ? el.value : _dd.highlights[i]; });
-    _dd.specs    = (_dd.specs||[]).map((_, i) => { const k = document.getElementById('d-sk-' + i), v = document.getElementById('d-sv-' + i); return { k: k?k.value:'', v: v?v.value:'' }; });
-    _dd.credits  = (_dd.credits||[]).map((_, i) => { const r = document.getElementById('d-cr-' + i), n = document.getElementById('d-cn-' + i); return { r: r?r.value:'', n: n?n.value:'' }; });
-    _dd.awards   = (_dd.awards||[]).map((_, i) => { const a = document.getElementById('d-aa-' + i), d = document.getElementById('d-ad-' + i); return { a: a?a.value:'', d: d?d.value:'' }; });
 }
 
 // ─── DYNAMIC LISTS ────────────────────────────────────
@@ -1759,14 +1714,11 @@ function removeNarrative(n, i) {
 function addItem(type) {
     collectDetail();
     if (type === 'highlights') _dd.highlights.push('');
-    else if (type === 'specs')   _dd.specs.push({ k: '', v: '' });
-    else if (type === 'credits') _dd.credits.push({ r: '', n: '' });
-    else if (type === 'awards')  _dd.awards.push({ a: '', d: '' });
     renderDetailBody();
 }
 function removeItem(type, i) {
     collectDetail();
-    const min = { highlights: [''], specs: [{k:'',v:''}], credits: [{r:'',n:''}], awards: [{a:'',d:''}] };
+    const min = { highlights: [''] };
     _dd[type].splice(i, 1);
     if (!_dd[type].length) _dd[type] = min[type];
     renderDetailBody();

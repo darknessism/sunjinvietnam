@@ -112,7 +112,7 @@
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <span id="award-badge-text"></span>
                 </div>
-                <a href="project.html" class="close-btn">
+                <a href="project.html" class="close-btn ml-auto">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
                     <span data-en="Close">Đóng</span>
                 </a>
@@ -144,58 +144,15 @@
         </div>
         <p class="panel-caption mb-10" id="proj-photo1-cap"></p>
 
-        <p class="section-label" data-en="Design Concept">Ý tưởng thiết kế</p>
-        <div id="proj-narrative1"></div>
-
         <div class="panel-photo mb-3 mt-10" style="height:300px;">
             <img id="proj-photo2" src="" alt="" style="height:300px; object-fit:cover; width:100%;">
         </div>
         <p class="panel-caption mb-10" id="proj-photo2-cap"></p>
 
-        <div id="proj-narrative2"></div>
-
-        <div class="mt-10 mb-2">
-            <p class="section-label" data-en="Design Highlights">Điểm nhấn thiết kế</p>
-            <div id="proj-highlights"></div>
-        </div>
-
         <div class="panel-photo mb-3 mt-10" style="height:260px;">
             <img id="proj-photo3" src="" alt="" style="height:260px; object-fit:cover; width:100%;">
         </div>
         <p class="panel-caption mb-12" id="proj-photo3-cap"></p>
-
-        <!-- Technical Data -->
-        <div class="accordion-wrapper">
-            <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title" data-en="Technical Data">Thông số kỹ thuật</span>
-                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div class="accordion-content">
-                <div class="accordion-inner" id="proj-specs"></div>
-            </div>
-        </div>
-
-        <!-- Design Team -->
-        <div class="accordion-wrapper">
-            <button class="accordion-header" onclick="toggleAccordion(this)">
-                <span class="accordion-title" data-en="Design Team">Đội ngũ thiết kế</span>
-                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div class="accordion-content">
-                <div class="accordion-inner" id="proj-credits"></div>
-            </div>
-        </div>
-
-        <!-- Awards -->
-        <div class="accordion-wrapper">
-            <button class="accordion-header" onclick="toggleAccordion(this)" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <span class="accordion-title" data-en="Awards &amp; Recognition">Giải thưởng &amp; Ghi nhận</span>
-                <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div class="accordion-content">
-                <div class="accordion-inner" id="proj-awards-inner"></div>
-            </div>
-        </div>
 
         <!-- CTA -->
         <div class="mt-14 pt-10 border-t border-white/[0.07]">
@@ -305,12 +262,6 @@
         p3.src = d.images[3] || d.images[0] || ''; p3.alt = d.photo3alt || '';
         document.getElementById('proj-photo3-cap').textContent = d.photo3cap || '';
 
-        document.getElementById('proj-narrative1').innerHTML = (d.narrative1 || []).map(p => `<p class="body-para">${esc(p)}</p>`).join('');
-        document.getElementById('proj-narrative2').innerHTML = (d.narrative2 || []).map(p => `<p class="body-para">${esc(p)}</p>`).join('');
-        document.getElementById('proj-highlights').innerHTML = (d.highlights || []).map(h => `<div class="highlight-item">${esc(h)}</div>`).join('');
-        document.getElementById('proj-specs').innerHTML = (d.specs || []).map(s => `<div class="spec-row"><span class="spec-key">${esc(s.k)}</span><span class="spec-val">${esc(s.v)}</span></div>`).join('');
-        document.getElementById('proj-credits').innerHTML = (d.credits || []).map(c => `<div class="credit-row"><span class="credit-role">${esc(c.r)}</span><span class="credit-name">${esc(c.n)}</span></div>`).join('');
-        document.getElementById('proj-awards-inner').innerHTML = (d.awards || []).map(a => `<div class="credit-row"><span class="credit-role">${esc(a.a)}</span><span class="credit-name">${esc(a.d)}</span></div>`).join('');
     }
 
     // ── Overview panel — called with the API project object ──────────────────────
