@@ -410,7 +410,7 @@
             <button class="chip"        data-group="bannerpage" data-val="about" onclick="switchBannerPage('about', this)">About</button>
         </div>
         <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5;">
-            Each box is one banner video clip. Paste a direct video URL (e.g. an <strong>.mp4</strong> link from Pexels, a CDN or Cloudinary) and click <strong>Save</strong> to replace it across the live site. Leave empty / click <strong>Reset</strong> to restore the original clip.
+            Each box is one banner video clip. Either paste a direct video URL (e.g. an <strong>.mp4</strong> link from Pexels, a CDN or Cloudinary) and click <strong>Save URL</strong>, or click <strong>Upload Video</strong> to upload a small file (MP4/WEBM/OGG/MOV, max 50&nbsp;MB) — both replace it across the live site. Click <strong>Reset</strong> to restore the original clip.
         </div>
         <div id="banners-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
         <div id="banners-empty" class="empty-state" style="display:none;">Loading banners…</div>
@@ -773,10 +773,13 @@ async function renderBanners() {
         slots.length + ' clips · ' + slots.filter(s => s.hasOverride).length + ' replaced';
 
     grid.innerHTML = slots.map(s => {
-        const effective = s.url || s.default;
+        const effective = s.previewUrl || s.url || s.default;
         const badge = s.hasOverride
-            ? `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:#1c6b3f;background:rgba(28,107,63,0.1);border-radius:4px;padding:2px 7px;">Replaced</span>`
+            ? `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:#1c6b3f;background:rgba(28,107,63,0.1);border-radius:4px;padding:2px 7px;">${s.kind === 'file' ? 'Uploaded' : 'Replaced'}</span>`
             : `<span style="font-size:8px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.32);background:rgba(0,0,0,0.05);border-radius:4px;padding:2px 7px;">Original</span>`;
+        const fileNote = s.kind === 'file'
+            ? `<span style="font-size:10px;color:rgba(0,0,0,0.4);">Currently showing an uploaded video file.</span>`
+            : '';
         return `
         <div style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;">
             <div style="aspect-ratio:16/9;background:#111;overflow:hidden;">
@@ -789,9 +792,12 @@ async function renderBanners() {
                 </div>
                 <input type="url" id="bn-url-${x(s.slot)}" class="field-input" value="${x(s.url || '')}" placeholder="${x(s.default)}" style="font-size:11px;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                    <button onclick="saveBannerClip('${x(s.slot)}')" style="flex:1;font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save</button>
+                    <button onclick="saveBannerClip('${x(s.slot)}')" style="flex:1;font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save URL</button>
+                    <input type="file" id="bn-file-${x(s.slot)}" accept="video/mp4,video/webm,video/ogg,video/quicktime" style="display:none;" onchange="uploadBannerClip('${x(s.slot)}', this)">
+                    <button onclick="document.getElementById('bn-file-${x(s.slot)}').click()" style="flex:1;font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:#0a0a0a;background:white;border:1px solid rgba(0,0,0,0.2);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Upload Video</button>
                     ${s.hasOverride ? `<button onclick="resetBannerClip('${x(s.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.5);background:white;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Reset</button>` : ''}
                 </div>
+                ${fileNote}
             </div>
         </div>`;
     }).join('');
@@ -806,6 +812,30 @@ async function saveBannerClip(slot) {
         renderBanners();
     } catch (e) {
         toast('Save failed: ' + e.message);
+    }
+}
+
+async function uploadBannerClip(slot, input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    if (file.size > 50 * 1024 * 1024) { toast('Video is too large (max 50 MB). Host larger files and paste a URL.'); input.value = ''; return; }
+    const token = sessionStorage.getItem('sj_token');
+    const fd = new FormData();
+    fd.append('video', file);
+    try {
+        const res = await fetch('/api/banner-clips/admin/' + slot + '/upload', {
+            method: 'POST',
+            headers: token ? { Authorization: 'Bearer ' + token } : {},
+            body: fd,
+        });
+        if (res.status === 401) { doLogout(); return; }
+        if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Upload failed');
+        toast('Banner video uploaded.');
+        renderBanners();
+    } catch (e) {
+        toast('Upload failed: ' + e.message);
+    } finally {
+        input.value = '';
     }
 }
 
