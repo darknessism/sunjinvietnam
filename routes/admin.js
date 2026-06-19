@@ -131,14 +131,14 @@ router.post('/blog', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `INSERT INTO blog_posts (id, title, category, author, post_date, read_time, excerpt, cover_image, status, cols, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `INSERT INTO blog_posts (id, title, category, author, post_date, read_time, excerpt, cover_image, status, cols, featured, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON DUPLICATE KEY UPDATE
                title=VALUES(title), category=VALUES(category), author=VALUES(author),
                post_date=VALUES(post_date), read_time=VALUES(read_time), excerpt=VALUES(excerpt),
-               cover_image=VALUES(cover_image), status=VALUES(status)`,
+               cover_image=VALUES(cover_image), status=VALUES(status), featured=VALUES(featured)`,
             [p.id, p.title, p.category, p.author, p.date || null, p.readTime || 5,
-             p.excerpt, p.coverImage, p.status || 'draft', p.cols ?? 12,
+             p.excerpt, p.coverImage, p.status || 'draft', p.cols ?? 12, p.featured ? 1 : 0,
              p.createdAt || new Date().toISOString().slice(0, 10)]
         );
         const [[row]] = await pool.query('SELECT * FROM blog_posts WHERE id = ?', [p.id]);
@@ -151,9 +151,9 @@ router.put('/blog/:id', async (req, res, next) => {
         const p = req.body;
         await pool.query(
             `UPDATE blog_posts SET title=?, category=?, author=?, post_date=?, read_time=?,
-             excerpt=?, cover_image=?, status=? WHERE id=?`,
+             excerpt=?, cover_image=?, status=?, featured=? WHERE id=?`,
             [p.title, p.category, p.author, p.date || null, p.readTime || 5,
-             p.excerpt, p.coverImage, p.status, req.params.id]
+             p.excerpt, p.coverImage, p.status, p.featured ? 1 : 0, req.params.id]
         );
         const [[row]] = await pool.query('SELECT * FROM blog_posts WHERE id = ?', [req.params.id]);
         res.json(toPost(row));
@@ -370,6 +370,7 @@ function toPost(r) {
         coverImage: r.cover_image,
         status:     r.status,
         cols:       r.cols,
+        featured:   !!r.featured,
         createdAt:  r.created_at,
     };
 }

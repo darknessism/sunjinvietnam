@@ -1314,7 +1314,10 @@ function blogForm(b) {
         )}
         ${field('Cover Image URL', `<input id="f-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`)}
         ${field('Excerpt', `<textarea id="f-excerpt" class="field-textarea" placeholder="Short description…">${x(v.excerpt||'')}</textarea>`)}
-        ${field('Status', `<select id="f-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`)}
+        ${grid2(
+            field('Status', `<select id="f-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`),
+            field('Featured on home', `<label style="display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:13px;color:rgba(0,0,0,0.7);padding-top:6px;"><input type="checkbox" id="f-featured" ${v.featured ? 'checked' : ''} style="width:16px;height:16px;cursor:pointer;"> Show in the home Blog section</label>`)
+        )}
     </div>
     ${modalFooter('saveBlog', b ? 'Save Changes' : 'Add Article')}
     </div>`;
@@ -1403,6 +1406,7 @@ async function saveBlog() {
         coverImage: document.getElementById('f-img').value.trim(),
         excerpt: document.getElementById('f-excerpt').value.trim(),
         status: document.getElementById('f-status').value,
+        featured: document.getElementById('f-featured').checked,
         cols: _id ? (blog.find(b => b.id === _id)?.cols ?? 12) : 12,
         createdAt: _id ? (blog.find(b => b.id === _id)?.createdAt || today()) : today(),
     };
@@ -1760,11 +1764,6 @@ function blankBlogContent() {
         figureImage: '',
         figureCaption: '',
         tags: '',
-        related: [
-            { id: '', title: '', image: '', cat: '' },
-            { id: '', title: '', image: '', cat: '' },
-            { id: '', title: '', image: '', cat: '' }
-        ]
     };
 }
 
@@ -1774,7 +1773,6 @@ async function openBlogContent(id) {
         const stored = await api('GET', '/admin/blog/' + id + '/content');
         _bc = stored || blankBlogContent();
     } catch { _bc = blankBlogContent(); }
-    if (!_bc.related) _bc.related = blankBlogContent().related;
     _bc_meta = db('blog').find(b => b.id === id) || null;
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1935,22 +1933,7 @@ function buildBlogContentHTML(d) {
         <input id="bc-tags" class="field-input" value="${x(d.tags||'')}" placeholder="e.g. National Award, Residential, Hanoi, 2025">
     `);
 
-    const rels = (d.related||[{},{},{}]).slice(0,3);
-    while (rels.length < 3) rels.push({id:'',title:'',image:'',cat:''});
-    const relRows = rels.map((r, i) => `
-        <div style="padding:12px;background:#f9f9f9;border-radius:8px;border:1px solid rgba(0,0,0,0.06);margin-bottom:10px;">
-            <p class="field-label" style="margin-bottom:8px;">Related Article ${i+1}</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Article ID (URL slug)</label><input id="bc-rel-id-${i}" class="field-input" value="${x(r.id||'')}" placeholder="e.g. national-award"></div>
-                <div><label class="field-label">Category display</label><input id="bc-rel-cat-${i}" class="field-input" value="${x(r.cat||'')}" placeholder="e.g. News"></div>
-            </div>
-            <div style="margin-top:10px;"><label class="field-label">Title</label><input id="bc-rel-title-${i}" class="field-input" value="${x(r.title||'')}" placeholder="Article headline"></div>
-            <div style="margin-top:10px;"><label class="field-label">Cover Image URL</label><input id="bc-rel-img-${i}" class="field-input" value="${x(r.image||'')}" placeholder="https://…">${prev(r.image)}</div>
-        </div>`).join('');
-
-    const relSec = bcCard('Related Articles (3 shown at bottom of article)', relRows);
-
-    return metaSec + leadSec + bodySec + quoteSec + figureSec + afterSec + tagsSec + relSec;
+    return metaSec + leadSec + bodySec + quoteSec + figureSec + afterSec + tagsSec;
 }
 
 function collectBlogContent() {
@@ -1976,12 +1959,6 @@ function collectBlogContent() {
     _bc.figureCaption = g('bc-fig-cap');
     _bc.bodyAfterFigure = (_bc.bodyAfterFigure||['']).map((_, i) => { const el = document.getElementById('bc-after-' + i); return el ? el.value : ''; });
     _bc.tags = g('bc-tags');
-    _bc.related = [0,1,2].map(i => ({
-        id: g('bc-rel-id-' + i),
-        title: g('bc-rel-title-' + i),
-        image: g('bc-rel-img-' + i),
-        cat: g('bc-rel-cat-' + i)
-    }));
 }
 
 function bcAddBody() {

@@ -31,6 +31,9 @@ banners.initBanners().catch(e => console.error('banner clips init failed:', e.me
 const textContent = require('./routes/textContent');
 textContent.initTextContent().catch(e => console.error('text content init failed:', e.message));
 
+// Ensure the blog "featured" flag column exists
+require('./routes/blog').initBlog().catch(e => console.error('blog init failed:', e.message));
+
 // API routes
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/admin',       require('./routes/admin'));

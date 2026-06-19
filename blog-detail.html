@@ -196,15 +196,6 @@
         </div>
     </article>
 
-    <!-- RELATED ARTICLES -->
-    <section class="border-t border-white/8 pt-20 pb-0">
-        <div class="px-6 md:px-12 lg:px-16 mb-10 reveal-up">
-            <span class="font-sans text-xs uppercase tracking-[0.3em] text-white/30 block mb-3" data-en="Continue Reading">Đọc tiếp</span>
-            <h2 class="font-display font-light text-white" style="font-size: clamp(1.8rem, 4vw, 3rem);" data-en="Related Articles">Bài viết liên quan</h2>
-        </div>
-        <div class="grid grid-cols-12 gap-px bg-white/[0.12]" id="related-grid"></div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 md:mb-32 reveal-up">
@@ -290,23 +281,6 @@
         document.getElementById('article-tags').innerHTML = tags.map(t =>
             `<span class="font-sans text-[10px] uppercase tracking-[0.25em] text-white/40 border border-white/12 px-4 py-2 rounded-full">${esc(t)}</span>`
         ).join('');
-
-        const related = (content.related || []).filter(r => r && r.id);
-        document.getElementById('related-grid').innerHTML = related.map(r => {
-            const rTitle = r.title || '';
-            const rImage = r.image || '';
-            const rCat   = catLabel(r.cat) || r.cat || '';
-            const rDate  = r.date || '';
-            return `<a href="blog-detail.html?id=${esc(r.id)}" class="blog-card col-span-12 md:col-span-4" style="height:48vh;">
-                <img src="${esc(rImage)}" alt="${esc(rTitle)}">
-                <div class="blog-overlay"></div>
-                <span class="blog-cat-tag">${esc(rCat)}</span>
-                <div class="blog-info">
-                    ${rDate ? `<span class="blog-date">${esc(rDate)}</span>` : ''}
-                    <h3 class="blog-title" style="font-size:clamp(1rem,2vw,1.5rem);">${esc(rTitle)}</h3>
-                </div>
-            </a>`;
-        }).join('');
 
         document.querySelectorAll('.reveal-up:not(.active), .reveal-fade:not(.active)').forEach(el => observer.observe(el));
     }

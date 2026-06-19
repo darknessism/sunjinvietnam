@@ -938,7 +938,7 @@
             align-items: center;
             justify-content: center;
             background: #ffffff;
-            border: 1px solid rgba(255,255,255,0.10);
+            border: 1px solid rgba(0,0,0,0.10);
             border-radius: 8px;
             overflow: hidden;
             padding: 16px 20px;
@@ -954,7 +954,7 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.18em;
-            color: rgba(255,255,255,0.5);
+            color: rgba(0,0,0,0.5);
             text-align: center;
             white-space: nowrap;
         }
@@ -968,9 +968,9 @@
             .partner-name { font-size: 10px; margin-top: 9px; }
         }
     </style>
-    <section class="bg-black py-12 md:py-16">
+    <section class="bg-white py-12 md:py-16">
         <div class="px-6 md:px-16 lg:px-24 mb-10 md:mb-14">
-            <h2 class="font-display text-4xl md:text-6xl font-normal leading-none tracking-tight text-white" data-tkey="home-t054" data-en="Partners">Đối tác</h2>
+            <h2 class="font-display text-4xl md:text-6xl font-normal leading-none tracking-tight text-dark" data-tkey="home-t054" data-en="Partners">Đối tác</h2>
         </div>
         <div class="partners-marquee">
             <!-- Logos are managed in the admin Photo module (slots home-partner-1..20);
@@ -1008,123 +1008,63 @@
         })();
     </script>
 
-    <!-- Blog Section -->
-    <section class="py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white text-dark">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-8 reveal-up">
-            <h2 class="font-display text-6xl md:text-8xl lg:text-[110px] font-normal leading-none tracking-tight">Blog</h2>
+    <!-- Blog Section (6 featured articles, pulled from the blog list) -->
+    <style>
+        .hblog-card { display:block; position:relative; overflow:hidden; background:#0d0d0d; text-decoration:none; color:#fff; aspect-ratio:4/5; }
+        .hblog-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .hblog-card:hover img { transform:scale(1.05); }
+        .hblog-ov { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.28) 55%, rgba(10,10,10,0.05) 100%); transition:background 0.55s ease; }
+        .hblog-card:hover .hblog-ov { background:linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.55) 60%, rgba(10,10,10,0.18) 100%); }
+        .hblog-tag { position:absolute; top:1.4rem; left:1.6rem; z-index:2; font-family:'Open Sans',sans-serif; font-size:9px; text-transform:uppercase; letter-spacing:0.3em; color:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.22); padding:4px 12px; border-radius:20px; background:rgba(10,10,10,0.5); backdrop-filter:blur(8px); }
+        .hblog-info { position:absolute; bottom:0; left:0; right:0; z-index:2; padding:1.6rem 1.8rem 2rem; }
+        .hblog-date { display:block; font-family:'Open Sans',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:0.2em; color:rgba(255,255,255,0.4); margin-bottom:9px; }
+        .hblog-title { font-family:'Open Sans',sans-serif; font-weight:300; color:#fff; line-height:1.2; font-size:clamp(1.1rem,1.6vw,1.5rem); }
+    </style>
+    <section class="py-24 md:py-36 px-6 md:px-16 lg:px-24 bg-dark text-white">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 md:mb-20 gap-8 reveal-up">
+            <h2 class="font-display text-6xl md:text-8xl lg:text-[110px] font-normal leading-none tracking-tight" data-tkey="home-t059" data-en="Blog">Blog</h2>
             <div class="flex flex-col items-start md:items-end gap-6">
-                <p class="text-base md:text-lg lg:text-xl text-gray-600 font-light leading-relaxed max-w-lg md:max-w-xl pb-2 md:pb-4">
+                <p class="text-base md:text-lg text-white/55 font-light leading-relaxed max-w-lg md:max-w-xl pb-2">
                     <span data-tkey="home-t043" data-en="Visionary updates, design research, and project stories that advance Vietnam's architectural future through global standards and cultural insight.">Những cập nhật giàu tầm nhìn, nghiên cứu thiết kế và câu chuyện dự án góp phần thúc đẩy tương lai kiến trúc Việt Nam qua tiêu chuẩn toàn cầu và chiều sâu văn hóa.</span>
                 </p>
-                <a href="blog.html" class="inline-flex items-center gap-3 font-sans text-sm uppercase tracking-[0.2em] text-dark border-b border-dark pb-1 hover:opacity-60 transition-opacity interactive">
+                <a href="blog.html" class="inline-flex items-center gap-3 font-sans text-sm uppercase tracking-[0.2em] text-white border-b border-white pb-1 hover:opacity-60 transition-opacity interactive">
                     <span data-tkey="home-t044" data-en="See All Articles">Xem tất cả bài viết</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
         </div>
-
-        <!-- Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-x-6 lg:gap-x-10 gap-y-16">
-
-            <!-- 01 — Tropical Climate (7 cols, large) -->
-            <div class="md:col-span-7 reveal-up">
-                <a href="blog-detail.html?id=tropical-climate" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[16/9] bg-gray-100">
-                        <img data-img-slot="home-feature-1" src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1600&q=80" alt="Tropical Climate" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Ideas]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">Designing for Tropical Climate: Principles from Southeast Asia</h4>
-                        <p class="text-gray-500 text-sm font-light">April 8, 2025</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 02 — Design Lab (5 cols, bottom-aligned) -->
-            <div class="md:col-span-5 flex flex-col justify-end reveal-up" style="transition-delay:0.1s">
-                <a href="blog-detail.html?id=design-lab" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[4/3] bg-gray-100">
-                        <img data-img-slot="home-feature-2" src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=80" alt="Design Lab" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[News]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">New Design Lab Opens in Hanoi's Ba Dinh District</h4>
-                        <p class="text-gray-500 text-sm font-light">March 18, 2025</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 03 — Dezeen Spotlight (4 cols) -->
-            <div class="md:col-span-4 reveal-up">
-                <a href="blog-detail.html?id=dezeen-spotlight" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-square bg-gray-100">
-                        <img data-img-slot="home-feature-3" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80" alt="Dezeen Spotlight" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Press Coverage]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">Dezeen Spotlight: Vietnam's Modernist Architecture Revolution</h4>
-                        <p class="text-gray-500 text-sm font-light">February 22, 2025</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 04 — SUNJIN Academy (4 cols) -->
-            <div class="md:col-span-4 reveal-up" style="transition-delay:0.1s">
-                <a href="blog-detail.html?id=sunjin-academy" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[4/3] bg-gray-100">
-                        <img data-img-slot="home-feature-4" src="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?auto=format&fit=crop&w=800&q=80" alt="SUNJIN Academy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Community]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">SUNJIN Academy: Training the Next Generation of Architects</h4>
-                        <p class="text-gray-500 text-sm font-light">January 30, 2025</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 05 — National Award (4 cols) -->
-            <div class="md:col-span-4 reveal-up" style="transition-delay:0.2s">
-                <a href="blog-detail.html?id=national-award" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[3/4] bg-gray-100">
-                        <img data-img-slot="home-feature-5" src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80" alt="National Award" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[News]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">SUNJIN VIETNAM Receives National Architecture Silver Award</h4>
-                        <p class="text-gray-500 text-sm font-light">January 15, 2025</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 06 — Public Space (full width banner) -->
-            <div class="md:col-span-12 reveal-up" style="transition-delay:0.1s">
-                <a href="blog-detail.html?id=public-space" class="group block interactive">
-                    <div class="relative overflow-hidden rounded-[24px] md:rounded-[32px] w-full aspect-[21/9] bg-gray-100">
-                        <img data-img-slot="home-feature-6" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=80" alt="Public Space" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                            <span class="text-white font-sans text-xs md:text-sm uppercase tracking-[0.2em] transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">[Ideas]</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-display text-xl md:text-2xl text-black mb-1">The Role of Public Space in Shaping Urban Identity</h4>
-                        <p class="text-gray-500 text-sm font-light">December 12, 2024</p>
-                    </div>
-                </a>
-            </div>
-
-        </div>
+        <div id="home-blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
     </section>
+    <script>
+        (function () {
+            const L = () => (window.getLang ? window.getLang() : 'vi');
+            const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            const HBCAT = {
+                vi: { news:'Tin tức', press:'Báo chí', ideas:'Ý tưởng', community:'Trách nhiệm cộng đồng', events:'Sự kiện', awards:'Giải thưởng' },
+                en: { news:'News', press:'Press Coverage', ideas:'Ideas', community:'Community Responsibility', events:'Events', awards:'Awards' },
+            };
+            const catLbl = c => (HBCAT[L()] || HBCAT.vi)[c] || c || '';
+            const fmtDate = iso => { try { return new Date(iso).toLocaleDateString(L() === 'vi' ? 'vi-VN' : 'en-US', { year:'numeric', month:'long', day:'numeric' }); } catch (e) { return iso || ''; } };
+            const grid = document.getElementById('home-blog-grid');
+            if (!grid) return;
+            let _posts = null;
+            function render() {
+                // Prefer curated "featured" articles; fall back to newest if none are flagged.
+                const all = _posts || [];
+                const featured = all.filter(a => a.featured);
+                const items = (featured.length ? featured : all).slice(0, 6);
+                grid.innerHTML = items.map(a =>
+                    `<a href="blog-detail.html?id=${esc(a.id)}" class="hblog-card interactive"><img src="${esc(a.coverImage || '')}" alt="${esc(a.title)}" onerror="this.style.opacity=0"><div class="hblog-ov"></div><span class="hblog-tag">${esc(catLbl(a.category))}</span><div class="hblog-info"><span class="hblog-date">${esc(fmtDate(a.date))}</span><h3 class="hblog-title">${esc(a.title)}</h3></div></a>`
+                ).join('');
+                document.querySelectorAll('#home-blog-grid .hblog-card').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+                });
+            }
+            fetch('/api/blog').then(r => r.ok ? r.json() : []).then(posts => { _posts = posts || []; render(); }).catch(() => {});
+            document.addEventListener('langchange', () => { if (_posts) render(); });
+        })();
+    </script>
 
     <!-- Footer -->
     <footer class="bg-dark pt-24 pb-12 px-6 md:px-16 lg:px-24 text-white">
