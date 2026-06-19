@@ -31,7 +31,12 @@
     </script>
 
     <style>
+        /* Fixed-header height — content is offset so the header never overlaps it. */
+        :root { --hdr-h: 56px; }
+        @media (min-width: 768px) { :root { --hdr-h: 72px; } }
+        .below-hdr-sticky { position: sticky; top: var(--hdr-h); }
         body {
+            padding-top: var(--hdr-h);
             background-color: #0a0a0a;
             color: #f5f5f5;
             cursor: none;
@@ -393,7 +398,7 @@
 
     <!-- 3. Stats — sticky scroll (5+ → 200+ → 20+) -->
     <section id="stats-section" style="height: 280vh;">
-        <div id="stats-sticky" class="sticky top-0 overflow-hidden" style="height: 100vh;">
+        <div id="stats-sticky" class="below-hdr-sticky overflow-hidden" style="height: calc(100vh - var(--hdr-h));">
             <div class="h-full flex flex-col px-8 md:px-14 lg:px-20">
 
                 <!-- Top: huge number (left) + label + description (right) -->
@@ -490,7 +495,7 @@
 
     <!-- 4. Core Values — dark split: text left · photo right -->
     <section id="cv-section" style="height: 370vh;">
-        <div id="cv-sticky" class="sticky top-0 overflow-hidden" style="height: 100vh;">
+        <div id="cv-sticky" class="below-hdr-sticky overflow-hidden" style="height: calc(100vh - var(--hdr-h));">
             <div class="h-full flex flex-col">
 
                 <!-- Section header -->
@@ -811,7 +816,7 @@
 
     <!-- 6. Foundation Principles — fullscreen sticky scroll -->
     <section id="fp-section" style="height: 280vh;">
-        <div id="fp-sticky" class="sticky top-0 overflow-hidden bg-dark" style="height: 100vh;">
+        <div id="fp-sticky" class="below-hdr-sticky overflow-hidden bg-dark" style="height: calc(100vh - var(--hdr-h));">
 
             <!-- Background layers -->
             <div class="fp-bg fp-bg-active">
