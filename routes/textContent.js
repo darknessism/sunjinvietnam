@@ -11,7 +11,7 @@ const router      = express.Router();
 // admin's Vietnamese/English overrides. The page loads its defaults, then a
 // loader swaps in any override and re-applies the language.
 // ──────────────────────────────────────────────────────────────────────────
-const SLOT_RE = /^(home|about|careers)-t\d{1,4}$/;
+const SLOT_RE = /^(home|about|careers)-(t\d{1,4}|partner-name-\d{1,3})$/;
 
 async function initTextContent() {
     await pool.query(`CREATE TABLE IF NOT EXISTS text_content (

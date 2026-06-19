@@ -1562,6 +1562,16 @@ function fld(label, inp, hint) {
 }
 function inp(id, val, ph) { return `<input id="${id}" class="field-input" value="${x(val||'')}" placeholder="${ph||''}"`+'>';}
 function ta(id, val, ph, rows) { return `<textarea id="${id}" class="field-textarea" placeholder="${ph||''}" style="min-height:${(rows||3)*26}px">${x(val||'')}</textarea>`; }
+// URL input paired with an "Upload" button: uploads a file to /api/media and
+// writes the resulting URL back into the same field, refreshing the preview.
+function imgControl(id, val, ph) {
+    return `<div style="display:flex;gap:8px;align-items:stretch;">
+            <div style="flex:1;">${inp(id, val, ph || 'https://… or click Upload →')}</div>
+            <input type="file" id="${id}-file" accept="image/*" style="display:none;" onchange="uploadDetailImage('${id}', this)">
+            <button type="button" id="${id}-btn" onclick="document.getElementById('${id}-file').click()" style="flex-shrink:0;font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:#fff;background:#0a0a0a;border:none;border-radius:6px;padding:0 16px;cursor:pointer;font-family:'Open Sans',sans-serif;">Upload</button>
+        </div>
+        <img id="${id}-prev" src="${x(val||'')}" style="width:100%;height:100px;object-fit:cover;border-radius:4px;margin-top:6px;display:${val?'block':'none'};" onerror="this.style.display='none'">`;
+}
 
 function buildDetailHTML(d) {
     const imgs = d.images || ['','','',''];
@@ -1581,7 +1591,7 @@ function buildDetailHTML(d) {
         ${fld('Location', inp('d-ov-loc', _proj.location || '', 'e.g. Hanoi, Vietnam'))}
         ${fld('Award / Tag Line', inp('d-ov-award', _proj.award || '', 'e.g. National Architecture Silver Award 2024'))}
         ${fld('Architects / Team', inp('d-ov-arch', _proj.architects || '', 'e.g. KTS. Tran Nguyen Quang'))}
-        ${fld('Cover Image URL', inp('d-ov-cover', _proj.coverImage || '', 'https://...'))}
+        ${fld('Cover Image URL', imgControl('d-ov-cover', _proj.coverImage || ''))}
         ${row2(
             fld('Publish Status', `<select id="d-ov-status" class="field-input" style="cursor:pointer;"><option value="published"${_proj.status==='published'?' selected':''}>Published</option><option value="draft"${_proj.status!=='published'?' selected':''}>Draft</option></select>`),
             fld('Grid Width (cols 1–12)', inp('d-ov-cols', String(_proj.cols || 4), '4 = half width, 12 = full width'))
@@ -1598,8 +1608,7 @@ function buildDetailHTML(d) {
         ${['Cover Photo (main)', 'Panel Photo 1', 'Panel Photo 2', 'Panel Photo 3'].map((lbl, i) => `
             <div style="margin-bottom:14px;">
                 <label class="field-label">${lbl}</label>
-                ${inp('d-img-' + i, imgs[i], 'https://...')}
-                ${prev(imgs[i])}
+                ${imgControl('d-img-' + i, imgs[i])}
             </div>`).join('')}
     `);
 
@@ -1692,6 +1701,40 @@ function collectDetail() {
     _dd.narrative1 = (_dd.narrative1||['']).map((_, i) => { const el = document.getElementById('d-n1-' + i); return el ? el.value : _dd.narrative1[i]; });
     _dd.narrative2 = (_dd.narrative2||['']).map((_, i) => { const el = document.getElementById('d-n2-' + i); return el ? el.value : _dd.narrative2[i]; });
     _dd.highlights = (_dd.highlights||['']).map((_, i) => { const el = document.getElementById('d-hl-' + i); return el ? el.value : _dd.highlights[i]; });
+}
+
+// Upload an image file to the generic media store and write the returned URL
+// into the field `targetId` (a gallery / cover URL input), refreshing preview.
+async function uploadDetailImage(targetId, input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) { toast('Image is too large (max 8 MB).'); input.value = ''; return; }
+    const token = sessionStorage.getItem('sj_token');
+    const btn = document.getElementById(targetId + '-btn');
+    const oldLabel = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = '…'; btn.disabled = true; }
+    const fd = new FormData();
+    fd.append('image', file);
+    try {
+        const res = await fetch('/api/media/admin/upload', {
+            method: 'POST',
+            headers: token ? { Authorization: 'Bearer ' + token } : {},
+            body: fd,
+        });
+        if (res.status === 401) { doLogout(); return; }
+        if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Upload failed');
+        const data = await res.json();
+        const field = document.getElementById(targetId);
+        if (field) field.value = data.url;
+        const pv = document.getElementById(targetId + '-prev');
+        if (pv) { pv.src = data.url; pv.style.display = 'block'; }
+        toast('Image uploaded.');
+    } catch (e) {
+        toast('Upload failed: ' + e.message);
+    } finally {
+        if (btn) { btn.textContent = oldLabel || 'Upload'; btn.disabled = false; }
+        input.value = '';
+    }
 }
 
 // ─── DYNAMIC LISTS ────────────────────────────────────

@@ -31,6 +31,10 @@ banners.initBanners().catch(e => console.error('banner clips init failed:', e.me
 const textContent = require('./routes/textContent');
 textContent.initTextContent().catch(e => console.error('text content init failed:', e.message));
 
+// Ensure the generic uploaded-media table exists
+const media = require('./routes/media');
+media.initMedia().catch(e => console.error('media init failed:', e.message));
+
 // Ensure the blog "featured" flag column exists
 require('./routes/blog').initBlog().catch(e => console.error('blog init failed:', e.message));
 
@@ -43,6 +47,7 @@ app.use('/api/careers',     require('./routes/careers'));
 app.use('/api/page-images', pageImages);
 app.use('/api/banner-clips', banners);
 app.use('/api/text-content', textContent);
+app.use('/api/media',        media);
 
 // Fallback: serve index.html for any unmatched route
 app.get('*', (req, res) => {
