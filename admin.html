@@ -1509,6 +1509,12 @@ function blankDetail(title) {
         narrative1: [''],
         narrative2: [''],
         highlights: [''],
+        // English variants (bilingual content)
+        leadEn: '',
+        photo1capEn: '', photo2capEn: '', photo3capEn: '',
+        narrative1En: [''],
+        narrative2En: [''],
+        highlightsEn: [''],
     };
 }
 
@@ -1613,11 +1619,15 @@ function buildDetailHTML(d) {
     `);
 
 
-    // LEAD
-    const leadSec = card('Lead Paragraph', fld('', ta('d-lead', d.lead, 'Opening statement — displayed large on the right panel…', 4)));
+    // LEAD (bilingual)
+    const leadSec = card('Lead Paragraph', `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><label class="field-label">Tiếng Việt</label>${ta('d-lead', d.lead, 'Câu mở đầu — hiển thị lớn ở bảng bên phải…', 4)}</div>
+            <div><label class="field-label">English</label>${ta('d-lead-en', d.leadEn, 'Opening statement — displayed large on the right panel…', 4)}</div>
+        </div>`);
 
     // PHOTOS & NARRATIVE
-    const mkPhotoBlock = (n, imgUrl, altId, altVal, capId, capVal) => `
+    const mkPhotoBlock = (n, imgUrl, altId, altVal, capId, capVal, capEnId, capEnVal) => `
         <div style="margin:14px 0;padding:14px;background:#f9f9f9;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
             <p class="field-label" style="margin-bottom:8px;">Panel Photo ${n}</p>
             <label class="field-label">Image URL (use Gallery Image ${n+1} field above)</label>
@@ -1625,41 +1635,52 @@ function buildDetailHTML(d) {
                 <input class="field-input" value="${x(imgUrl||'')}" placeholder="Mirrors Gallery image ${n} — edit in Gallery section above" disabled style="background:#f0f0f0;color:rgba(0,0,0,0.35);">
                 ${prev(imgUrl)}
             </div>
+            ${fld('Alt Text', inp(altId, altVal, 'Image alt text for accessibility'))}
             ${row2(
-                fld('Alt Text', inp(altId, altVal, 'Image alt text for accessibility')),
-                fld('Caption', inp(capId, capVal, 'Caption shown below the photo'))
+                fld('Caption · Tiếng Việt', inp(capId, capVal, 'Chú thích hiển thị dưới ảnh')),
+                fld('Caption · English', inp(capEnId, capEnVal, 'Caption shown below the photo'))
             )}
         </div>`;
 
+    const rmBtn = (n, i) => `<button onclick="removeNarrative(${n},${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
     const n1 = (d.narrative1 || ['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-            ${ta('d-n1-' + i, p, 'Paragraph ' + (i+1) + '…', 5)}
-            <button onclick="removeNarrative(1,${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label class="field-label">Tiếng Việt</label>${ta('d-n1-' + i, p, 'Đoạn ' + (i+1) + '…', 5)}</div>
+                <div><label class="field-label">English</label>${ta('d-n1en-' + i, (d.narrative1En||[])[i] || '', 'Paragraph ' + (i+1) + '…', 5)}</div>
+            </div>
+            ${rmBtn(1, i)}
         </div>`).join('');
 
     const n2 = (d.narrative2 || ['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-            ${ta('d-n2-' + i, p, 'Paragraph ' + (i+1) + '…', 5)}
-            <button onclick="removeNarrative(2,${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label class="field-label">Tiếng Việt</label>${ta('d-n2-' + i, p, 'Đoạn ' + (i+1) + '…', 5)}</div>
+                <div><label class="field-label">English</label>${ta('d-n2en-' + i, (d.narrative2En||[])[i] || '', 'Paragraph ' + (i+1) + '…', 5)}</div>
+            </div>
+            ${rmBtn(2, i)}
         </div>`).join('');
 
     const narrative = card('Design Concept & Narrative', `
         <p class="field-label" style="margin-bottom:10px;">Design Concept paragraphs (shown after Panel Photo 1)</p>
         <div id="n1-wrap">${n1}</div>
         <button onclick="addNarrative(1)" style="margin-bottom:20px;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
-        ${mkPhotoBlock(1, imgs[1], 'd-photo1alt', d.photo1alt, 'd-photo1cap', d.photo1cap)}
-        ${mkPhotoBlock(2, imgs[2], 'd-photo2alt', d.photo2alt, 'd-photo2cap', d.photo2cap)}
+        ${mkPhotoBlock(1, imgs[1], 'd-photo1alt', d.photo1alt, 'd-photo1cap', d.photo1cap, 'd-photo1cap-en', d.photo1capEn)}
+        ${mkPhotoBlock(2, imgs[2], 'd-photo2alt', d.photo2alt, 'd-photo2cap', d.photo2cap, 'd-photo2cap-en', d.photo2capEn)}
         <p class="field-label" style="margin:14px 0 10px;">Continuation paragraphs (shown after Panel Photo 2)</p>
         <div id="n2-wrap">${n2}</div>
         <button onclick="addNarrative(2)" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
-        ${mkPhotoBlock(3, imgs[3], 'd-photo3alt', d.photo3alt, 'd-photo3cap', d.photo3cap)}
+        ${mkPhotoBlock(3, imgs[3], 'd-photo3alt', d.photo3alt, 'd-photo3cap', d.photo3cap, 'd-photo3cap-en', d.photo3capEn)}
     `);
 
-    // HIGHLIGHTS
+    // HIGHLIGHTS (bilingual)
     const hlItems = (d.highlights || ['']).map((h, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;align-items:flex-start;">
             <span style="font-size:11px;color:rgba(0,0,0,0.3);margin-top:9px;flex-shrink:0;">—</span>
-            ${ta('d-hl-' + i, h, 'Design highlight…', 2)}
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label class="field-label">Tiếng Việt</label>${ta('d-hl-' + i, h, 'Điểm nhấn thiết kế…', 2)}</div>
+                <div><label class="field-label">English</label>${ta('d-hlen-' + i, (d.highlightsEn||[])[i] || '', 'Design highlight…', 2)}</div>
+            </div>
             <button onclick="removeItem('highlights',${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>`).join('');
     const highlights = card('Design Highlights', `
@@ -1701,6 +1722,12 @@ function collectDetail() {
     _dd.narrative1 = (_dd.narrative1||['']).map((_, i) => { const el = document.getElementById('d-n1-' + i); return el ? el.value : _dd.narrative1[i]; });
     _dd.narrative2 = (_dd.narrative2||['']).map((_, i) => { const el = document.getElementById('d-n2-' + i); return el ? el.value : _dd.narrative2[i]; });
     _dd.highlights = (_dd.highlights||['']).map((_, i) => { const el = document.getElementById('d-hl-' + i); return el ? el.value : _dd.highlights[i]; });
+    // English variants — read in parallel with the VI arrays (same index/length)
+    _dd.leadEn = g('d-lead-en');
+    _dd.photo1capEn = g('d-photo1cap-en'); _dd.photo2capEn = g('d-photo2cap-en'); _dd.photo3capEn = g('d-photo3cap-en');
+    _dd.narrative1En = _dd.narrative1.map((_, i) => { const el = document.getElementById('d-n1en-' + i); return el ? el.value : ((_dd.narrative1En||[])[i] || ''); });
+    _dd.narrative2En = _dd.narrative2.map((_, i) => { const el = document.getElementById('d-n2en-' + i); return el ? el.value : ((_dd.narrative2En||[])[i] || ''); });
+    _dd.highlightsEn = _dd.highlights.map((_, i) => { const el = document.getElementById('d-hlen-' + i); return el ? el.value : ((_dd.highlightsEn||[])[i] || ''); });
 }
 
 // Upload an image file to the generic media store and write the returned URL
@@ -1738,10 +1765,12 @@ async function uploadDetailImage(targetId, input) {
 }
 
 // ─── DYNAMIC LISTS ────────────────────────────────────
+// VI and EN arrays are kept parallel (same length / index) so each paragraph's
+// two language boxes stay paired when rows are added or removed.
 function addNarrative(n) {
     collectDetail();
-    if (n === 1) _dd.narrative1.push('');
-    else _dd.narrative2.push('');
+    if (n === 1) { _dd.narrative1.push(''); _dd.narrative1En.push(''); }
+    else         { _dd.narrative2.push(''); _dd.narrative2En.push(''); }
     renderDetailBody();
     // scroll to the new textarea
     setTimeout(() => {
@@ -1752,22 +1781,24 @@ function addNarrative(n) {
 }
 function removeNarrative(n, i) {
     collectDetail();
-    if (n === 1) _dd.narrative1.splice(i, 1);
-    else _dd.narrative2.splice(i, 1);
-    if (n === 1 && !_dd.narrative1.length) _dd.narrative1 = [''];
-    if (n === 2 && !_dd.narrative2.length) _dd.narrative2 = [''];
+    if (n === 1) { _dd.narrative1.splice(i, 1); _dd.narrative1En.splice(i, 1); }
+    else         { _dd.narrative2.splice(i, 1); _dd.narrative2En.splice(i, 1); }
+    if (n === 1 && !_dd.narrative1.length) { _dd.narrative1 = ['']; _dd.narrative1En = ['']; }
+    if (n === 2 && !_dd.narrative2.length) { _dd.narrative2 = ['']; _dd.narrative2En = ['']; }
     renderDetailBody();
 }
 function addItem(type) {
     collectDetail();
-    if (type === 'highlights') _dd.highlights.push('');
+    if (type === 'highlights') { _dd.highlights.push(''); _dd.highlightsEn.push(''); }
     renderDetailBody();
 }
 function removeItem(type, i) {
     collectDetail();
     const min = { highlights: [''] };
+    const enKey = { highlights: 'highlightsEn' }[type];
     _dd[type].splice(i, 1);
-    if (!_dd[type].length) _dd[type] = min[type];
+    if (enKey && Array.isArray(_dd[enKey])) _dd[enKey].splice(i, 1);
+    if (!_dd[type].length) { _dd[type] = min[type]; if (enKey) _dd[enKey] = ['']; }
     renderDetailBody();
 }
 
@@ -1807,6 +1838,13 @@ function blankBlogContent() {
         figureImage: '',
         figureCaption: '',
         tags: '',
+        // English variants (bilingual content)
+        leadEn: '',
+        bodyEn: [''],
+        pullQuoteEn: '',
+        pullQuoteCiteEn: '',
+        bodyAfterFigureEn: [''],
+        figureCaptionEn: '',
     };
 }
 
@@ -1924,20 +1962,26 @@ function buildBlogContentHTML(d) {
             fld('Author', inp('bc-meta-author', vm.author||'SUNJIN Vietnam', 'Author name')),
             fld('Read Time (min)', `<input id="bc-meta-rt" class="field-input" type="number" min="1" value="${x(String(vm.readTime||'5'))}">`)
         )}
-        ${fld('Cover Image URL', `<div>${inp('bc-meta-img', vm.coverImage||'', 'https://...')}${prev(vm.coverImage)}</div>`)}
+        ${fld('Cover Image URL', imgControl('bc-meta-img', vm.coverImage||''))}
         ${fld('Excerpt', ta('bc-meta-excerpt', vm.excerpt||'', 'Short description shown in article listings…'))}
         ${fld('Status', `<select id="bc-meta-status" class="field-input" style="cursor:pointer;">${sel([['published','Published'],['draft','Draft']],vm.status||'published')}</select>`)}
     `);
 
     const leadSec = bcCard('Lead Paragraph (displayed large)', `
-        <label class="field-label">Opening statement</label>
-        <textarea id="bc-lead" class="field-textarea" style="min-height:80px;" placeholder="Compelling opening paragraph…">${x(d.lead||'')}</textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><label class="field-label">Tiếng Việt</label><textarea id="bc-lead" class="field-textarea" style="min-height:80px;" placeholder="Đoạn mở đầu ấn tượng…">${x(d.lead||'')}</textarea></div>
+            <div><label class="field-label">English</label><textarea id="bc-lead-en" class="field-textarea" style="min-height:80px;" placeholder="Compelling opening paragraph…">${x(d.leadEn||'')}</textarea></div>
+        </div>
     `);
 
+    const bcRmBtn = (fn, i) => `<button onclick="${fn}(${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
     const bodyRows = (d.body||['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-            <textarea id="bc-body-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea>
-            <button onclick="bcRemoveBody(${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label class="field-label">Tiếng Việt</label><textarea id="bc-body-${i}" class="field-textarea" placeholder="Đoạn ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea></div>
+                <div><label class="field-label">English</label><textarea id="bc-body-en-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x((d.bodyEn||[])[i]||'')}</textarea></div>
+            </div>
+            ${bcRmBtn('bcRemoveBody', i)}
         </div>`).join('');
 
     const bodySec = bcCard('Article Body Paragraphs', `
@@ -1947,23 +1991,33 @@ function buildBlogContentHTML(d) {
     `);
 
     const quoteSec = bcCard('Pull Quote (optional)', `
+        <label class="field-label" style="margin-bottom:8px;">Quote Text</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;">
+            <div><label class="field-label">Tiếng Việt</label><textarea id="bc-quote" class="field-textarea" placeholder="Câu trích dẫn đáng nhớ…" style="min-height:72px;">${x(d.pullQuote||'')}</textarea></div>
+            <div><label class="field-label">English</label><textarea id="bc-quote-en" class="field-textarea" placeholder="Memorable quote…" style="min-height:72px;">${x(d.pullQuoteEn||'')}</textarea></div>
+        </div>
+        <label class="field-label" style="margin-bottom:8px;">Citation</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div><label class="field-label">Quote Text</label><textarea id="bc-quote" class="field-textarea" placeholder="Memorable quote…" style="min-height:72px;">${x(d.pullQuote||'')}</textarea></div>
-            <div><label class="field-label">Citation</label><input id="bc-cite" class="field-input" value="${x(d.pullQuoteCite||'')}" placeholder="e.g. KTS. Tran Nguyen Quang — SUNJIN Vietnam"></div>
+            <div><label class="field-label">Tiếng Việt</label><input id="bc-cite" class="field-input" value="${x(d.pullQuoteCite||'')}" placeholder="VD: KTS. Trần Nguyên Quang — SUNJIN Việt Nam"></div>
+            <div><label class="field-label">English</label><input id="bc-cite-en" class="field-input" value="${x(d.pullQuoteCiteEn||'')}" placeholder="e.g. Arch. Tran Nguyen Quang — SUNJIN Vietnam"></div>
         </div>
     `);
 
     const figureSec = bcCard('Figure / Banner Image', `
+        <div style="margin-bottom:12px;"><label class="field-label">Image URL</label>${imgControl('bc-fig-img', d.figureImage||'')}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div><label class="field-label">Image URL</label><input id="bc-fig-img" class="field-input" value="${x(d.figureImage||'')}" placeholder="https://…">${prev(d.figureImage)}</div>
-            <div><label class="field-label">Caption</label><textarea id="bc-fig-cap" class="field-textarea" placeholder="Caption text…">${x(d.figureCaption||'')}</textarea></div>
+            <div><label class="field-label">Caption · Tiếng Việt</label><textarea id="bc-fig-cap" class="field-textarea" placeholder="Chú thích ảnh…">${x(d.figureCaption||'')}</textarea></div>
+            <div><label class="field-label">Caption · English</label><textarea id="bc-fig-cap-en" class="field-textarea" placeholder="Caption text…">${x(d.figureCaptionEn||'')}</textarea></div>
         </div>
     `);
 
     const afterRows = (d.bodyAfterFigure||['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-            <textarea id="bc-after-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea>
-            <button onclick="bcRemoveAfter(${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label class="field-label">Tiếng Việt</label><textarea id="bc-after-${i}" class="field-textarea" placeholder="Đoạn ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea></div>
+                <div><label class="field-label">English</label><textarea id="bc-after-en-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x((d.bodyAfterFigureEn||[])[i]||'')}</textarea></div>
+            </div>
+            ${bcRmBtn('bcRemoveAfter', i)}
         </div>`).join('');
 
     const afterSec = bcCard('Paragraphs After Figure', `
@@ -2002,30 +2056,37 @@ function collectBlogContent() {
     _bc.figureCaption = g('bc-fig-cap');
     _bc.bodyAfterFigure = (_bc.bodyAfterFigure||['']).map((_, i) => { const el = document.getElementById('bc-after-' + i); return el ? el.value : ''; });
     _bc.tags = g('bc-tags');
+    // English variants — body arrays read in parallel with the VI arrays (same index/length)
+    _bc.leadEn = g('bc-lead-en');
+    _bc.pullQuoteEn = g('bc-quote-en');
+    _bc.pullQuoteCiteEn = g('bc-cite-en');
+    _bc.figureCaptionEn = g('bc-fig-cap-en');
+    _bc.bodyEn = _bc.body.map((_, i) => { const el = document.getElementById('bc-body-en-' + i); return el ? el.value : ((_bc.bodyEn||[])[i] || ''); });
+    _bc.bodyAfterFigureEn = _bc.bodyAfterFigure.map((_, i) => { const el = document.getElementById('bc-after-en-' + i); return el ? el.value : ((_bc.bodyAfterFigureEn||[])[i] || ''); });
 }
 
 function bcAddBody() {
     collectBlogContent();
-    _bc.body.push('');
+    _bc.body.push(''); _bc.bodyEn.push('');
     renderBlogContentBody();
     setTimeout(() => { const el = document.getElementById('bc-body-' + (_bc.body.length - 1)); if (el) el.scrollIntoView({ behavior:'smooth', block:'center' }); }, 80);
 }
 function bcRemoveBody(i) {
     collectBlogContent();
-    _bc.body.splice(i, 1);
-    if (!_bc.body.length) _bc.body = [''];
+    _bc.body.splice(i, 1); _bc.bodyEn.splice(i, 1);
+    if (!_bc.body.length) { _bc.body = ['']; _bc.bodyEn = ['']; }
     renderBlogContentBody();
 }
 function bcAddAfter() {
     collectBlogContent();
-    _bc.bodyAfterFigure.push('');
+    _bc.bodyAfterFigure.push(''); _bc.bodyAfterFigureEn.push('');
     renderBlogContentBody();
     setTimeout(() => { const el = document.getElementById('bc-after-' + (_bc.bodyAfterFigure.length - 1)); if (el) el.scrollIntoView({ behavior:'smooth', block:'center' }); }, 80);
 }
 function bcRemoveAfter(i) {
     collectBlogContent();
-    _bc.bodyAfterFigure.splice(i, 1);
-    if (!_bc.bodyAfterFigure.length) _bc.bodyAfterFigure = [''];
+    _bc.bodyAfterFigure.splice(i, 1); _bc.bodyAfterFigureEn.splice(i, 1);
+    if (!_bc.bodyAfterFigure.length) { _bc.bodyAfterFigure = ['']; _bc.bodyAfterFigureEn = ['']; }
     renderBlogContentBody();
 }
 

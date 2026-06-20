@@ -82,6 +82,13 @@ function toContent(r) {
         bodyAfterFigure:  parse(r.body_after_figure) || [],
         tags:             r.tags,
         related:          parse(r.related_posts) || [],
+        // ── English variants (bilingual content) ──
+        leadEn:            r.lead_en || '',
+        bodyEn:            parse(r.body_en) || [],
+        pullQuoteEn:       r.pull_quote_en || '',
+        pullQuoteCiteEn:   r.pull_quote_cite_en || '',
+        figureCaptionEn:   r.figure_caption_en || '',
+        bodyAfterFigureEn: parse(r.body_after_figure_en) || [],
     };
 }
 

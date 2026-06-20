@@ -221,8 +221,21 @@
         } catch(e) {}
     })();
 
-    // Re-render the (translated) overview panel when language changes
-    document.addEventListener('langchange', () => { if (_proj) renderOverviewPanel(_proj); });
+    // Re-render the (translated) overview panel + bilingual content when language changes
+    document.addEventListener('langchange', () => { if (_proj) renderOverviewPanel(_proj); applyDetailLang(); });
+
+    // ── Bilingual project content (VI is default; EN falls back to VI when empty) ──
+    function pickLang(vi, en) {
+        const e = (en != null && String(en).trim() !== '') ? en : vi;
+        return (L() === 'en') ? (e || '') : (vi || '');
+    }
+    function applyDetailLang() {
+        const d = projectData; if (!d) return;
+        document.getElementById('proj-lead').textContent = pickLang(d.lead, d.leadEn);
+        document.getElementById('proj-photo1-cap').textContent = pickLang(d.photo1cap, d.photo1capEn);
+        document.getElementById('proj-photo2-cap').textContent = pickLang(d.photo2cap, d.photo2capEn);
+        document.getElementById('proj-photo3-cap').textContent = pickLang(d.photo3cap, d.photo3capEn);
+    }
 
     // ── Populate page ─────────────────────────────────────────────────────────────
     function populate(d) {
@@ -262,6 +275,8 @@
         p3.src = d.images[3] || d.images[0] || ''; p3.alt = d.photo3alt || '';
         document.getElementById('proj-photo3-cap').textContent = d.photo3cap || '';
 
+        // Apply the active language to lead + captions (after i18n.js has loaded)
+        applyDetailLang();
     }
 
     // ── Overview panel — called with the API project object ──────────────────────

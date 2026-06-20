@@ -19,6 +19,12 @@ require('./db/initCareerTax')().catch(e => console.error('career taxonomy init f
 // Ensure the careers table has the bilingual (English) content columns
 require('./db/initCareerI18n')().catch(e => console.error('career i18n init failed:', e.message));
 
+// Ensure the project_details table has the bilingual (English) content columns
+require('./db/initProjectI18n')().catch(e => console.error('project i18n init failed:', e.message));
+
+// Ensure the blog_content table has the bilingual (English) content columns
+require('./db/initBlogI18n')().catch(e => console.error('blog i18n init failed:', e.message));
+
 // Ensure the managed page-images table exists
 const pageImages = require('./routes/pageImages');
 pageImages.initPageImages().catch(e => console.error('page images init failed:', e.message));

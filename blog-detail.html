@@ -254,28 +254,39 @@
 
         const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
+        // Bilingual content: show EN when active and provided, else fall back to VI.
+        const en = (L() === 'en');
+        const pick = (vi, e) => (en && e != null && String(e).trim() !== '') ? e : (vi || '');
+        const pickArr = (vi, e) => (en && Array.isArray(e) && e.some(s => s && s.trim())) ? e : (vi || []);
+        const lead            = pick(content.lead, content.leadEn);
+        const body            = pickArr(content.body, content.bodyEn);
+        const pullQuote       = pick(content.pullQuote, content.pullQuoteEn);
+        const pullQuoteCite   = pick(content.pullQuoteCite, content.pullQuoteCiteEn);
+        const figureCaption   = pick(content.figureCaption, content.figureCaptionEn);
+        const bodyAfterFigure = pickArr(content.bodyAfterFigure, content.bodyAfterFigureEn);
+
         let bodyHTML = '';
-        if (content.lead) bodyHTML += `<p class="article-lead">${esc(content.lead)}</p>`;
-        if (content.body && content.body.length) {
+        if (lead) bodyHTML += `<p class="article-lead">${esc(lead)}</p>`;
+        if (body && body.length) {
             bodyHTML += '<div class="article-body">';
-            content.body.forEach(p => { if (p && p.trim()) bodyHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
+            body.forEach(p => { if (p && p.trim()) bodyHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
             bodyHTML += '</div>';
         }
-        if (content.pullQuote) {
-            bodyHTML += `<blockquote class="pull-quote reveal-up"><p>${esc(content.pullQuote)}</p>${content.pullQuoteCite ? `<cite>${esc(content.pullQuoteCite)}</cite>` : ''}</blockquote>`;
+        if (pullQuote) {
+            bodyHTML += `<blockquote class="pull-quote reveal-up"><p>${esc(pullQuote)}</p>${pullQuoteCite ? `<cite>${esc(pullQuoteCite)}</cite>` : ''}</blockquote>`;
         }
 
         const figureHTML = `<figure class="my-20 md:my-28 -mx-6 md:-mx-16 lg:-mx-28 xl:-mx-40 reveal-fade">
             <div class="w-full overflow-hidden" style="height:60vh;">
                 <img src="${esc(content.figureImage || meta.coverImage || '')}" alt="${esc(meta.title)}" class="w-full h-full object-cover">
             </div>
-            <figcaption class="mt-5 px-6 md:px-16 font-sans text-[10px] uppercase tracking-[0.25em] text-white/28 text-center">${esc(content.figureCaption || '')}</figcaption>
+            <figcaption class="mt-5 px-6 md:px-16 font-sans text-[10px] uppercase tracking-[0.25em] text-white/28 text-center">${esc(figureCaption || '')}</figcaption>
         </figure>`;
 
         let afterHTML = '';
-        if (content.bodyAfterFigure && content.bodyAfterFigure.length) {
+        if (bodyAfterFigure && bodyAfterFigure.length) {
             afterHTML += '<div class="article-body">';
-            content.bodyAfterFigure.forEach(p => { if (p && p.trim()) afterHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
+            bodyAfterFigure.forEach(p => { if (p && p.trim()) afterHTML += p.startsWith('### ') ? `<h3>${esc(p.slice(4))}</h3>` : `<p>${esc(p)}</p>`; });
             afterHTML += '</div>';
         }
 

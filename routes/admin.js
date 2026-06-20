@@ -95,8 +95,10 @@ router.put('/projects/:id/detail', async (req, res, next) => {
             `INSERT INTO project_details
                (project_id, title_plain, title_display, category_label, year_loc, award,
                 images, \`lead\`, photo1_alt, photo1_cap, photo2_alt, photo2_cap, photo3_alt, photo3_cap,
-                narrative1, narrative2, highlights, specs, credits, awards_list)
-             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?)
+                narrative1, narrative2, highlights, specs, credits, awards_list,
+                lead_en, photo1_cap_en, photo2_cap_en, photo3_cap_en,
+                narrative1_en, narrative2_en, highlights_en)
+             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
                title_plain=VALUES(title_plain), title_display=VALUES(title_display),
                category_label=VALUES(category_label), year_loc=VALUES(year_loc), award=VALUES(award),
@@ -106,11 +108,18 @@ router.put('/projects/:id/detail', async (req, res, next) => {
                photo3_alt=VALUES(photo3_alt), photo3_cap=VALUES(photo3_cap),
                narrative1=VALUES(narrative1), narrative2=VALUES(narrative2),
                highlights=VALUES(highlights), specs=VALUES(specs), credits=VALUES(credits),
-               awards_list=VALUES(awards_list)`,
+               awards_list=VALUES(awards_list),
+               lead_en=VALUES(lead_en),
+               photo1_cap_en=VALUES(photo1_cap_en), photo2_cap_en=VALUES(photo2_cap_en),
+               photo3_cap_en=VALUES(photo3_cap_en),
+               narrative1_en=VALUES(narrative1_en), narrative2_en=VALUES(narrative2_en),
+               highlights_en=VALUES(highlights_en)`,
             [req.params.id, d.titlePlain, d.title, d.category, d.yearLoc, d.award,
              j(d.images), d.lead, d.photo1alt, d.photo1cap, d.photo2alt, d.photo2cap,
              d.photo3alt, d.photo3cap, j(d.narrative1), j(d.narrative2),
-             j(d.highlights), j(d.specs), j(d.credits), j(d.awards)]
+             j(d.highlights), j(d.specs), j(d.credits), j(d.awards),
+             d.leadEn ?? null, d.photo1capEn ?? null, d.photo2capEn ?? null, d.photo3capEn ?? null,
+             j(d.narrative1En || []), j(d.narrative2En || []), j(d.highlightsEn || [])]
         );
         res.json({ ok: true });
     } catch (e) { next(e); }
@@ -182,16 +191,24 @@ router.put('/blog/:id/content', async (req, res, next) => {
         await pool.query(
             `INSERT INTO blog_content
                (post_id, \`lead\`, body, pull_quote, pull_quote_cite, figure_image,
-                figure_caption, body_after_figure, tags, related_posts)
-             VALUES (?,?,?,?,?,?,?,?,?,?)
+                figure_caption, body_after_figure, tags, related_posts,
+                lead_en, body_en, pull_quote_en, pull_quote_cite_en,
+                figure_caption_en, body_after_figure_en)
+             VALUES (?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
                \`lead\`=VALUES(\`lead\`), body=VALUES(body),
                pull_quote=VALUES(pull_quote), pull_quote_cite=VALUES(pull_quote_cite),
                figure_image=VALUES(figure_image), figure_caption=VALUES(figure_caption),
                body_after_figure=VALUES(body_after_figure), tags=VALUES(tags),
-               related_posts=VALUES(related_posts)`,
+               related_posts=VALUES(related_posts),
+               lead_en=VALUES(lead_en), body_en=VALUES(body_en),
+               pull_quote_en=VALUES(pull_quote_en), pull_quote_cite_en=VALUES(pull_quote_cite_en),
+               figure_caption_en=VALUES(figure_caption_en),
+               body_after_figure_en=VALUES(body_after_figure_en)`,
             [req.params.id, c.lead, j(c.body), c.pullQuote, c.pullQuoteCite,
-             c.figureImage, c.figureCaption, j(c.bodyAfterFigure), c.tags, j(c.related)]
+             c.figureImage, c.figureCaption, j(c.bodyAfterFigure), c.tags, j(c.related),
+             c.leadEn ?? null, j(c.bodyEn || []), c.pullQuoteEn ?? null, c.pullQuoteCiteEn ?? null,
+             c.figureCaptionEn ?? null, j(c.bodyAfterFigureEn || [])]
         );
         res.json({ ok: true });
     } catch (e) { next(e); }
@@ -355,6 +372,12 @@ function toDetail(r) {
         specs:       parse(r.specs) || [],
         credits:     parse(r.credits) || [],
         awards:      parse(r.awards_list) || [],
+        // ── English variants (bilingual content) ──
+        leadEn:       r.lead_en || '',
+        photo1capEn:  r.photo1_cap_en || '', photo2capEn: r.photo2_cap_en || '', photo3capEn: r.photo3_cap_en || '',
+        narrative1En: parse(r.narrative1_en) || [],
+        narrative2En: parse(r.narrative2_en) || [],
+        highlightsEn: parse(r.highlights_en) || [],
     };
 }
 
@@ -387,6 +410,13 @@ function toContent(r) {
         bodyAfterFigure: parse(r.body_after_figure) || [],
         tags:            r.tags,
         related:         parse(r.related_posts) || [],
+        // ── English variants (bilingual content) ──
+        leadEn:            r.lead_en || '',
+        bodyEn:            parse(r.body_en) || [],
+        pullQuoteEn:       r.pull_quote_en || '',
+        pullQuoteCiteEn:   r.pull_quote_cite_en || '',
+        figureCaptionEn:   r.figure_caption_en || '',
+        bodyAfterFigureEn: parse(r.body_after_figure_en) || [],
     };
 }
 
