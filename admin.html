@@ -1626,69 +1626,12 @@ function buildDetailHTML(d) {
             <div><label class="field-label">English</label>${ta('d-lead-en', d.leadEn, 'Opening statement — displayed large on the right panel…', 4)}</div>
         </div>`);
 
-    // PHOTOS & NARRATIVE
-    const mkPhotoBlock = (n, imgUrl, altId, altVal, capId, capVal, capEnId, capEnVal) => `
-        <div style="margin:14px 0;padding:14px;background:#f9f9f9;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
-            <p class="field-label" style="margin-bottom:8px;">Panel Photo ${n}</p>
-            <label class="field-label">Image URL (use Gallery Image ${n+1} field above)</label>
-            <div style="position:relative;margin-bottom:10px;">
-                <input class="field-input" value="${x(imgUrl||'')}" placeholder="Mirrors Gallery image ${n} — edit in Gallery section above" disabled style="background:#f0f0f0;color:rgba(0,0,0,0.35);">
-                ${prev(imgUrl)}
-            </div>
-            ${fld('Alt Text', inp(altId, altVal, 'Image alt text for accessibility'))}
-            ${row2(
-                fld('Caption · Tiếng Việt', inp(capId, capVal, 'Chú thích hiển thị dưới ảnh')),
-                fld('Caption · English', inp(capEnId, capEnVal, 'Caption shown below the photo'))
-            )}
-        </div>`;
+    // Only the Lead paragraph is shown on the public project-detail page, so the
+    // editor exposes just Overview + Gallery + Lead. Narrative paragraphs, design
+    // highlights, and photo alt/captions are no longer editable here; any values
+    // already stored for them are preserved untouched on save (see collectDetail).
 
-    const rmBtn = (n, i) => `<button onclick="removeNarrative(${n},${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
-    const n1 = (d.narrative1 || ['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Tiếng Việt</label>${ta('d-n1-' + i, p, 'Đoạn ' + (i+1) + '…', 5)}</div>
-                <div><label class="field-label">English</label>${ta('d-n1en-' + i, (d.narrative1En||[])[i] || '', 'Paragraph ' + (i+1) + '…', 5)}</div>
-            </div>
-            ${rmBtn(1, i)}
-        </div>`).join('');
-
-    const n2 = (d.narrative2 || ['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Tiếng Việt</label>${ta('d-n2-' + i, p, 'Đoạn ' + (i+1) + '…', 5)}</div>
-                <div><label class="field-label">English</label>${ta('d-n2en-' + i, (d.narrative2En||[])[i] || '', 'Paragraph ' + (i+1) + '…', 5)}</div>
-            </div>
-            ${rmBtn(2, i)}
-        </div>`).join('');
-
-    const narrative = card('Design Concept & Narrative', `
-        <p class="field-label" style="margin-bottom:10px;">Design Concept paragraphs (shown after Panel Photo 1)</p>
-        <div id="n1-wrap">${n1}</div>
-        <button onclick="addNarrative(1)" style="margin-bottom:20px;font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
-        ${mkPhotoBlock(1, imgs[1], 'd-photo1alt', d.photo1alt, 'd-photo1cap', d.photo1cap, 'd-photo1cap-en', d.photo1capEn)}
-        ${mkPhotoBlock(2, imgs[2], 'd-photo2alt', d.photo2alt, 'd-photo2cap', d.photo2cap, 'd-photo2cap-en', d.photo2capEn)}
-        <p class="field-label" style="margin:14px 0 10px;">Continuation paragraphs (shown after Panel Photo 2)</p>
-        <div id="n2-wrap">${n2}</div>
-        <button onclick="addNarrative(2)" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
-        ${mkPhotoBlock(3, imgs[3], 'd-photo3alt', d.photo3alt, 'd-photo3cap', d.photo3cap, 'd-photo3cap-en', d.photo3capEn)}
-    `);
-
-    // HIGHLIGHTS (bilingual)
-    const hlItems = (d.highlights || ['']).map((h, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:10px;align-items:flex-start;">
-            <span style="font-size:11px;color:rgba(0,0,0,0.3);margin-top:9px;flex-shrink:0;">—</span>
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Tiếng Việt</label>${ta('d-hl-' + i, h, 'Điểm nhấn thiết kế…', 2)}</div>
-                <div><label class="field-label">English</label>${ta('d-hlen-' + i, (d.highlightsEn||[])[i] || '', 'Design highlight…', 2)}</div>
-            </div>
-            <button onclick="removeItem('highlights',${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>`).join('');
-    const highlights = card('Design Highlights', `
-        <div id="hl-wrap">${hlItems}</div>
-        <button onclick="addItem('highlights')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Highlight</button>
-    `);
-
-    return identity + gallery + leadSec + narrative + highlights;
+    return identity + gallery + leadSec;
 }
 
 // ─── COLLECT VALUES ───────────────────────────────────
@@ -1716,15 +1659,18 @@ function collectDetail() {
     _dd._overview  = { title: _ovTitle, category: _ovCat, year: _ovYear, location: _ovLoc, award: _ovAward, architects: _ovArch, coverImage: _ovCover, status: _ovStatus, cols: _ovCols, scale: _ovScale, investor: _ovInvest, constructionStatus: _ovCStatus };
     _dd.images = [0,1,2,3].map(i => g('d-img-' + i));
     _dd.lead = g('d-lead');
-    _dd.photo1alt = g('d-photo1alt'); _dd.photo1cap = g('d-photo1cap');
-    _dd.photo2alt = g('d-photo2alt'); _dd.photo2cap = g('d-photo2cap');
-    _dd.photo3alt = g('d-photo3alt'); _dd.photo3cap = g('d-photo3cap');
+    // Photo alt/captions are no longer edited here — preserve existing values when
+    // their fields are absent (gp returns the field value if present, else current).
+    const gp = (id, cur) => { const el = document.getElementById(id); return el ? el.value : (cur || ''); };
+    _dd.photo1alt = gp('d-photo1alt', _dd.photo1alt); _dd.photo1cap = gp('d-photo1cap', _dd.photo1cap);
+    _dd.photo2alt = gp('d-photo2alt', _dd.photo2alt); _dd.photo2cap = gp('d-photo2cap', _dd.photo2cap);
+    _dd.photo3alt = gp('d-photo3alt', _dd.photo3alt); _dd.photo3cap = gp('d-photo3cap', _dd.photo3cap);
     _dd.narrative1 = (_dd.narrative1||['']).map((_, i) => { const el = document.getElementById('d-n1-' + i); return el ? el.value : _dd.narrative1[i]; });
     _dd.narrative2 = (_dd.narrative2||['']).map((_, i) => { const el = document.getElementById('d-n2-' + i); return el ? el.value : _dd.narrative2[i]; });
     _dd.highlights = (_dd.highlights||['']).map((_, i) => { const el = document.getElementById('d-hl-' + i); return el ? el.value : _dd.highlights[i]; });
     // English variants — read in parallel with the VI arrays (same index/length)
     _dd.leadEn = g('d-lead-en');
-    _dd.photo1capEn = g('d-photo1cap-en'); _dd.photo2capEn = g('d-photo2cap-en'); _dd.photo3capEn = g('d-photo3cap-en');
+    _dd.photo1capEn = gp('d-photo1cap-en', _dd.photo1capEn); _dd.photo2capEn = gp('d-photo2cap-en', _dd.photo2capEn); _dd.photo3capEn = gp('d-photo3cap-en', _dd.photo3capEn);
     _dd.narrative1En = _dd.narrative1.map((_, i) => { const el = document.getElementById('d-n1en-' + i); return el ? el.value : ((_dd.narrative1En||[])[i] || ''); });
     _dd.narrative2En = _dd.narrative2.map((_, i) => { const el = document.getElementById('d-n2en-' + i); return el ? el.value : ((_dd.narrative2En||[])[i] || ''); });
     _dd.highlightsEn = _dd.highlights.map((_, i) => { const el = document.getElementById('d-hlen-' + i); return el ? el.value : ((_dd.highlightsEn||[])[i] || ''); });

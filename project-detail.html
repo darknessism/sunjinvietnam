@@ -139,20 +139,17 @@
             <p class="lead-text" id="proj-lead"></p>
         </div>
 
-        <div class="panel-photo mb-3" style="height:320px;">
+        <div class="panel-photo mb-10" style="height:320px;">
             <img id="proj-photo1" src="" alt="" style="height:320px; object-fit:cover; width:100%;">
         </div>
-        <p class="panel-caption mb-10" id="proj-photo1-cap"></p>
 
-        <div class="panel-photo mb-3 mt-10" style="height:300px;">
+        <div class="panel-photo mb-10 mt-10" style="height:300px;">
             <img id="proj-photo2" src="" alt="" style="height:300px; object-fit:cover; width:100%;">
         </div>
-        <p class="panel-caption mb-10" id="proj-photo2-cap"></p>
 
-        <div class="panel-photo mb-3 mt-10" style="height:260px;">
+        <div class="panel-photo mb-12 mt-10" style="height:260px;">
             <img id="proj-photo3" src="" alt="" style="height:260px; object-fit:cover; width:100%;">
         </div>
-        <p class="panel-caption mb-12" id="proj-photo3-cap"></p>
 
         <!-- CTA -->
         <div class="mt-14 pt-10 border-t border-white/[0.07]">
@@ -232,9 +229,6 @@
     function applyDetailLang() {
         const d = projectData; if (!d) return;
         document.getElementById('proj-lead').textContent = pickLang(d.lead, d.leadEn);
-        document.getElementById('proj-photo1-cap').textContent = pickLang(d.photo1cap, d.photo1capEn);
-        document.getElementById('proj-photo2-cap').textContent = pickLang(d.photo2cap, d.photo2capEn);
-        document.getElementById('proj-photo3-cap').textContent = pickLang(d.photo3cap, d.photo3capEn);
     }
 
     // ── Populate page ─────────────────────────────────────────────────────────────
@@ -265,17 +259,14 @@
 
         const p1 = document.getElementById('proj-photo1');
         p1.src = d.images[1] || d.images[0] || ''; p1.alt = d.photo1alt || '';
-        document.getElementById('proj-photo1-cap').textContent = d.photo1cap || '';
 
         const p2 = document.getElementById('proj-photo2');
         p2.src = d.images[2] || d.images[0] || ''; p2.alt = d.photo2alt || '';
-        document.getElementById('proj-photo2-cap').textContent = d.photo2cap || '';
 
         const p3 = document.getElementById('proj-photo3');
         p3.src = d.images[3] || d.images[0] || ''; p3.alt = d.photo3alt || '';
-        document.getElementById('proj-photo3-cap').textContent = d.photo3cap || '';
 
-        // Apply the active language to lead + captions (after i18n.js has loaded)
+        // Apply the active language to the lead (after i18n.js has loaded)
         applyDetailLang();
     }
 
