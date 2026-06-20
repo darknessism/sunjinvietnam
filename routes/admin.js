@@ -97,8 +97,8 @@ router.put('/projects/:id/detail', async (req, res, next) => {
                 images, \`lead\`, photo1_alt, photo1_cap, photo2_alt, photo2_cap, photo3_alt, photo3_cap,
                 narrative1, narrative2, highlights, specs, credits, awards_list,
                 lead_en, photo1_cap_en, photo2_cap_en, photo3_cap_en,
-                narrative1_en, narrative2_en, highlights_en)
-             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?,?,?,?)
+                narrative1_en, narrative2_en, highlights_en, title_display_en)
+             VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?,?,?,?,?)
              ON DUPLICATE KEY UPDATE
                title_plain=VALUES(title_plain), title_display=VALUES(title_display),
                category_label=VALUES(category_label), year_loc=VALUES(year_loc), award=VALUES(award),
@@ -113,13 +113,13 @@ router.put('/projects/:id/detail', async (req, res, next) => {
                photo1_cap_en=VALUES(photo1_cap_en), photo2_cap_en=VALUES(photo2_cap_en),
                photo3_cap_en=VALUES(photo3_cap_en),
                narrative1_en=VALUES(narrative1_en), narrative2_en=VALUES(narrative2_en),
-               highlights_en=VALUES(highlights_en)`,
+               highlights_en=VALUES(highlights_en), title_display_en=VALUES(title_display_en)`,
             [req.params.id, d.titlePlain, d.title, d.category, d.yearLoc, d.award,
              j(d.images), d.lead, d.photo1alt, d.photo1cap, d.photo2alt, d.photo2cap,
              d.photo3alt, d.photo3cap, j(d.narrative1), j(d.narrative2),
              j(d.highlights), j(d.specs), j(d.credits), j(d.awards),
              d.leadEn ?? null, d.photo1capEn ?? null, d.photo2capEn ?? null, d.photo3capEn ?? null,
-             j(d.narrative1En || []), j(d.narrative2En || []), j(d.highlightsEn || [])]
+             j(d.narrative1En || []), j(d.narrative2En || []), j(d.highlightsEn || []), d.titleEn ?? null]
         );
         res.json({ ok: true });
     } catch (e) { next(e); }
@@ -140,13 +140,13 @@ router.post('/blog', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `INSERT INTO blog_posts (id, title, category, author, post_date, read_time, excerpt, cover_image, status, cols, featured, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `INSERT INTO blog_posts (id, title, title_en, category, author, post_date, read_time, excerpt, cover_image, status, cols, featured, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON DUPLICATE KEY UPDATE
-               title=VALUES(title), category=VALUES(category), author=VALUES(author),
+               title=VALUES(title), title_en=VALUES(title_en), category=VALUES(category), author=VALUES(author),
                post_date=VALUES(post_date), read_time=VALUES(read_time), excerpt=VALUES(excerpt),
                cover_image=VALUES(cover_image), status=VALUES(status), featured=VALUES(featured)`,
-            [p.id, p.title, p.category, p.author, p.date || null, p.readTime || 5,
+            [p.id, p.title, p.titleEn ?? null, p.category, p.author, p.date || null, p.readTime || 5,
              p.excerpt, p.coverImage, p.status || 'draft', p.cols ?? 12, p.featured ? 1 : 0,
              p.createdAt || new Date().toISOString().slice(0, 10)]
         );
@@ -159,9 +159,9 @@ router.put('/blog/:id', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `UPDATE blog_posts SET title=?, category=?, author=?, post_date=?, read_time=?,
+            `UPDATE blog_posts SET title=?, title_en=?, category=?, author=?, post_date=?, read_time=?,
              excerpt=?, cover_image=?, status=?, featured=? WHERE id=?`,
-            [p.title, p.category, p.author, p.date || null, p.readTime || 5,
+            [p.title, p.titleEn ?? null, p.category, p.author, p.date || null, p.readTime || 5,
              p.excerpt, p.coverImage, p.status, p.featured ? 1 : 0, req.params.id]
         );
         const [[row]] = await pool.query('SELECT * FROM blog_posts WHERE id = ?', [req.params.id]);
@@ -373,6 +373,7 @@ function toDetail(r) {
         credits:     parse(r.credits) || [],
         awards:      parse(r.awards_list) || [],
         // ── English variants (bilingual content) ──
+        titleEn:      r.title_display_en || '',
         leadEn:       r.lead_en || '',
         photo1capEn:  r.photo1_cap_en || '', photo2capEn: r.photo2_cap_en || '', photo3capEn: r.photo3_cap_en || '',
         narrative1En: parse(r.narrative1_en) || [],
@@ -381,13 +382,27 @@ function toDetail(r) {
     };
 }
 
+// mysql2 returns DATE columns as JS Date objects; String(date).slice(0,10)
+// yields "Mon Nov 24" (drops the year). Normalise to YYYY-MM-DD.
+function fmtDate(d) {
+    if (!d) return null;
+    if (d instanceof Date) {
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+    return String(d).slice(0, 10);
+}
+
 function toPost(r) {
     return {
         id:         r.id,
         title:      r.title,
+        titleEn:    r.title_en || '',
         category:   r.category,
         author:     r.author,
-        date:       r.post_date ? String(r.post_date).slice(0, 10) : null,
+        date:       fmtDate(r.post_date),
         readTime:   r.read_time,
         excerpt:    r.excerpt,
         coverImage: r.cover_image,

@@ -65,6 +65,7 @@ function toDetail(r) {
         narrative2:    parse(r.narrative2) || [],
         highlights:    parse(r.highlights) || [],
         // ── English variants (bilingual content) ──
+        titleEn:       r.title_display_en || '',
         leadEn:        r.lead_en || '',
         photo1capEn:   r.photo1_cap_en || '',
         photo2capEn:   r.photo2_cap_en || '',

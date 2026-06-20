@@ -235,16 +235,18 @@
     <script>
     // ── Populate from CMS (localStorage) ─────────────────────────────
     function populateFromCMS(meta, content) {
-        document.title = meta.title + ' | Blog | SUNJIN VIETNAM';
+        // Article title: show EN when active and provided, else fall back to VI.
+        const titleLoc = (L() === 'en' && meta.titleEn && meta.titleEn.trim()) ? meta.titleEn : meta.title;
+        document.title = titleLoc + ' | Blog | SUNJIN VIETNAM';
 
         const heroImg = document.getElementById('hero-img');
         heroImg.src = meta.coverImage || '';
-        heroImg.alt = meta.title;
+        heroImg.alt = titleLoc;
         const bannerImg = document.getElementById('banner-img');
         bannerImg.src = meta.coverImage || '';
-        bannerImg.alt = meta.title;
+        bannerImg.alt = titleLoc;
         document.getElementById('article-cat').textContent = catLabel(meta.category);
-        document.getElementById('article-title').textContent = meta.title;
+        document.getElementById('article-title').textContent = titleLoc;
         document.getElementById('article-date').textContent = meta.date;
         document.getElementById('article-readtime').textContent = (meta.readTime || '') + ' ' + minRead();
         document.getElementById('article-author').textContent = meta.author;

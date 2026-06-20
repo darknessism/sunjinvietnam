@@ -5,6 +5,7 @@ const pool = require('./connection');
 // idempotently at startup so an existing deployment gains the columns without
 // a manual migration.
 const COLUMNS = [
+    ['title_display_en', 'VARCHAR(255)'],
     ['lead_en',       'TEXT'],
     ['narrative1_en', 'JSON'],
     ['narrative2_en', 'JSON'],

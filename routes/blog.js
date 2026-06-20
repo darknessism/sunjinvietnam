@@ -57,6 +57,7 @@ function toPost(r) {
     return {
         id:         r.id,
         title:      r.title,
+        titleEn:    r.title_en || '',
         category:   r.category,
         author:     r.author,
         date:       fmtDate(r.post_date),

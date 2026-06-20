@@ -1510,6 +1510,7 @@ function blankDetail(title) {
         narrative2: [''],
         highlights: [''],
         // English variants (bilingual content)
+        titleEn: '',
         leadEn: '',
         photo1capEn: '', photo2capEn: '', photo3capEn: '',
         narrative1En: [''],
@@ -1589,7 +1590,10 @@ function buildDetailHTML(d) {
     // OVERVIEW + IDENTITY — editable, saves to both sj_projects and sj_detail
     const _proj = (db('projects') || []).find(p => p.id === _did) || {};
     const identity = card('Overview', `
-        ${fld('Project Title *', inp('d-ov-title', _proj.title || '', 'e.g. Grand Hotel Nha Trang'))}
+        ${row2(
+            fld('Project Title (VI) *', inp('d-ov-title', _proj.title || '', 'VD: Khách sạn Grand Nha Trang')),
+            fld('Project Title (EN)', inp('d-ov-title-en', d.titleEn || '', 'e.g. Grand Hotel Nha Trang'))
+        )}
         ${row2(
             fld('Category *', `<select id="d-ov-cat" class="field-input" style="cursor:pointer;"><option value="planning"${_proj.category==='planning'?' selected':''}>Planning</option><option value="housing"${_proj.category==='housing'?' selected':''}>Housing</option><option value="school"${_proj.category==='school'?' selected':''}>School</option><option value="hotel"${_proj.category==='hotel'?' selected':''}>Hotel</option><option value="headquarters"${_proj.category==='headquarters'?' selected':''}>Headquarters</option></select>`),
             fld('Year', `<select id="d-ov-year" class="field-input" style="cursor:pointer;">${[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007].map(y=>`<option value="${y}"${((_proj.year||new Date().getFullYear())==y)?' selected':''}>${y}</option>`).join('')}</select>`)
@@ -1663,6 +1667,7 @@ function collectDetail() {
     const _ovCStatus = g('d-ov-cstatus');
     _dd.titlePlain = _ovTitle;
     _dd.title      = _ovTitle;
+    _dd.titleEn    = g('d-ov-title-en');
     _dd.category   = _CCAT[_ovCat] || _ovCat || '';
     _dd.yearLoc    = [_ovYear, _ovLoc].filter(Boolean).join(' · ') + (_ovLoc ? ', Vietnam' : '');
     _dd.award      = _ovAward;
@@ -1923,7 +1928,10 @@ function buildBlogContentHTML(d) {
 
     const vm = _bc_meta || {};
     const metaSec = bcCard('Article Info', `
-        ${fld('Article Title *', inp('bc-meta-title', vm.title||'', 'Article headline'))}
+        ${row2(
+            fld('Article Title (VI) *', inp('bc-meta-title', vm.title||'', 'Tiêu đề bài viết')),
+            fld('Article Title (EN)', inp('bc-meta-title-en', vm.titleEn||'', 'Article headline'))
+        )}
         ${row2(
             fld('Category *', `<select id="bc-meta-cat" class="field-input" style="cursor:pointer;">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility'],['events','Events'],['awards','Awards']],vm.category||'news')}</select>`),
             fld('Date', `<input id="bc-meta-date" class="field-input" type="date" value="${x(vm.date||new Date().toISOString().slice(0,10))}">`)
@@ -2008,6 +2016,7 @@ function collectBlogContent() {
     if (_bc_meta) {
         const t = g('bc-meta-title').trim();
         if (t) _bc_meta.title = t;
+        _bc_meta.titleEn = g('bc-meta-title-en').trim();
         const catEl = document.getElementById('bc-meta-cat');
         if (catEl) _bc_meta.category = catEl.value;
         _bc_meta.date = g('bc-meta-date');

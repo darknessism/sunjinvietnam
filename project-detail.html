@@ -219,6 +219,7 @@
     }
     function applyDetailLang() {
         const d = projectData; if (!d) return;
+        document.getElementById('proj-title').innerHTML = pickLang(d.title, d.titleEn);
         document.getElementById('proj-lead').textContent = pickLang(d.lead, d.leadEn);
     }
 
