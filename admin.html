@@ -1580,8 +1580,8 @@ function imgControl(id, val, ph) {
 }
 
 function buildDetailHTML(d) {
-    const imgs = d.images || ['','','',''];
-    while (imgs.length < 4) imgs.push('');
+    const imgs = (d.images && d.images.length) ? d.images.slice() : [''];
+    if (!imgs.length) imgs.push('');
 
     // helper: img preview inline
     const prev = (url) => url ? `<img src="${x(url)}" style="width:100%;height:100px;object-fit:cover;border-radius:4px;margin-top:6px;display:block;" onerror="this.style.display='none'">` : '';
@@ -1609,13 +1609,23 @@ function buildDetailHTML(d) {
         ${fld('Construction Status', inp('d-ov-cstatus', _proj.constructionStatus || '', 'e.g. Completed, Under Construction, Planning Phase'))}
     `);
 
-    // GALLERY
-    const gallery = card('Gallery (4 images)', `
-        ${['Cover Photo (main)', 'Panel Photo 1', 'Panel Photo 2', 'Panel Photo 3'].map((lbl, i) => `
-            <div style="margin-bottom:14px;">
-                <label class="field-label">${lbl}</label>
-                ${imgControl('d-img-' + i, imgs[i])}
-            </div>`).join('')}
+    // GALLERY — cover photo + any number of additional images. The cover is the
+    // hero on the left of the public page; the rest stack on the right.
+    const galleryExtra = imgs.slice(1).map((url, k) => {
+        const i = k + 1;
+        return `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;">
+            <div style="flex:1;"><label class="field-label">Gallery Image ${i}</label>${imgControl('d-img-' + i, url)}</div>
+            <button onclick="removeImage(${i})" title="Remove image" style="flex-shrink:0;margin-top:18px;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>`;
+    }).join('');
+    const gallery = card('Gallery Images', `
+        <div style="margin-bottom:18px;">
+            <label class="field-label">Cover Photo (main)</label>
+            ${imgControl('d-img-0', imgs[0]||'')}
+        </div>
+        <div id="gallery-extra">${galleryExtra}</div>
+        <button onclick="addImage()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Image</button>
+        <p style="font-size:10px;color:rgba(0,0,0,0.3);margin-top:8px;">The cover photo is the hero on the left of the project page. Additional images stack on the right at full height (not cropped).</p>
     `);
 
 
@@ -1657,7 +1667,7 @@ function collectDetail() {
     _dd.yearLoc    = [_ovYear, _ovLoc].filter(Boolean).join(' · ') + (_ovLoc ? ', Vietnam' : '');
     _dd.award      = _ovAward;
     _dd._overview  = { title: _ovTitle, category: _ovCat, year: _ovYear, location: _ovLoc, award: _ovAward, architects: _ovArch, coverImage: _ovCover, status: _ovStatus, cols: _ovCols, scale: _ovScale, investor: _ovInvest, constructionStatus: _ovCStatus };
-    _dd.images = [0,1,2,3].map(i => g('d-img-' + i));
+    _dd.images = (_dd.images && _dd.images.length ? _dd.images : ['']).map((_, i) => { const el = document.getElementById('d-img-' + i); return el ? el.value : (_dd.images[i] || ''); });
     _dd.lead = g('d-lead');
     // Photo alt/captions are no longer edited here — preserve existing values when
     // their fields are absent (gp returns the field value if present, else current).
@@ -1711,6 +1721,20 @@ async function uploadDetailImage(targetId, input) {
 }
 
 // ─── DYNAMIC LISTS ────────────────────────────────────
+// Gallery images: index 0 is the cover (left hero); 1..N stack on the right.
+function addImage() {
+    collectDetail();
+    _dd.images.push('');
+    renderDetailBody();
+    setTimeout(() => { const el = document.getElementById('d-img-' + (_dd.images.length - 1)); if (el) el.scrollIntoView({ behavior:'smooth', block:'center' }); }, 80);
+}
+function removeImage(i) {
+    collectDetail();
+    _dd.images.splice(i, 1);
+    if (!_dd.images.length) _dd.images = [''];
+    renderDetailBody();
+}
+
 // VI and EN arrays are kept parallel (same length / index) so each paragraph's
 // two language boxes stay paired when rows are added or removed.
 function addNarrative(n) {

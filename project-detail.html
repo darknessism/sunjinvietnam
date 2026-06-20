@@ -139,17 +139,8 @@
             <p class="lead-text" id="proj-lead"></p>
         </div>
 
-        <div class="panel-photo mb-10" style="height:320px;">
-            <img id="proj-photo1" src="" alt="" style="height:320px; object-fit:cover; width:100%;">
-        </div>
-
-        <div class="panel-photo mb-10 mt-10" style="height:300px;">
-            <img id="proj-photo2" src="" alt="" style="height:300px; object-fit:cover; width:100%;">
-        </div>
-
-        <div class="panel-photo mb-12 mt-10" style="height:260px;">
-            <img id="proj-photo3" src="" alt="" style="height:260px; object-fit:cover; width:100%;">
-        </div>
+        <!-- Gallery images (all images after the cover) — rendered full height, width fits the section -->
+        <div id="proj-photos"></div>
 
         <!-- CTA -->
         <div class="mt-14 pt-10 border-t border-white/[0.07]">
@@ -190,7 +181,7 @@
             category: typology,
             yearLoc: [m.year, m.location].filter(Boolean).join(' · ') + (m.location ? ', Vietnam' : ''),
             award: m.award || '',
-            images: [img, img, img, img],
+            images: img ? [img] : [],
             lead: '',
             photo1alt: m.title, photo1cap: '',
             photo2alt: m.title, photo2cap: '',
@@ -257,14 +248,13 @@
 
         document.getElementById('proj-lead').textContent = d.lead || '';
 
-        const p1 = document.getElementById('proj-photo1');
-        p1.src = d.images[1] || d.images[0] || ''; p1.alt = d.photo1alt || '';
-
-        const p2 = document.getElementById('proj-photo2');
-        p2.src = d.images[2] || d.images[0] || ''; p2.alt = d.photo2alt || '';
-
-        const p3 = document.getElementById('proj-photo3');
-        p3.src = d.images[3] || d.images[0] || ''; p3.alt = d.photo3alt || '';
+        // Gallery images (everything after the cover) stacked on the right at full
+        // height — width fits the section, height is natural (not cropped).
+        const galleryImgs = (d.images || []).slice(1).filter(Boolean);
+        document.getElementById('proj-photos').innerHTML = galleryImgs.map((src, i) => `
+            <div class="panel-photo" style="margin-top:${i === 0 ? '0' : '2.5rem'};">
+                <img src="${esc(src)}" alt="${esc(d.titlePlain || '')}" style="width:100%;height:auto;display:block;">
+            </div>`).join('');
 
         // Apply the active language to the lead (after i18n.js has loaded)
         applyDetailLang();
