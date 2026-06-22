@@ -90,6 +90,8 @@ function toContent(r) {
         pullQuoteCiteEn:   r.pull_quote_cite_en || '',
         figureCaptionEn:   r.figure_caption_en || '',
         bodyAfterFigureEn: parse(r.body_after_figure_en) || [],
+        bodyHtml:          r.body_html || '',
+        bodyHtmlEn:        r.body_html_en || '',
     };
 }
 

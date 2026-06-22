@@ -13,6 +13,9 @@
             theme: { extend: { fontFamily: { display: ['Open Sans','sans-serif'], sans: ['Open Sans','sans-serif'] }, colors: { dark: '#0a0a0a', light: '#f5f5f5' } } }
         }
     </script>
+    <!-- Quill rich text editor (article body) -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Open Sans', sans-serif; background: #f2f2f2; margin: 0; }
@@ -69,6 +72,17 @@
         .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: #0a0a0a; }
         .field-select { appearance: none; cursor: pointer; }
         .field-textarea { resize: vertical; min-height: 76px; }
+
+        /* Rich text editor (article body) */
+        .bc-lang-tab { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; border: 1px solid rgba(0,0,0,0.14); border-radius: 6px; padding: 6px 16px; background: none; cursor: pointer; color: rgba(0,0,0,0.45); font-family: 'Open Sans', sans-serif; }
+        .bc-lang-tab.active { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
+        .bc-editor { min-height: 360px; font-family: 'Open Sans', sans-serif; font-size: 14px; }
+        .bc-editor .ql-editor { min-height: 360px; }
+        .ql-toolbar.ql-snow, .ql-container.ql-snow { border-color: rgba(0,0,0,0.14); }
+        .ql-toolbar.ql-snow { border-top-left-radius: 6px; border-top-right-radius: 6px; }
+        .ql-container.ql-snow { border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+        .ql-editor img { max-width: 100%; height: auto; }
+        .ql-editor iframe.ql-video { width: 100%; aspect-ratio: 16/9; height: auto; }
 
         /* Login */
         #login-screen { position: fixed; inset: 0; background: #0a0a0a; z-index: 200; display: flex; align-items: center; justify-content: center; }
@@ -1820,6 +1834,9 @@ function blankBlogContent() {
         pullQuoteCiteEn: '',
         bodyAfterFigureEn: [''],
         figureCaptionEn: '',
+        // Rich-text article body (VI + EN), stored as HTML
+        bodyHtml: '',
+        bodyHtmlEn: '',
     };
 }
 
@@ -1836,6 +1853,7 @@ async function openBlogContent(id) {
     document.querySelector('.nav-item[data-view="blog"]').classList.add('active');
     document.getElementById('bc-heading').textContent = 'Edit Article — ' + (_bc_meta ? _bc_meta.title : id);
     document.getElementById('bc-preview-link').href = 'blog-detail.html?id=' + id;
+    _bcLang = 'vi';
     renderBlogContentBody();
 }
 
@@ -1912,6 +1930,7 @@ async function saveCareerEdit() {
 
 function renderBlogContentBody() {
     document.getElementById('blog-content-body').innerHTML = buildBlogContentHTML(_bc);
+    initBlogEditors();
 }
 
 function bcCard(title, body) {
@@ -1945,62 +1964,17 @@ function buildBlogContentHTML(d) {
         ${fld('Status', `<select id="bc-meta-status" class="field-input" style="cursor:pointer;">${sel([['published','Published'],['draft','Draft']],vm.status||'published')}</select>`)}
     `);
 
-    const leadSec = bcCard('Lead Paragraph (displayed large)', `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div><label class="field-label">Tiếng Việt</label><textarea id="bc-lead" class="field-textarea" style="min-height:80px;" placeholder="Đoạn mở đầu ấn tượng…">${x(d.lead||'')}</textarea></div>
-            <div><label class="field-label">English</label><textarea id="bc-lead-en" class="field-textarea" style="min-height:80px;" placeholder="Compelling opening paragraph…">${x(d.leadEn||'')}</textarea></div>
+    // Single rich-text body editor, one per language (VI / EN tabs). Text,
+    // headings, quotes, inline images (uploaded to the site) and YouTube embeds
+    // are composed in one place and stored as HTML.
+    const contentSec = bcCard('Article Content', `
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button type="button" id="bc-tab-vi" onclick="bcLang('vi')" class="bc-lang-tab active">Tiếng Việt</button>
+            <button type="button" id="bc-tab-en" onclick="bcLang('en')" class="bc-lang-tab">English</button>
         </div>
-    `);
-
-    const bcRmBtn = (fn, i) => `<button onclick="${fn}(${i})" style="flex-shrink:0;background:none;border:1px solid rgba(0,0,0,0.1);border-radius:5px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.4);align-self:flex-start;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
-    const bodyRows = (d.body||['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Tiếng Việt</label><textarea id="bc-body-${i}" class="field-textarea" placeholder="Đoạn ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea></div>
-                <div><label class="field-label">English</label><textarea id="bc-body-en-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x((d.bodyEn||[])[i]||'')}</textarea></div>
-            </div>
-            ${bcRmBtn('bcRemoveBody', i)}
-        </div>`).join('');
-
-    const bodySec = bcCard('Article Body Paragraphs', `
-        <div id="bc-body-wrap">${bodyRows}</div>
-        <button onclick="bcAddBody()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
-        <p style="font-size:10px;color:rgba(0,0,0,0.3);margin-top:8px;">These paragraphs appear after the lead and before the figure image. Basic HTML like &lt;h3&gt; and &lt;em&gt; is supported.</p>
-    `);
-
-    const quoteSec = bcCard('Pull Quote (optional)', `
-        <label class="field-label" style="margin-bottom:8px;">Quote Text</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;">
-            <div><label class="field-label">Tiếng Việt</label><textarea id="bc-quote" class="field-textarea" placeholder="Câu trích dẫn đáng nhớ…" style="min-height:72px;">${x(d.pullQuote||'')}</textarea></div>
-            <div><label class="field-label">English</label><textarea id="bc-quote-en" class="field-textarea" placeholder="Memorable quote…" style="min-height:72px;">${x(d.pullQuoteEn||'')}</textarea></div>
-        </div>
-        <label class="field-label" style="margin-bottom:8px;">Citation</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div><label class="field-label">Tiếng Việt</label><input id="bc-cite" class="field-input" value="${x(d.pullQuoteCite||'')}" placeholder="VD: KTS. Trần Nguyên Quang — SUNJIN Việt Nam"></div>
-            <div><label class="field-label">English</label><input id="bc-cite-en" class="field-input" value="${x(d.pullQuoteCiteEn||'')}" placeholder="e.g. Arch. Tran Nguyen Quang — SUNJIN Vietnam"></div>
-        </div>
-    `);
-
-    const figureSec = bcCard('Figure / Banner Image', `
-        <div style="margin-bottom:12px;"><label class="field-label">Image URL</label>${imgControl('bc-fig-img', d.figureImage||'')}</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div><label class="field-label">Caption · Tiếng Việt</label><textarea id="bc-fig-cap" class="field-textarea" placeholder="Chú thích ảnh…">${x(d.figureCaption||'')}</textarea></div>
-            <div><label class="field-label">Caption · English</label><textarea id="bc-fig-cap-en" class="field-textarea" placeholder="Caption text…">${x(d.figureCaptionEn||'')}</textarea></div>
-        </div>
-    `);
-
-    const afterRows = (d.bodyAfterFigure||['']).map((p, i) => `
-        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;">
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label class="field-label">Tiếng Việt</label><textarea id="bc-after-${i}" class="field-textarea" placeholder="Đoạn ${i+1}…" style="min-height:78px;">${x(p||'')}</textarea></div>
-                <div><label class="field-label">English</label><textarea id="bc-after-en-${i}" class="field-textarea" placeholder="Paragraph ${i+1}…" style="min-height:78px;">${x((d.bodyAfterFigureEn||[])[i]||'')}</textarea></div>
-            </div>
-            ${bcRmBtn('bcRemoveAfter', i)}
-        </div>`).join('');
-
-    const afterSec = bcCard('Paragraphs After Figure', `
-        <div id="bc-after-wrap">${afterRows}</div>
-        <button onclick="bcAddAfter()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;background:none;border:1px dashed rgba(0,0,0,0.18);border-radius:6px;padding:6px 14px;cursor:pointer;color:rgba(0,0,0,0.4);font-family:'Open Sans',sans-serif;">+ Add Paragraph</button>
+        <div id="bc-editor-vi-wrap"><div id="bc-editor-vi" class="bc-editor"></div></div>
+        <div id="bc-editor-en-wrap" style="display:none;"><div id="bc-editor-en" class="bc-editor"></div></div>
+        <p style="font-size:10px;color:rgba(0,0,0,0.3);margin-top:10px;line-height:1.6;">Compose the whole article here — text, headings, quotes, lists, links. Use the <strong>image</strong> button to upload &amp; insert a photo, and the <strong>video</strong> button to embed a YouTube link. Switch the VI / EN tabs to write each language. Then press <strong>Save Changes</strong> to publish.</p>
     `);
 
     const tagsSec = bcCard('Tags', `
@@ -2008,7 +1982,120 @@ function buildBlogContentHTML(d) {
         <input id="bc-tags" class="field-input" value="${x(d.tags||'')}" placeholder="e.g. National Award, Residential, Hanoi, 2025">
     `);
 
-    return metaSec + leadSec + bodySec + quoteSec + figureSec + afterSec + tagsSec;
+    return metaSec + contentSec + tagsSec;
+}
+
+// ── Rich text editors (Quill) ─────────────────────────
+let _quillVi = null, _quillEn = null, _bcLang = 'vi';
+
+// Build initial HTML for the editor from a post's legacy structured fields, so
+// existing articles open with their content ready to edit in the rich editor.
+function legacyToHtml(c, lang) {
+    const en = lang === 'en';
+    const lead   = en ? (c.leadEn || c.lead) : c.lead;
+    const body   = en ? ((c.bodyEn && c.bodyEn.length) ? c.bodyEn : c.body) : c.body;
+    const quote  = en ? (c.pullQuoteEn || c.pullQuote) : c.pullQuote;
+    const cite   = en ? (c.pullQuoteCiteEn || c.pullQuoteCite) : c.pullQuoteCite;
+    const figCap = en ? (c.figureCaptionEn || c.figureCaption) : c.figureCaption;
+    const after  = en ? ((c.bodyAfterFigureEn && c.bodyAfterFigureEn.length) ? c.bodyAfterFigureEn : c.bodyAfterFigure) : c.bodyAfterFigure;
+    const para = p => { if (!p || !p.trim()) return ''; return p.startsWith('### ') ? `<h3>${x(p.slice(4))}</h3>` : `<p>${x(p)}</p>`; };
+    let h = '';
+    if (lead && lead.trim()) h += `<p>${x(lead)}</p>`;
+    (body || []).forEach(p => h += para(p));
+    if (quote && quote.trim()) h += `<blockquote>${x(quote)}${cite ? ' — ' + x(cite) : ''}</blockquote>`;
+    if (c.figureImage && c.figureImage.trim()) h += `<p><img src="${x(c.figureImage)}"></p>`;
+    if (figCap && figCap.trim()) h += `<p><em>${x(figCap)}</em></p>`;
+    (after || []).forEach(p => h += para(p));
+    return h;
+}
+
+function makeQuill(el) {
+    const q = new Quill(el, {
+        theme: 'snow',
+        placeholder: 'Write the article…',
+        modules: { toolbar: {
+            container: [
+                [{ header: [2, 3, false] }],
+                ['bold', 'italic', 'underline', 'blockquote'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link', 'image', 'video'],
+                ['clean'],
+            ],
+            handlers: {
+                image: function () { bcInsertImage(q); },
+                video: function () { bcInsertVideo(q); },
+            },
+        } },
+    });
+    return q;
+}
+
+function initBlogEditors() {
+    const elVi = document.getElementById('bc-editor-vi');
+    const elEn = document.getElementById('bc-editor-en');
+    if (!elVi || !elEn || typeof Quill === 'undefined') return;
+    _quillVi = makeQuill(elVi);
+    _quillEn = makeQuill(elEn);
+    const htmlVi = (_bc.bodyHtml && _bc.bodyHtml.trim()) ? _bc.bodyHtml : legacyToHtml(_bc, 'vi');
+    const htmlEn = (_bc.bodyHtmlEn && _bc.bodyHtmlEn.trim()) ? _bc.bodyHtmlEn : legacyToHtml(_bc, 'en');
+    if (htmlVi) _quillVi.clipboard.dangerouslyPasteHTML(htmlVi);
+    if (htmlEn) _quillEn.clipboard.dangerouslyPasteHTML(htmlEn);
+    bcLang(_bcLang || 'vi');
+}
+
+function bcLang(lang) {
+    _bcLang = (lang === 'en') ? 'en' : 'vi';
+    const viWrap = document.getElementById('bc-editor-vi-wrap');
+    const enWrap = document.getElementById('bc-editor-en-wrap');
+    const viTab = document.getElementById('bc-tab-vi');
+    const enTab = document.getElementById('bc-tab-en');
+    if (viWrap) viWrap.style.display = _bcLang === 'vi' ? '' : 'none';
+    if (enWrap) enWrap.style.display = _bcLang === 'en' ? '' : 'none';
+    if (viTab) viTab.classList.toggle('active', _bcLang === 'vi');
+    if (enTab) enTab.classList.toggle('active', _bcLang === 'en');
+}
+
+// Quill leaves "<p><br></p>" for an empty editor — treat that as blank.
+function quillHtml(q) {
+    if (!q) return '';
+    const h = q.root.innerHTML;
+    return h.replace(/<p>(\s|<br>|&nbsp;)*<\/p>/gi, '').trim() ? h : '';
+}
+
+function bcInsertImage(q) {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    input.onchange = async () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        if (file.size > 8 * 1024 * 1024) { toast('Image is too large (max 8 MB).'); return; }
+        const token = sessionStorage.getItem('sj_token');
+        const fd = new FormData(); fd.append('image', file);
+        try {
+            const res = await fetch('/api/media/admin/upload', { method: 'POST', headers: token ? { Authorization: 'Bearer ' + token } : {}, body: fd });
+            if (res.status === 401) { doLogout(); return; }
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Upload failed');
+            const data = await res.json();
+            const range = q.getSelection(true);
+            q.insertEmbed(range.index, 'image', data.url, 'user');
+            q.setSelection(range.index + 1, 'silent');
+            toast('Image inserted.');
+        } catch (e) { toast('Upload failed: ' + e.message); }
+    };
+    input.click();
+}
+
+function ytEmbed(u) {
+    const m = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    return m ? 'https://www.youtube.com/embed/' + m[1] : null;
+}
+function bcInsertVideo(q) {
+    const url = prompt('Paste a YouTube link (or video URL):');
+    if (!url || !url.trim()) return;
+    const embed = ytEmbed(url.trim()) || url.trim();
+    const range = q.getSelection(true);
+    q.insertEmbed(range.index, 'video', embed, 'user');
+    q.setSelection(range.index + 1, 'silent');
 }
 
 function collectBlogContent() {
@@ -2027,21 +2114,12 @@ function collectBlogContent() {
         const stEl = document.getElementById('bc-meta-status');
         if (stEl) _bc_meta.status = stEl.value;
     }
-    _bc.lead = g('bc-lead');
-    _bc.body = (_bc.body||['']).map((_, i) => { const el = document.getElementById('bc-body-' + i); return el ? el.value : ''; });
-    _bc.pullQuote = g('bc-quote');
-    _bc.pullQuoteCite = g('bc-cite');
-    _bc.figureImage = g('bc-fig-img');
-    _bc.figureCaption = g('bc-fig-cap');
-    _bc.bodyAfterFigure = (_bc.bodyAfterFigure||['']).map((_, i) => { const el = document.getElementById('bc-after-' + i); return el ? el.value : ''; });
     _bc.tags = g('bc-tags');
-    // English variants — body arrays read in parallel with the VI arrays (same index/length)
-    _bc.leadEn = g('bc-lead-en');
-    _bc.pullQuoteEn = g('bc-quote-en');
-    _bc.pullQuoteCiteEn = g('bc-cite-en');
-    _bc.figureCaptionEn = g('bc-fig-cap-en');
-    _bc.bodyEn = _bc.body.map((_, i) => { const el = document.getElementById('bc-body-en-' + i); return el ? el.value : ((_bc.bodyEn||[])[i] || ''); });
-    _bc.bodyAfterFigureEn = _bc.bodyAfterFigure.map((_, i) => { const el = document.getElementById('bc-after-en-' + i); return el ? el.value : ((_bc.bodyAfterFigureEn||[])[i] || ''); });
+    // Rich-text article body (VI + EN) from the Quill editors. The legacy
+    // structured fields (lead/body/quote/figure/after) are left untouched so
+    // not-yet-migrated articles still render via the public-page fallback.
+    if (_quillVi) _bc.bodyHtml = quillHtml(_quillVi);
+    if (_quillEn) _bc.bodyHtmlEn = quillHtml(_quillEn);
 }
 
 function bcAddBody() {

@@ -11,6 +11,9 @@ const CONTENT_COLUMNS = [
     ['pull_quote_cite_en',  'VARCHAR(255)'],
     ['figure_caption_en',   'TEXT'],
     ['body_after_figure_en', 'JSON'],
+    // Rich-text article body (single WYSIWYG field) — VI + EN, stored as HTML.
+    ['body_html',           'LONGTEXT'],
+    ['body_html_en',        'LONGTEXT'],
 ];
 const POST_COLUMNS = [
     ['title_en', 'VARCHAR(255)'],

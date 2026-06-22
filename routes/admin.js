@@ -193,8 +193,8 @@ router.put('/blog/:id/content', async (req, res, next) => {
                (post_id, \`lead\`, body, pull_quote, pull_quote_cite, figure_image,
                 figure_caption, body_after_figure, tags, related_posts,
                 lead_en, body_en, pull_quote_en, pull_quote_cite_en,
-                figure_caption_en, body_after_figure_en)
-             VALUES (?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?)
+                figure_caption_en, body_after_figure_en, body_html, body_html_en)
+             VALUES (?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?, ?,?)
              ON DUPLICATE KEY UPDATE
                \`lead\`=VALUES(\`lead\`), body=VALUES(body),
                pull_quote=VALUES(pull_quote), pull_quote_cite=VALUES(pull_quote_cite),
@@ -204,11 +204,12 @@ router.put('/blog/:id/content', async (req, res, next) => {
                lead_en=VALUES(lead_en), body_en=VALUES(body_en),
                pull_quote_en=VALUES(pull_quote_en), pull_quote_cite_en=VALUES(pull_quote_cite_en),
                figure_caption_en=VALUES(figure_caption_en),
-               body_after_figure_en=VALUES(body_after_figure_en)`,
+               body_after_figure_en=VALUES(body_after_figure_en),
+               body_html=VALUES(body_html), body_html_en=VALUES(body_html_en)`,
             [req.params.id, c.lead, j(c.body), c.pullQuote, c.pullQuoteCite,
              c.figureImage, c.figureCaption, j(c.bodyAfterFigure), c.tags, j(c.related),
              c.leadEn ?? null, j(c.bodyEn || []), c.pullQuoteEn ?? null, c.pullQuoteCiteEn ?? null,
-             c.figureCaptionEn ?? null, j(c.bodyAfterFigureEn || [])]
+             c.figureCaptionEn ?? null, j(c.bodyAfterFigureEn || []), c.bodyHtml ?? null, c.bodyHtmlEn ?? null]
         );
         res.json({ ok: true });
     } catch (e) { next(e); }
@@ -432,6 +433,8 @@ function toContent(r) {
         pullQuoteCiteEn:   r.pull_quote_cite_en || '',
         figureCaptionEn:   r.figure_caption_en || '',
         bodyAfterFigureEn: parse(r.body_after_figure_en) || [],
+        bodyHtml:          r.body_html || '',
+        bodyHtmlEn:        r.body_html_en || '',
     };
 }
 
