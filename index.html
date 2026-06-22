@@ -1266,14 +1266,18 @@
 
         let targetClip = { top: 0, right: 0, bottom: 0, left: 0, radius: 32 };
         
-        // Dynamically compute where the full-screen hero box needs to "shrink" down into
+        // Dynamically compute where the full-screen hero box needs to "shrink" down into.
+        // The clip-path insets are relative to the hero-media element's own box, which is
+        // pinned *below the header* (top: var(--hdr-h)) — so measure against that box, not
+        // the raw viewport, otherwise the window lands ~header-height too low.
         function updateClipTarget() {
-            if (!placeholder) return;
+            if (!placeholder || !heroMedia) return;
             const rect = placeholder.getBoundingClientRect();
-            targetClip.top = rect.top;
-            targetClip.left = rect.left;
-            targetClip.right = window.innerWidth - rect.right;
-            targetClip.bottom = window.innerHeight - rect.bottom;
+            const host = heroMedia.getBoundingClientRect();
+            targetClip.top    = rect.top    - host.top;
+            targetClip.left   = rect.left   - host.left;
+            targetClip.right  = host.right  - rect.right;
+            targetClip.bottom = host.bottom - rect.bottom;
             targetClip.radius = window.innerWidth < 768 ? 16 : 32;
         }
         
@@ -1287,7 +1291,14 @@
                 const offsetTop = megaSection.offsetTop;
                 const scrollY = window.scrollY;
                 const windowHeight = window.innerHeight;
-                
+
+                // Re-measure the target frame against the (now pinned) layout so the
+                // hero shrinks to the photo box's exact on-screen position. Measuring
+                // only at load is stale because the section isn't pinned yet then.
+                if (scrollY >= offsetTop - windowHeight && scrollY <= offsetTop + windowHeight) {
+                    updateClipTarget();
+                }
+
                 // Phase 1: Hero Shrink Transformation (0 to 100vh)
                 if (scrollY >= offsetTop && scrollY <= offsetTop + windowHeight) {
                     targetProgressHero = (scrollY - offsetTop) / windowHeight;
