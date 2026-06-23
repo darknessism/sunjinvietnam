@@ -144,6 +144,10 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
             Careers
         </button>
+        <button class="nav-item" data-view="staff" onclick="showView('staff')">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Staff
+        </button>
         <button class="nav-item" data-view="photos" onclick="showView('photos')">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Page Photos
@@ -428,6 +432,30 @@
         </div>
         <div id="banners-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
         <div id="banners-empty" class="empty-state" style="display:none;">Loading banners…</div>
+    </div>
+
+    <!-- STAFF -->
+    <div id="view-staff" class="view">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+            <div>
+                <h1 style="font-family:'Open Sans',sans-serif;font-weight:300;font-size:1.9rem;color:#0a0a0a;margin:0;">Staff</h1>
+                <p style="font-size:11px;color:rgba(0,0,0,0.38);margin-top:4px;" id="staff-lbl">Manage the people shown on the About page.</p>
+            </div>
+            <a href="about.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(0,0,0,0.38);background:white;border:1px solid rgba(0,0,0,0.13);border-radius:6px;padding:8px 14px;cursor:pointer;font-family:'Open Sans',sans-serif;text-decoration:none;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                View About Page
+            </a>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="chip active" data-group="staffgrp" data-val="board" onclick="switchStaffGroup('board', this)">Ban Lãnh Đạo</button>
+            <button class="chip"        data-group="staffgrp" data-val="team"  onclick="switchStaffGroup('team', this)">Đội Ngũ</button>
+        </div>
+        <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5;">
+            Each card is one person. Upload a photo, fill in the name and position (Vietnamese + English), then click <strong>Save</strong>. Use <strong>+ Add Person</strong> to create a new one and <strong>Remove</strong> to delete. Lower <strong>Order</strong> numbers appear first.
+        </div>
+        <button onclick="addPerson()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;color:#fff;background:#0a0a0a;border:none;border-radius:6px;padding:9px 18px;cursor:pointer;font-family:'Open Sans',sans-serif;margin-bottom:16px;">+ Add Person</button>
+        <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+        <div id="staff-empty" class="empty-state" style="display:none;">Loading…</div>
     </div>
 
     <!-- TEXT CONTENT -->
@@ -744,7 +772,111 @@ function showView(name) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
     document.querySelector(`.nav-item[data-view="${name}"]`).classList.add('active');
-    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos, banners: renderBanners, text: renderText }[name])();
+    ({ dashboard: renderDashboard, projects: renderProjects, blog: renderBlog, careers: renderCareers, photos: renderPhotos, banners: renderBanners, text: renderText, staff: renderStaff }[name])();
+}
+
+// ─── STAFF (About-page people) ───────────────────────
+let _staff = [];
+let _staffGroup = 'board';
+
+function switchStaffGroup(grp, btn) {
+    _staffGroup = grp;
+    document.querySelectorAll('.chip[data-group="staffgrp"]').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderStaffGrid();
+}
+
+async function renderStaff() {
+    const empty = document.getElementById('staff-empty');
+    empty.style.display = 'block';
+    empty.textContent = 'Loading…';
+    try {
+        _staff = await api('GET', '/staff/admin/list') || [];
+    } catch (e) {
+        empty.textContent = 'Could not load staff: ' + e.message;
+        return;
+    }
+    renderStaffGrid();
+}
+
+function renderStaffGrid() {
+    const grid = document.getElementById('staff-grid');
+    const empty = document.getElementById('staff-empty');
+    const list = _staff.filter(s => s.grp === _staffGroup);
+    document.getElementById('staff-lbl').textContent =
+        _staff.filter(s => s.grp === 'board').length + ' in Ban Lãnh Đạo · ' +
+        _staff.filter(s => s.grp === 'team').length + ' in Đội Ngũ';
+    empty.style.display = list.length ? 'none' : 'block';
+    if (!list.length) empty.textContent = 'No people yet — click “+ Add Person”.';
+    grid.innerHTML = list.map(s => {
+        const draft = !s.id;
+        const key = s.id || s._tmp;
+        return `
+        <div style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:16px;">
+            <label class="field-label">Photo</label>
+            ${imgControl('st-photo-' + key, s.photo || '')}
+            <div style="margin-top:12px;">${field('Name (VI)', inp('st-name-' + key, s.name || '', 'e.g. Mr. Trinh Thanh Gian'))}</div>
+            <div style="margin-top:10px;">${field('Name (EN)', inp('st-nameen-' + key, s.nameEn || '', 'optional'))}</div>
+            <div style="margin-top:10px;">${field('Position (VI)', ta('st-pos-' + key, s.position || '', 'e.g. Chủ tịch Hội đồng thành viên', 2))}</div>
+            <div style="margin-top:10px;">${field('Position (EN)', ta('st-posen-' + key, s.positionEn || '', 'e.g. Chairman of the Board', 2))}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+                ${field('Order', `<input id="st-order-${key}" class="field-input" type="number" value="${x(String(s.order ?? 0))}">`)}
+                ${field('Status', `<select id="st-status-${key}" class="field-input" style="cursor:pointer;">${sel([['published','Published'],['draft','Draft']], s.status || 'published')}</select>`)}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:14px;">
+                <button onclick="savePerson('${key}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:#fff;background:#0a0a0a;border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save</button>
+                <button onclick="removePerson('${key}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.5);background:white;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:8px 14px;cursor:pointer;font-family:'Open Sans',sans-serif;">Remove</button>
+                ${draft ? '<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.16em;color:#8a6d00;">Unsaved</span>' : ''}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function addPerson() {
+    _staff.push({ id: null, _tmp: 't' + Date.now(), grp: _staffGroup, name: '', nameEn: '', position: '', positionEn: '', photo: '', order: _staff.filter(s => s.grp === _staffGroup).length, status: 'published' });
+    renderStaffGrid();
+    setTimeout(() => { const g = document.getElementById('staff-grid'); if (g) g.lastElementChild?.scrollIntoView({ behavior:'smooth', block:'center' }); }, 60);
+}
+
+function _collectPerson(key) {
+    const g = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+    return {
+        grp:        _staffGroup,
+        name:       g('st-name-' + key).trim(),
+        nameEn:     g('st-nameen-' + key).trim(),
+        position:   g('st-pos-' + key),
+        positionEn: g('st-posen-' + key),
+        photo:      g('st-photo-' + key).trim(),
+        order:      parseInt(g('st-order-' + key)) || 0,
+        status:     g('st-status-' + key) || 'published',
+    };
+}
+
+async function savePerson(key) {
+    const rec = _staff.find(s => (s.id || s._tmp) === key);
+    if (!rec) return;
+    const body = _collectPerson(key);
+    try {
+        const saved = rec.id
+            ? await api('PUT', '/staff/admin/' + rec.id, body)
+            : await api('POST', '/staff/admin', body);
+        Object.assign(rec, saved); delete rec._tmp;
+        toast('Saved.');
+        renderStaffGrid();
+    } catch (e) { toast('Save failed: ' + e.message); }
+}
+
+async function removePerson(key) {
+    const idx = _staff.findIndex(s => (s.id || s._tmp) === key);
+    if (idx < 0) return;
+    const rec = _staff[idx];
+    if (rec.id && !confirm('Remove this person?')) return;
+    try {
+        if (rec.id) await api('DELETE', '/staff/admin/' + rec.id);
+        _staff.splice(idx, 1);
+        toast('Removed.');
+        renderStaffGrid();
+    } catch (e) { toast('Remove failed: ' + e.message); }
 }
 
 // ─── BANNERS (video clips) ───────────────────────────

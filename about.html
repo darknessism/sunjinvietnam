@@ -576,7 +576,7 @@
             </div>
 
             <!-- Leadership grid: responsive, single row on desktop -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.2s">
+            <div id="leadership-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-px bg-[#0a0a0a]/8 reveal-up" style="transition-delay:0.2s">
 
                 <!-- 1 -->
                 <div class="bg-white group overflow-hidden">
@@ -675,7 +675,7 @@
             <div class="flex items-end justify-between mt-20 md:mt-28 mb-10 reveal-up">
                 <h2 class="font-display text-3xl md:text-5xl font-light text-[#0a0a0a]" data-tkey="about-t071" data-en="Team">Đội ngũ</h2>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-px bg-[#0a0a0a]/8 reveal-up">
+            <div id="team-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-px bg-[#0a0a0a]/8 reveal-up">
                 <div class="bg-white group overflow-hidden">
                     <div class="img-wrapper aspect-[3/4] overflow-hidden">
                         <img data-img-slot="about-staff-1" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27400%27%3E%3Crect width=%27300%27 height=%27400%27 fill=%27%23ececec%27/%3E%3Ccircle cx=%27150%27 cy=%27150%27 r=%2752%27 fill=%27%23cfcfcf%27/%3E%3Cpath d=%27M62 362c0-50 39-88 88-88s88 38 88 88z%27 fill=%27%23cfcfcf%27/%3E%3C/svg%3E" alt="Team member 1" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
@@ -1431,6 +1431,45 @@
                     });
                 })
                 .catch(() => {}); // page keeps its default images if the API is unavailable
+        })();
+    </script>
+
+    <!-- ── Staff (Leadership / Team) — rendered from the admin Staff module ─── -->
+    <script>
+        (function loadStaff(){
+            const PH = "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27400%27%3E%3Crect width=%27300%27 height=%27400%27 fill=%27%23ececec%27/%3E%3Ccircle cx=%27150%27 cy=%27150%27 r=%2752%27 fill=%27%23cfcfcf%27/%3E%3Cpath d=%27M62 362c0-50 39-88 88-88s88 38 88 88z%27 fill=%27%23cfcfcf%27/%3E%3C/svg%3E";
+            const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const L = () => (window.getLang ? window.getLang() : 'vi');
+            const pick = (vi, en) => (L() === 'en' && en && en.trim()) ? en : (vi || '');
+            const nl2br = s => esc(s).replace(/\r?\n/g, '<br>');
+            let DATA = null;
+            function card(p, board){
+                const name = esc(pick(p.name, p.nameEn));
+                const pos  = nl2br(pick(p.position, p.positionEn));
+                const pad     = board ? 'p-4' : 'p-3';
+                const nameCls = board ? 'text-sm' : 'text-[13px]';
+                const posCls  = board ? 'text-[10px] mt-1.5' : 'text-[9px] mt-1';
+                return `<div class="bg-white group overflow-hidden">
+                    <div class="img-wrapper aspect-[3/4] overflow-hidden">
+                        <img src="${esc(p.photo) || PH}" alt="${name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" onerror="this.src='${PH}'">
+                    </div>
+                    <div class="${pad} border-t border-[#0a0a0a]/8">
+                        <h3 class="font-display ${nameCls} font-light text-[#0a0a0a]">${name || '&nbsp;'}</h3>
+                        <p class="font-sans ${posCls} uppercase tracking-[0.12em] text-[#0a0a0a]/40 leading-relaxed">${pos}</p>
+                    </div>
+                </div>`;
+            }
+            function render(){
+                if (!DATA) return;
+                const board = DATA.filter(s => s.grp === 'board');
+                const team  = DATA.filter(s => s.grp === 'team');
+                const lg = document.getElementById('leadership-grid');
+                const tg = document.getElementById('team-grid');
+                if (lg && board.length) lg.innerHTML = board.map(p => card(p, true)).join('');
+                if (tg && team.length)  tg.innerHTML = team.map(p => card(p, false)).join('');
+            }
+            fetch('/api/staff').then(r => r.ok ? r.json() : []).then(d => { DATA = d; render(); }).catch(() => {});
+            document.addEventListener('langchange', render);
         })();
     </script>
 

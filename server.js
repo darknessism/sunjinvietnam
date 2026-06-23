@@ -41,6 +41,10 @@ textContent.initTextContent().catch(e => console.error('text content init failed
 const media = require('./routes/media');
 media.initMedia().catch(e => console.error('media init failed:', e.message));
 
+// Ensure the staff (About-page people) table exists
+const staff = require('./routes/staff');
+staff.initStaff().catch(e => console.error('staff init failed:', e.message));
+
 // Ensure the blog "featured" flag column exists
 require('./routes/blog').initBlog().catch(e => console.error('blog init failed:', e.message));
 
@@ -54,6 +58,7 @@ app.use('/api/page-images', pageImages);
 app.use('/api/banner-clips', banners);
 app.use('/api/text-content', textContent);
 app.use('/api/media',        media);
+app.use('/api/staff',        staff);
 
 // Fallback: serve index.html for any unmatched route
 app.get('*', (req, res) => {
