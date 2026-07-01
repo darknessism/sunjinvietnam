@@ -1474,11 +1474,14 @@
                 const s = currentProjScrub;
                 const winH = projWindow ? projWindow.clientHeight : 0;
 
-                // Image slides: crossfade + upward movement between adjacent images
+                // Image slides: crossfade + upward movement between adjacent images.
+                // Only the visible slide receives clicks — otherwise a stacked
+                // opacity:0 slide on top would block a linked photo underneath.
                 projSlides.forEach((slide, i) => {
                     const delta = s - i;
                     slide.style.opacity   = Math.max(0, 1 - Math.abs(delta));
                     slide.style.transform = `translateY(${delta * 80}px)`;
+                    slide.style.pointerEvents = Math.abs(delta) < 0.5 ? 'auto' : 'none';
                 });
 
                 // Backgrounds: crossfade between adjacent pairs
