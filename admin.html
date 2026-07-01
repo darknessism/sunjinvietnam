@@ -474,6 +474,7 @@
             <button class="chip active" data-group="textpage" data-val="home"    onclick="switchTextPage('home', this)">Home</button>
             <button class="chip"        data-group="textpage" data-val="about"   onclick="switchTextPage('about', this)">About</button>
             <button class="chip"        data-group="textpage" data-val="careers" onclick="switchTextPage('careers', this)">Careers</button>
+            <button class="chip"        data-group="textpage" data-val="project" onclick="switchTextPage('project', this)">Projects</button>
             <div class="search-wrap" style="margin-left:auto;">
                 <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input type="text" class="search-input" id="text-search" placeholder="Search text…" oninput="renderTextList()">
@@ -1001,8 +1002,8 @@ async function resetBannerClip(slot) {
 // with data-tkey); the server only stores VI/EN overrides per slot.
 let _textPage = 'home';
 let _textEntries = [];
-const TEXT_PAGE_FILE = { home: 'index.html', about: 'about.html', careers: 'careers.html' };
-const TEXT_PAGE_NAME = { home: 'Home', about: 'About', careers: 'Careers' };
+const TEXT_PAGE_FILE = { home: 'index.html', about: 'about.html', careers: 'careers.html', project: 'project.html' };
+const TEXT_PAGE_NAME = { home: 'Home', about: 'About', careers: 'Careers', project: 'Projects' };
 
 function switchTextPage(page, btn) {
     _textPage = page;

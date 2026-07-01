@@ -6,6 +6,7 @@
     var p = location.pathname.toLowerCase();
     var page = p.indexOf('about') > -1 ? 'about'
              : p.indexOf('careers') > -1 ? 'careers'
+             : p.indexOf('project') > -1 ? 'project'
              : 'home';
 
     fetch('/api/text-content/overrides?page=' + page)
