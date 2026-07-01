@@ -121,15 +121,31 @@ const SLOTS = [
 ];
 const SLOT_MAP = new Map(SLOTS.map(s => [s.slot, s]));
 
-// Ensure the storage table exists (runs once at startup).
+// Ensure the storage table exists (runs once at startup). A slot row may hold an
+// image override (mime+data), an optional click-through link, or both — so mime
+// and data are nullable (a row can exist for a link alone).
 async function initPageImages() {
     await pool.query(`CREATE TABLE IF NOT EXISTS page_images (
         slot       VARCHAR(64)  NOT NULL PRIMARY KEY,
         page       VARCHAR(32)  NOT NULL,
-        mime       VARCHAR(80)  NOT NULL,
-        data       LONGBLOB     NOT NULL,
+        mime       VARCHAR(80)  NULL,
+        data       LONGBLOB     NULL,
+        link       TEXT         NULL,
         updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`);
+    // Migrate older installs (mime/data were NOT NULL; link column absent).
+    await ensureColumn('page_images', 'link', 'ALTER TABLE page_images ADD COLUMN link TEXT NULL');
+    await pool.query('ALTER TABLE page_images MODIFY mime VARCHAR(80) NULL').catch(() => {});
+    await pool.query('ALTER TABLE page_images MODIFY data LONGBLOB NULL').catch(() => {});
+}
+
+async function ensureColumn(table, col, alterSql) {
+    const [[row]] = await pool.query(
+        `SELECT COUNT(*) AS c FROM information_schema.columns
+         WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?`,
+        [table, col]
+    );
+    if (!row.c) await pool.query(alterSql);
 }
 
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
@@ -150,10 +166,24 @@ router.get('/overrides', async (req, res, next) => {
     try {
         const page = req.query.page;
         const [rows] = page
-            ? await pool.query('SELECT slot, updated_at FROM page_images WHERE page = ?', [page])
-            : await pool.query('SELECT slot, updated_at FROM page_images');
+            ? await pool.query('SELECT slot, mime, updated_at FROM page_images WHERE page = ?', [page])
+            : await pool.query('SELECT slot, mime, updated_at FROM page_images');
         const out = {};
-        for (const r of rows) if (SLOT_MAP.has(r.slot)) out[r.slot] = ver(r.updated_at);
+        for (const r of rows) if (r.mime && SLOT_MAP.has(r.slot)) out[r.slot] = ver(r.updated_at);
+        res.set('Cache-Control', 'no-cache');
+        res.json(out);
+    } catch (e) { next(e); }
+});
+
+// ── Public: map of slots -> click-through link, so photos can be made clickable ─
+router.get('/links', async (req, res, next) => {
+    try {
+        const page = req.query.page;
+        const [rows] = page
+            ? await pool.query('SELECT slot, link FROM page_images WHERE page = ?', [page])
+            : await pool.query('SELECT slot, link FROM page_images');
+        const out = {};
+        for (const r of rows) if (r.link && SLOT_MAP.has(r.slot)) out[r.slot] = r.link;
         res.set('Cache-Control', 'no-cache');
         res.json(out);
     } catch (e) { next(e); }
@@ -176,7 +206,7 @@ router.get('/raw/:slot', async (req, res, next) => {
 // ── Admin: full list with current state for the management UI ────────────────
 router.get('/admin/list', requireAuth, async (req, res, next) => {
     try {
-        const [rows] = await pool.query('SELECT slot, mime, updated_at FROM page_images');
+        const [rows] = await pool.query('SELECT slot, mime, link, updated_at FROM page_images');
         const overrides = new Map(rows.map(r => [r.slot, r]));
         const page = req.query.page;
         const list = SLOTS
@@ -188,8 +218,9 @@ router.get('/admin/list', requireAuth, async (req, res, next) => {
                     page:        s.page,
                     label:       s.label,
                     default:     s.default,
-                    hasOverride: !!o,
+                    hasOverride: !!(o && o.mime),
                     version:     o ? ver(o.updated_at) : 0,
+                    link:        (o && o.link) || '',
                 };
             });
         res.json(list);
@@ -212,11 +243,37 @@ router.post('/admin/:slot', requireAuth, upload.single('image'), async (req, res
     } catch (e) { next(e); }
 });
 
-// ── Admin: remove the override, reverting to the default image ───────────────
+// ── Admin: remove the image override (revert to default). Keeps any link. ────
 router.delete('/admin/:slot', requireAuth, async (req, res, next) => {
     try {
         if (!SLOT_MAP.has(req.params.slot)) return res.status(404).json({ error: 'Unknown image slot.' });
-        await pool.query('DELETE FROM page_images WHERE slot = ?', [req.params.slot]);
+        // Clear the image; drop the row only if there's no link left on it.
+        await pool.query('UPDATE page_images SET mime = NULL, data = NULL WHERE slot = ?', [req.params.slot]);
+        await pool.query("DELETE FROM page_images WHERE slot = ? AND (link IS NULL OR link = '')", [req.params.slot]);
+        res.json({ ok: true });
+    } catch (e) { next(e); }
+});
+
+// ── Admin: set / clear the click-through link for a slot ─────────────────────
+router.put('/admin/:slot/link', requireAuth, async (req, res, next) => {
+    try {
+        const slot = SLOT_MAP.get(req.params.slot);
+        if (!slot) return res.status(404).json({ error: 'Unknown image slot.' });
+        const link = String((req.body && req.body.link) || '').trim();
+        if (!link) {
+            // Clear the link; drop the row only if there's no image left on it.
+            await pool.query('UPDATE page_images SET link = NULL WHERE slot = ?', [slot.slot]);
+            await pool.query('DELETE FROM page_images WHERE slot = ? AND mime IS NULL', [slot.slot]);
+            return res.json({ ok: true, reset: true });
+        }
+        if (!/^(https?:\/\/|\/|#)/i.test(link)) {
+            return res.status(400).json({ error: 'Link must start with http://, https://, / or #' });
+        }
+        await pool.query(
+            `INSERT INTO page_images (slot, page, link) VALUES (?, ?, ?)
+             ON DUPLICATE KEY UPDATE link = VALUES(link)`,
+            [slot.slot, slot.page, link]
+        );
         res.json({ ok: true });
     } catch (e) { next(e); }
 });

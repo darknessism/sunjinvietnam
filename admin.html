@@ -110,7 +110,7 @@
 <div id="login-screen">
     <div style="width:100%;max-width:680px;padding:20px;">
         <div style="text-align:center;margin-bottom:36px;">
-            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="SUNJIN" style="height:56px;width:auto;object-fit:contain;margin:0 auto 14px;">
+            <img src="https://sunjin-vietnam.vercel.app/images/slogo2.png" alt="SUNJIN" style="height:168px;width:auto;object-fit:contain;margin:0 auto 14px;">
             <p style="font-size:9px;text-transform:uppercase;letter-spacing:0.32em;color:rgba(255,255,255,0.25);">Admin Console</p>
         </div>
         <label class="field-label" style="color:rgba(255,255,255,0.3);">Password</label>
@@ -1199,6 +1199,10 @@ async function renderPhotos() {
                     <button onclick="document.getElementById('ph-file-${x(s.slot)}').click()" style="flex:1;font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Upload / Replace</button>
                     ${s.hasOverride ? `<button onclick="resetPhoto('${x(s.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,0,0,0.5);background:white;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:'Open Sans',sans-serif;">Reset</button>` : ''}
                 </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <input id="ph-link-${x(s.slot)}" value="${x(s.link || '')}" placeholder="Link URL (optional) — click-through" title="When set, clicking this photo on the site opens this link" style="flex:1;border:1px solid rgba(0,0,0,0.14);border-radius:6px;padding:7px 10px;font-size:12px;font-family:'Open Sans',sans-serif;color:#0a0a0a;outline:none;">
+                    <button onclick="savePhotoLink('${x(s.slot)}')" style="font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:white;background:#0a0a0a;border:none;border-radius:6px;padding:8px 12px;cursor:pointer;font-family:'Open Sans',sans-serif;">Save</button>
+                </div>
             </div>
         </div>`;
     }).join('');
@@ -1236,6 +1240,18 @@ async function resetPhoto(slot) {
         renderPhotos();
     } catch (e) {
         toast('Reset failed: ' + e.message);
+    }
+}
+
+async function savePhotoLink(slot) {
+    const el = document.getElementById('ph-link-' + slot);
+    const link = el ? el.value.trim() : '';
+    try {
+        const r = await api('PUT', '/page-images/admin/' + slot + '/link', { link });
+        toast(r && r.reset ? 'Link removed.' : 'Link saved — the photo is now clickable.');
+        renderPhotos();
+    } catch (e) {
+        toast('Could not save link: ' + e.message);
     }
 }
 

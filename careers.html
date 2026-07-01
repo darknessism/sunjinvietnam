@@ -830,15 +830,29 @@
     <!-- ── Managed photos: swap in any admin-uploaded overrides ────────────── -->
     <script>
         (function loadPhotoOverrides(){
-            fetch('/api/page-images/overrides?page=careers')
-                .then(r => r.ok ? r.json() : {})
-                .then(map => {
-                    document.querySelectorAll('img[data-img-slot]').forEach(img => {
-                        const v = map[img.dataset.imgSlot];
-                        if (v) img.src = '/api/page-images/raw/' + img.dataset.imgSlot + '?v=' + v;
-                    });
-                })
-                .catch(() => {}); // page keeps its default images if the API is unavailable
+            var page = 'careers';
+            Promise.all([
+                fetch('/api/page-images/overrides?page=' + page).then(r => r.ok ? r.json() : {}),
+                fetch('/api/page-images/links?page=' + page).then(r => r.ok ? r.json() : {})
+            ]).then(function (res) {
+                var map = res[0] || {}, links = res[1] || {};
+                document.querySelectorAll('img[data-img-slot]').forEach(function (img) {
+                    var slot = img.dataset.imgSlot;
+                    if (map[slot]) img.src = '/api/page-images/raw/' + slot + '?v=' + map[slot];
+                    var link = links[slot];
+                    if (link) {
+                        var a = img.closest('a');
+                        if (a) { a.href = link; a.target = '_blank'; a.rel = 'noopener'; }
+                        else {
+                            a = document.createElement('a');
+                            a.href = link; a.target = '_blank'; a.rel = 'noopener';
+                            a.style.display = 'contents'; a.style.cursor = 'pointer';
+                            img.parentNode.insertBefore(a, img); a.appendChild(img);
+                        }
+                        img.style.cursor = 'pointer';
+                    }
+                });
+            }).catch(function () {}); // page keeps its defaults if the API is unavailable
         })();
     </script>
     <script src="text-overrides.js" defer></script>
