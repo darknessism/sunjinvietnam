@@ -33,6 +33,7 @@ function toProject(r) {
     return {
         id:          r.id,
         title:       r.title,
+        titleEn:     r.title_en || '',
         category:    r.category,
         location:    r.location,
         year:        r.year,

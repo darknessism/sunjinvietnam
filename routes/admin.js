@@ -21,15 +21,15 @@ router.post('/projects', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `INSERT INTO projects (id, title, category, location, year, award, architects, cover_image, status, cols, scale, investor, construction_status, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `INSERT INTO projects (id, title, title_en, category, location, year, award, architects, cover_image, status, cols, scale, investor, construction_status, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON DUPLICATE KEY UPDATE
-               title=VALUES(title), category=VALUES(category), location=VALUES(location),
+               title=VALUES(title), title_en=VALUES(title_en), category=VALUES(category), location=VALUES(location),
                year=VALUES(year), award=VALUES(award), architects=VALUES(architects),
                cover_image=VALUES(cover_image), status=VALUES(status),
                scale=VALUES(scale), investor=VALUES(investor),
                construction_status=VALUES(construction_status)`,
-            [p.id, p.title, p.category, p.location, p.year, p.award, p.architects,
+            [p.id, p.title, p.titleEn || null, p.category, p.location, p.year, p.award, p.architects,
              p.coverImage, p.status || 'draft', p.cols ?? 12,
              p.scale || null, p.investor || null, p.constructionStatus || null,
              p.createdAt || new Date().toISOString().slice(0, 10)]
@@ -43,9 +43,9 @@ router.put('/projects/:id', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `UPDATE projects SET title=?, category=?, location=?, year=?, award=?, architects=?,
+            `UPDATE projects SET title=?, title_en=?, category=?, location=?, year=?, award=?, architects=?,
              cover_image=?, status=?, scale=?, investor=?, construction_status=? WHERE id=?`,
-            [p.title, p.category, p.location, p.year, p.award, p.architects,
+            [p.title, p.titleEn || null, p.category, p.location, p.year, p.award, p.architects,
              p.coverImage, p.status, p.scale || null, p.investor || null,
              p.constructionStatus || null, req.params.id]
         );
@@ -78,13 +78,13 @@ router.put('/projects/:id/detail', async (req, res, next) => {
         if (d._overview) {
             const ov = d._overview;
             await pool.query(
-                `UPDATE projects SET title=COALESCE(?,title), category=COALESCE(?,category),
+                `UPDATE projects SET title=COALESCE(?,title), title_en=COALESCE(?,title_en), category=COALESCE(?,category),
                  location=COALESCE(?,location), year=COALESCE(?,year), award=COALESCE(?,award),
                  architects=COALESCE(?,architects), cover_image=COALESCE(?,cover_image),
                  status=COALESCE(?,status), scale=COALESCE(?,scale),
                  investor=COALESCE(?,investor),
                  construction_status=COALESCE(?,construction_status) WHERE id=?`,
-                [ov.title, ov.category, ov.location, ov.year, ov.award,
+                [ov.title, ov.titleEn || null, ov.category, ov.location, ov.year, ov.award,
                  ov.architects, ov.coverImage, ov.status,
                  ov.scale || null, ov.investor || null, ov.constructionStatus || null,
                  req.params.id]
@@ -140,14 +140,14 @@ router.post('/blog', async (req, res, next) => {
     try {
         const p = req.body;
         await pool.query(
-            `INSERT INTO blog_posts (id, title, title_en, category, author, post_date, read_time, excerpt, cover_image, status, cols, featured, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `INSERT INTO blog_posts (id, title, title_en, category, author, post_date, read_time, excerpt, excerpt_en, cover_image, status, cols, featured, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON DUPLICATE KEY UPDATE
                title=VALUES(title), title_en=VALUES(title_en), category=VALUES(category), author=VALUES(author),
-               post_date=VALUES(post_date), read_time=VALUES(read_time), excerpt=VALUES(excerpt),
+               post_date=VALUES(post_date), read_time=VALUES(read_time), excerpt=VALUES(excerpt), excerpt_en=VALUES(excerpt_en),
                cover_image=VALUES(cover_image), status=VALUES(status), featured=VALUES(featured)`,
             [p.id, p.title, p.titleEn ?? null, p.category, p.author, p.date || null, p.readTime || 5,
-             p.excerpt, p.coverImage, p.status || 'draft', p.cols ?? 12, p.featured ? 1 : 0,
+             p.excerpt, p.excerptEn ?? null, p.coverImage, p.status || 'draft', p.cols ?? 12, p.featured ? 1 : 0,
              p.createdAt || new Date().toISOString().slice(0, 10)]
         );
         const [[row]] = await pool.query('SELECT * FROM blog_posts WHERE id = ?', [p.id]);
@@ -160,9 +160,9 @@ router.put('/blog/:id', async (req, res, next) => {
         const p = req.body;
         await pool.query(
             `UPDATE blog_posts SET title=?, title_en=?, category=?, author=?, post_date=?, read_time=?,
-             excerpt=?, cover_image=?, status=?, featured=? WHERE id=?`,
+             excerpt=?, excerpt_en=?, cover_image=?, status=?, featured=? WHERE id=?`,
             [p.title, p.titleEn ?? null, p.category, p.author, p.date || null, p.readTime || 5,
-             p.excerpt, p.coverImage, p.status, p.featured ? 1 : 0, req.params.id]
+             p.excerpt, p.excerptEn ?? null, p.coverImage, p.status, p.featured ? 1 : 0, req.params.id]
         );
         const [[row]] = await pool.query('SELECT * FROM blog_posts WHERE id = ?', [req.params.id]);
         res.json(toPost(row));
@@ -339,6 +339,7 @@ function toProject(r) {
     return {
         id:                 r.id,
         title:              r.title,
+        titleEn:            r.title_en || '',
         category:           r.category,
         location:           r.location,
         year:               r.year,
@@ -406,6 +407,7 @@ function toPost(r) {
         date:       fmtDate(r.post_date),
         readTime:   r.read_time,
         excerpt:    r.excerpt,
+        excerptEn:  r.excerpt_en || '',
         coverImage: r.cover_image,
         status:     r.status,
         cols:       r.cols,

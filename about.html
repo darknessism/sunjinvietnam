@@ -1533,6 +1533,8 @@
                 const cardHTML = (a, idx) => {
                     const num = String(idx + 1).padStart(2, '0');
                     const d = new Date(a.date); const year = isNaN(d) ? '' : d.getFullYear();
+                    const titleLoc = (L() === 'en' && a.titleEn && a.titleEn.trim()) ? a.titleEn : a.title;
+                    const excerptLoc = (L() === 'en' && a.excerptEn && a.excerptEn.trim()) ? a.excerptEn : a.excerpt;
                     return `<a href="blog-detail.html?id=${esc(a.id)}" class="group py-10 md:py-14 grid grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_200px] gap-6 md:gap-10 items-start interactive" style="text-decoration:none;">
                         <span class="font-sans text-xs text-white/18 tracking-widest hidden md:block pt-1.5">${num}</span>
                         <div>
@@ -1540,12 +1542,12 @@
                                 <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] border border-[#c9a84c]/35 px-3 py-1 rounded-full">${esc(a.author||'')}</span>
                                 <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/28">${esc(year)}</span>
                             </div>
-                            <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">${esc(a.title)}</h3>
-                            <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">${esc(a.excerpt||'')}</p>
+                            <h3 class="font-display font-light text-white leading-snug mb-5 group-hover:translate-x-1 transition-transform duration-300" style="font-size:clamp(1.5rem,3vw,2.4rem);">${esc(titleLoc)}</h3>
+                            <p class="font-sans text-sm text-white/42 leading-relaxed mb-6 max-w-2xl">${esc(excerptLoc||'')}</p>
                             <span class="font-sans text-[11px] uppercase tracking-[0.22em] text-white/30 inline-flex items-center gap-2 group-hover:text-white/70 transition-colors">${more} ${arrow}</span>
                         </div>
                         <div class="hidden lg:block self-start overflow-hidden" style="aspect-ratio:3/4;">
-                            <img src="${esc(a.coverImage||'')}" alt="${esc(a.title)}" onerror="this.style.opacity=0" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                            <img src="${esc(a.coverImage||'')}" alt="${esc(titleLoc)}" onerror="this.style.opacity=0" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
                         </div>
                     </a>`;
                 };

@@ -1446,7 +1446,10 @@ function projForm(p) {
     return `<div style="padding:26px;">
     ${modalHeader(p ? 'Edit Project' : 'Add Project')}
     <div style="display:flex;flex-direction:column;gap:14px;">
-        ${field('Project Title *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Grand Hotel Nha Trang">`)}
+        ${grid2(
+            field('Project Title (VI) *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="e.g. Grand Hotel Nha Trang">`),
+            field('Project Title (EN)', `<input id="f-title-en" class="field-input" value="${x(v.titleEn||'')}" placeholder="e.g. Grand Hotel Nha Trang">`)
+        )}
         ${grid2(
             field('Category *', `<select id="f-cat" class="field-select">${sel([['planning','Planning'],['housing','Housing'],['school','School'],['hotel','Hotel'],['headquarters','Headquarters']],v.category||'hotel')}</select>`),
             field('Year', `<input id="f-year" class="field-input" type="number" min="2000" max="2035" value="${x(String(v.year||new Date().getFullYear()))}" placeholder="2024">`)
@@ -1466,7 +1469,10 @@ function blogForm(b) {
     return `<div style="padding:26px;">
     ${modalHeader(b ? 'Edit Article' : 'Add Article')}
     <div style="display:flex;flex-direction:column;gap:14px;">
-        ${field('Article Title *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="Article headline">`)}
+        ${grid2(
+            field('Article Title (VI) *', `<input id="f-title" class="field-input" value="${x(v.title||'')}" placeholder="Article headline">`),
+            field('Article Title (EN)', `<input id="f-title-en" class="field-input" value="${x(v.titleEn||'')}" placeholder="Article headline">`)
+        )}
         ${grid2(
             field('Category *', `<select id="f-cat" class="field-select">${sel([['news','News'],['press','Press Coverage'],['ideas','Ideas'],['community','Community Responsibility'],['events','Events'],['awards','Awards']],v.category||'news')}</select>`),
             field('Date', `<input id="f-date" class="field-input" type="date" value="${x(v.date||new Date().toISOString().slice(0,10))}">`)
@@ -1476,7 +1482,10 @@ function blogForm(b) {
             field('Read Time (min)', `<input id="f-rt" class="field-input" type="number" min="1" value="${x(String(v.readTime||'5'))}">`)
         )}
         ${field('Cover Image URL', `<input id="f-img" class="field-input" value="${x(v.coverImage||'')}" placeholder="https://...">`)}
-        ${field('Excerpt', `<textarea id="f-excerpt" class="field-textarea" placeholder="Short description…">${x(v.excerpt||'')}</textarea>`)}
+        ${grid2(
+            field('Excerpt (VI)', `<textarea id="f-excerpt" class="field-textarea" placeholder="Short description…">${x(v.excerpt||'')}</textarea>`),
+            field('Excerpt (EN)', `<textarea id="f-excerpt-en" class="field-textarea" placeholder="Short description…">${x(v.excerptEn||'')}</textarea>`)
+        )}
         ${grid2(
             field('Status', `<select id="f-status" class="field-select">${sel([['published','Published'],['draft','Draft']],v.status||'published')}</select>`),
             field('Featured on home', `<label style="display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:13px;color:rgba(0,0,0,0.7);padding-top:6px;"><input type="checkbox" id="f-featured" ${v.featured ? 'checked' : ''} style="width:16px;height:16px;cursor:pointer;"> Show in the home Blog section</label>`)
@@ -1535,6 +1544,7 @@ async function saveProject() {
     const rec = {
         id: _id || uid(title),
         title,
+        titleEn: document.getElementById('f-title-en').value.trim(),
         category: document.getElementById('f-cat').value,
         year: parseInt(document.getElementById('f-year').value) || new Date().getFullYear(),
         location: document.getElementById('f-loc').value.trim(),
@@ -1562,12 +1572,14 @@ async function saveBlog() {
     const rec = {
         id: _id || uid(title),
         title,
+        titleEn: document.getElementById('f-title-en').value.trim(),
         category: document.getElementById('f-cat').value,
         date: document.getElementById('f-date').value,
         author: document.getElementById('f-author').value.trim(),
         readTime: document.getElementById('f-rt').value,
         coverImage: document.getElementById('f-img').value.trim(),
         excerpt: document.getElementById('f-excerpt').value.trim(),
+        excerptEn: document.getElementById('f-excerpt-en').value.trim(),
         status: document.getElementById('f-status').value,
         featured: document.getElementById('f-featured').checked,
         cols: _id ? (blog.find(b => b.id === _id)?.cols ?? 12) : 12,
@@ -1834,7 +1846,7 @@ function collectDetail() {
     _dd.category   = _CCAT[_ovCat] || _ovCat || '';
     _dd.yearLoc    = [_ovYear, _ovLoc].filter(Boolean).join(' · ') + (_ovLoc ? ', Vietnam' : '');
     _dd.award      = _ovAward;
-    _dd._overview  = { title: _ovTitle, category: _ovCat, year: _ovYear, location: _ovLoc, award: _ovAward, architects: _ovArch, coverImage: _ovCover, status: _ovStatus, cols: _ovCols, scale: _ovScale, investor: _ovInvest, constructionStatus: _ovCStatus };
+    _dd._overview  = { title: _ovTitle, titleEn: _dd.titleEn, category: _ovCat, year: _ovYear, location: _ovLoc, award: _ovAward, architects: _ovArch, coverImage: _ovCover, status: _ovStatus, cols: _ovCols, scale: _ovScale, investor: _ovInvest, constructionStatus: _ovCStatus };
     _dd.images = (_dd.images && _dd.images.length ? _dd.images : ['']).map((_, i) => { const el = document.getElementById('d-img-' + i); return el ? el.value : (_dd.images[i] || ''); });
     _dd.lead = g('d-lead');
     // Photo alt/captions are no longer edited here — preserve existing values when
@@ -2109,7 +2121,10 @@ function buildBlogContentHTML(d) {
             fld('Read Time (min)', `<input id="bc-meta-rt" class="field-input" type="number" min="1" value="${x(String(vm.readTime||'5'))}">`)
         )}
         ${fld('Cover Image URL', imgControl('bc-meta-img', vm.coverImage||''))}
-        ${fld('Excerpt', ta('bc-meta-excerpt', vm.excerpt||'', 'Short description shown in article listings…'))}
+        ${row2(
+            fld('Excerpt (VI)', ta('bc-meta-excerpt', vm.excerpt||'', 'Short description shown in article listings…')),
+            fld('Excerpt (EN)', ta('bc-meta-excerpt-en', vm.excerptEn||'', 'Short description shown in article listings…'))
+        )}
         ${fld('Status', `<select id="bc-meta-status" class="field-input" style="cursor:pointer;">${sel([['published','Published'],['draft','Draft']],vm.status||'published')}</select>`)}
     `);
 
@@ -2260,6 +2275,7 @@ function collectBlogContent() {
         _bc_meta.readTime = g('bc-meta-rt');
         _bc_meta.coverImage = g('bc-meta-img').trim();
         _bc_meta.excerpt = g('bc-meta-excerpt').trim();
+        _bc_meta.excerptEn = g('bc-meta-excerpt-en').trim();
         const stEl = document.getElementById('bc-meta-status');
         if (stEl) _bc_meta.status = stEl.value;
     }

@@ -17,6 +17,7 @@ const CONTENT_COLUMNS = [
 ];
 const POST_COLUMNS = [
     ['title_en', 'VARCHAR(255)'],
+    ['excerpt_en', 'TEXT'],
 ];
 
 async function ensureColumns(table, columns) {

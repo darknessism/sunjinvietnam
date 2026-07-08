@@ -63,6 +63,7 @@ function toPost(r) {
         date:       fmtDate(r.post_date),
         readTime:   r.read_time,
         excerpt:    r.excerpt,
+        excerptEn:  r.excerpt_en || '',
         coverImage: r.cover_image,
         status:     r.status,
         cols:       r.cols,

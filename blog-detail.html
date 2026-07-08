@@ -293,7 +293,7 @@
 
         const figureHTML = `<figure class="my-20 md:my-28 -mx-6 md:-mx-16 lg:-mx-28 xl:-mx-40 reveal-fade">
             <div class="w-full overflow-hidden" style="height:60vh;">
-                <img src="${esc(content.figureImage || meta.coverImage || '')}" alt="${esc(meta.title)}" class="w-full h-full object-cover">
+                <img src="${esc(content.figureImage || meta.coverImage || '')}" alt="${esc(titleLoc)}" class="w-full h-full object-cover">
             </div>
             <figcaption class="mt-5 px-6 md:px-16 font-sans text-[10px] uppercase tracking-[0.25em] text-white/28 text-center">${esc(figureCaption || '')}</figcaption>
         </figure>`;

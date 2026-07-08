@@ -498,7 +498,8 @@
             grid.innerHTML = items.slice(start, start + PROJ_PER_PAGE).map((p) => {
                 const catLbl = (PROJ_CAT[L()]||PROJ_CAT.vi)[p.category] || p.category || '';
                 const detail = [catLbl, p.location, p.year, p.architects].filter(Boolean).join(' · ');
-                return `<article class="proj-card project-card" data-cat="${projEsc(p.category)}" data-year="${projEsc(String(p.year||''))}" style="aspect-ratio:4/5;"><a href="project-detail.html?id=${projEsc(p.id)}" class="absolute inset-0 z-20" aria-label="View ${projEsc(p.title)}"></a><img src="${projEsc(p.coverImage||'')}" alt="${projEsc(p.title)}" onerror="this.style.opacity=0"><div class="proj-overlay"></div><div class="proj-info"><span class="proj-tag">${projEsc(p.award)}</span><h2 class="proj-title" style="font-size:clamp(1.2rem,1.7vw,1.7rem);">${projEsc(p.title)}</h2><p class="proj-detail">${projEsc(detail)}</p></div></article>`;
+                const titleLoc = (L() === 'en' && p.titleEn && p.titleEn.trim()) ? p.titleEn : p.title;
+                return `<article class="proj-card project-card" data-cat="${projEsc(p.category)}" data-year="${projEsc(String(p.year||''))}" style="aspect-ratio:4/5;"><a href="project-detail.html?id=${projEsc(p.id)}" class="absolute inset-0 z-20" aria-label="View ${projEsc(titleLoc)}"></a><img src="${projEsc(p.coverImage||'')}" alt="${projEsc(titleLoc)}" onerror="this.style.opacity=0"><div class="proj-overlay"></div><div class="proj-info"><span class="proj-tag">${projEsc(p.award)}</span><h2 class="proj-title" style="font-size:clamp(1.2rem,1.7vw,1.7rem);">${projEsc(titleLoc)}</h2><p class="proj-detail">${projEsc(detail)}</p></div></article>`;
             }).join('');
             if (pager) pager.innerHTML = projPager(_projPage, pageCount);
             document.querySelectorAll('.project-card a').forEach(el => {
