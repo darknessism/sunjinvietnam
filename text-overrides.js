@@ -9,6 +9,13 @@
              : p.indexOf('project') > -1 ? 'project'
              : 'home';
 
+    // Pages mark <html> with .sj-txt-pending so data-tkey text is hidden from
+    // first paint; reveal only after the final text (override + language) is
+    // in place, so the hardcoded default never flashes first.
+    function reveal() { document.documentElement.classList.remove('sj-txt-pending'); }
+    // Safety net: never leave text hidden if the API hangs.
+    setTimeout(reveal, 3000);
+
     fetch('/api/text-content/overrides?page=' + page)
         .then(function (r) { return r.ok ? r.json() : {}; })
         .then(function (map) {
@@ -33,6 +40,7 @@
             if (applied && typeof window.applyLang === 'function') {
                 window.applyLang(localStorage.getItem('sj_lang') || 'vi');
             }
+            reveal();
         })
-        .catch(function () {}); // page keeps its default text if the API is unavailable
+        .catch(reveal); // page keeps its default text if the API is unavailable
 })();

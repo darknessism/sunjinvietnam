@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="sj-txt-pending scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -250,6 +250,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        /* Managed photos (admin-overridable): keep hidden until the final image
+           source is decided and loaded, so the hardcoded fallback never flashes
+           before the uploaded override. */
+        img[data-img-slot] { transition: opacity 0.45s ease; }
+        img[data-img-slot]:not(.sj-ready) { opacity: 0 !important; }
+        /* Managed text (admin-overridable via data-tkey): hidden from first
+           paint until text-overrides.js applies overrides + language, so the
+           hardcoded default never flashes before the final text. */
+        html.sj-txt-pending [data-tkey] { opacity: 0 !important; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-dark">
@@ -419,7 +428,7 @@
                         <!-- Media Placeholder -->
                         <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
                             <div id="media-placeholder" class="w-full max-w-2xl max-h-full aspect-[21/9] rounded-[32px] overflow-hidden relative group">
-                                <img data-img-slot="home-method-1" src="https://images.unsplash.com/photo-1615406020658-6c4b805f1f30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Traditionally" class="w-full h-full object-cover">
+                                <img data-img-slot="home-method-1" alt="Traditionally" class="w-full h-full object-cover">
                             </div>
                         </div>
 
@@ -444,7 +453,7 @@
                     </div>
                     <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
                         <div class="w-full max-w-2xl max-h-full aspect-[21/9] rounded-[32px] overflow-hidden relative group">
-                            <img data-img-slot="home-method-2" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Skyscraper" class="w-full h-full object-cover">
+                            <img data-img-slot="home-method-2" alt="Skyscraper" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="absolute bottom-14 right-6 md:right-16 font-display text-[56px] md:text-[80px] font-light leading-none flex items-start text-gray-800">
@@ -467,7 +476,7 @@
                     </div>
                     <div class="flex-1 flex items-center justify-center w-full max-w-4xl overflow-hidden">
                         <div class="w-full max-w-2xl max-h-full aspect-[21/9] rounded-[32px] overflow-hidden relative group">
-                            <img data-img-slot="home-method-3" src="https://plus.unsplash.com/premium_photo-1661883964999-c1bcb57a7357?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Creative Building" class="w-full h-full object-cover">
+                            <img data-img-slot="home-method-3" alt="Creative Building" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer">
                                 <span class="text-white uppercase tracking-widest text-sm"><span data-tkey="home-t027" data-en="[Explore SUNJIN VIETNAM]">[Khám phá SUNJIN VIETNAM]</span></span>
                             </div>
@@ -510,19 +519,19 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
                 </div>
                 <div class="proj-bg absolute inset-0" style="opacity:0;">
-                    <img data-img-slot="home-proj-2" src="https://plus.unsplash.com/premium_photo-1697730007755-86770b6cd276?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <img data-img-slot="home-proj-2" class="w-full h-full object-cover" style="opacity:0.55;" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
                 </div>
                 <div class="proj-bg absolute inset-0" style="opacity:0;">
-                    <img data-img-slot="home-proj-3" src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <img data-img-slot="home-proj-3" class="w-full h-full object-cover" style="opacity:0.55;" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
                 </div>
                 <div class="proj-bg absolute inset-0" style="opacity:0;">
-                    <img data-img-slot="home-proj-4" src="https://images.unsplash.com/photo-1554793000-245d3a3c2a51?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <img data-img-slot="home-proj-4" class="w-full h-full object-cover" style="opacity:0.55;" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
                 </div>
                 <div class="proj-bg absolute inset-0" style="opacity:0;">
-                    <img data-img-slot="home-proj-5" src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover" style="opacity:0.55;" />
+                    <img data-img-slot="home-proj-5" class="w-full h-full object-cover" style="opacity:0.55;" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10"></div>
                 </div>
             </div>
@@ -542,10 +551,10 @@
                 <!-- Stacked images: crossfade via opacity -->
                 <div id="proj-img-strip" class="absolute inset-0 w-full h-full">
                     <img data-img-slot="home-proj-1" src="https://sunjin-vietnam.vercel.app/images/sipaphin.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:1;" />
-                    <img data-img-slot="home-proj-2" src="https://plus.unsplash.com/premium_photo-1697730007755-86770b6cd276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
-                    <img data-img-slot="home-proj-3" src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
-                    <img data-img-slot="home-proj-4" src="https://images.unsplash.com/photo-1554793000-245d3a3c2a51?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
-                    <img data-img-slot="home-proj-5" src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img data-img-slot="home-proj-2" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img data-img-slot="home-proj-3" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img data-img-slot="home-proj-4" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
+                    <img data-img-slot="home-proj-5" class="proj-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-100" style="opacity:0;" />
                 </div>
             </div>
 
@@ -625,14 +634,14 @@
                     <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
                         <!-- Atmospheric Full-Screen Background -->
                         <div class="absolute inset-0 z-0">
-                            <img data-img-slot="home-work-1" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <img data-img-slot="home-work-1" class="w-full h-full object-cover scale-105 opacity-60" alt="">
                             <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         </div>
                         
                         <!-- Central Thumbnail -->
                         <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
-                            <img data-img-slot="home-work-1" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Isola Della Musica">
+                            <img data-img-slot="home-work-1" class="w-full h-full object-cover" alt="Isola Della Musica">
                         </div>
                         
                         <!-- Details Grid -->
@@ -679,14 +688,14 @@
                     <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
                         <!-- Atmospheric Full-Screen Background -->
                         <div class="absolute inset-0 z-0">
-                            <img data-img-slot="home-work-2" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <img data-img-slot="home-work-2" src="/images/lanexang.jpg" class="w-full h-full object-cover scale-105 opacity-60" alt="">
                             <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         </div>
                         
                         <!-- Central Thumbnail -->
                         <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
-                            <img data-img-slot="home-work-2" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Lanexang Avani Plus">
+                            <img data-img-slot="home-work-2" src="/images/lanexang.jpg" class="w-full h-full object-cover" alt="Lanexang Avani Plus">
                         </div>
                         
                         <!-- Details Grid -->
@@ -733,14 +742,14 @@
                     <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
                         <!-- Atmospheric Full-Screen Background -->
                         <div class="absolute inset-0 z-0">
-                            <img data-img-slot="home-work-3" src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <img data-img-slot="home-work-3" src="/images/ct3.jpg" class="w-full h-full object-cover scale-105 opacity-60" alt="">
                             <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         </div>
                         
                         <!-- Central Thumbnail -->
                         <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
-                            <img data-img-slot="home-work-3" src="https://images.unsplash.com/photo-1481026469463-66327c86e544?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Aspira Tower">
+                            <img data-img-slot="home-work-3" src="/images/ct3.jpg" class="w-full h-full object-cover" alt="Aspira Tower">
                         </div>
                         
                         <!-- Details Grid -->
@@ -787,14 +796,14 @@
                     <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
                         <!-- Atmospheric Full-Screen Background -->
                         <div class="absolute inset-0 z-0">
-                            <img data-img-slot="home-work-4" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <img data-img-slot="home-work-4" class="w-full h-full object-cover scale-105 opacity-60" alt="">
                             <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         </div>
                         
                         <!-- Central Thumbnail -->
                         <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
-                            <img data-img-slot="home-work-4" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="S2 Arena">
+                            <img data-img-slot="home-work-4" class="w-full h-full object-cover" alt="S2 Arena">
                         </div>
                         
                         <!-- Details Grid -->
@@ -841,14 +850,14 @@
                     <div class="relative w-full mt-8 h-[90vh] min-h-[700px] flex flex-col justify-end overflow-hidden border-t border-b border-white/10">
                         <!-- Atmospheric Full-Screen Background -->
                         <div class="absolute inset-0 z-0">
-                            <img data-img-slot="home-work-5" src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover scale-105 opacity-60" alt="">
+                            <img data-img-slot="home-work-5" src="/images/nhao.jpg" class="w-full h-full object-cover scale-105 opacity-60" alt="">
                             <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         </div>
                         
                         <!-- Central Thumbnail -->
                         <div class="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[90%] max-w-[700px] aspect-[16/9] rounded-[24px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10">
-                            <img data-img-slot="home-work-5" src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="Aurora Tower">
+                            <img data-img-slot="home-work-5" src="/images/nhao.jpg" class="w-full h-full object-cover" alt="Aurora Tower">
                         </div>
                         
                         <!-- Details Grid -->
@@ -1643,19 +1652,32 @@
     </script>
     <script src="i18n.js" defer></script>
     <script src="text-overrides.js" defer></script>
+    <script src="search.js" defer></script>
 
     <!-- ── Managed photos: swap in any admin-uploaded overrides ────────────── -->
     <script>
         (function loadPhotoOverrides(){
             var page = 'home';
+            var imgs = document.querySelectorAll('img[data-img-slot]');
+            // Reveal an image only after its FINAL source (override or default)
+            // has loaded — prevents the hardcoded fallback flashing first.
+            function reveal(img){ img.classList.add('sj-ready'); }
+            function revealWhenLoaded(img){
+                if (img.complete && img.naturalWidth) return reveal(img);
+                img.addEventListener('load',  function(){ reveal(img); }, { once: true });
+                img.addEventListener('error', function(){ reveal(img); }, { once: true });
+            }
+            // Safety net: never leave photos hidden if the API hangs.
+            setTimeout(function(){ imgs.forEach(reveal); }, 4000);
             Promise.all([
                 fetch('/api/page-images/overrides?page=' + page).then(r => r.ok ? r.json() : {}),
                 fetch('/api/page-images/links?page=' + page).then(r => r.ok ? r.json() : {})
             ]).then(function (res) {
                 var map = res[0] || {}, links = res[1] || {};
-                document.querySelectorAll('img[data-img-slot]').forEach(function (img) {
+                imgs.forEach(function (img) {
                     var slot = img.dataset.imgSlot;
                     if (map[slot]) img.src = '/api/page-images/raw/' + slot + '?v=' + map[slot];
+                    revealWhenLoaded(img);
                     var link = links[slot];
                     if (link) {
                         var a = img.closest('a');
@@ -1669,7 +1691,7 @@
                         img.style.cursor = 'pointer';
                     }
                 });
-            }).catch(function () {}); // page keeps its defaults if the API is unavailable
+            }).catch(function () { imgs.forEach(revealWhenLoaded); }); // keep defaults if the API is unavailable
         })();
     </script>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="sj-txt-pending scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -172,6 +172,10 @@
         .pg-arrow { width: 44px; height: 44px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.28); color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; background: none; cursor: pointer; transition: border-color 0.25s ease, color 0.25s ease; }
         .pg-arrow:hover:not(:disabled) { border-color: #fff; color: #fff; }
         .pg-arrow:disabled { opacity: 0.25; cursor: default; }
+        /* Managed text (admin-overridable via data-tkey): hidden from first
+           paint until text-overrides.js applies overrides + language, so the
+           hardcoded default never flashes before the final text. */
+        html.sj-txt-pending [data-tkey] { opacity: 0 !important; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-dark">
@@ -270,7 +274,7 @@
     <!-- 1. Hero -->
     <section class="relative min-h-screen flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2000&q=80"
+            <img src="/images/sanbayphanthiet.jpg"
                  alt="Architecture" class="w-full h-full object-cover opacity-35">
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/55 to-dark/25"></div>
         </div>
@@ -601,5 +605,6 @@
     </script>
     <script src="i18n.js" defer></script>
     <script src="text-overrides.js" defer></script>
+    <script src="search.js" defer></script>
 </body>
 </html>
