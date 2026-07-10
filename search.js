@@ -76,8 +76,13 @@
         if (DATA) return Promise.resolve(DATA);
         if (LOADING) return LOADING;
         var get = function (url) { return fetch(url).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }); };
-        LOADING = Promise.all([get('/api/projects'), get('/api/blog'), get('/api/careers')]).then(function (res) {
-            DATA = { projects: res[0] || [], blog: res[1] || [], careers: res[2] || [] };
+        LOADING = Promise.all([get('/api/projects'), get('/api/blog'), get('/api/careers'), get('/api/blog/search-index')]).then(function (res) {
+            // Pre-normalize full article bodies once so typing stays fast.
+            var bodyIdx = {};
+            (res[3] || []).forEach(function (r) {
+                bodyIdx[r.id] = norm((r.text || '') + ' ' + (r.textEn || ''));
+            });
+            DATA = { projects: res[0] || [], blog: res[1] || [], careers: res[2] || [], bodyIdx: bodyIdx };
             return DATA;
         });
         return LOADING;
@@ -112,7 +117,8 @@
         });
 
         var blog = data.blog.filter(function (b) {
-            return hit([b.title, b.titleEn, b.excerpt, b.excerptEn, b.author]);
+            return hit([b.title, b.titleEn, b.excerpt, b.excerptEn, b.author])
+                || (data.bodyIdx[b.id] || '').indexOf(nq) !== -1;
         }).map(function (b) {
             return { url: 'blog-detail.html?id=' + encodeURIComponent(b.id), img: b.coverImage,
                      title: pick(b.title, b.titleEn), meta: [b.date, b.author].filter(Boolean).join(' · ') };
