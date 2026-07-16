@@ -29,6 +29,7 @@ const SLOTS = [
     { slot: 'careers-culture-3',   page: 'careers', label: 'Dải văn hóa · Phải (Công việc)',      default: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80' },
 
     // ── HOME (index.html) ──────────────────────────────────────────────────
+    { slot: 'home-hero',      page: 'home', label: 'Hero — ảnh nền đầu trang (hiện thay video nền khi được tải lên)', default: '' },
     { slot: 'home-method-1',  page: 'home', label: 'Phương pháp 01 · Truyền thống', default: 'https://images.unsplash.com/photo-1615406020658-6c4b805f1f30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
     { slot: 'home-method-2',  page: 'home', label: 'Phương pháp 02 · Đương đại',    default: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
     { slot: 'home-method-3',  page: 'home', label: 'Phương pháp 03 · Sáng tạo',     default: 'https://plus.unsplash.com/premium_photo-1661883964999-c1bcb57a7357?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
@@ -96,6 +97,9 @@ const SLOTS = [
     { slot: 'about-grid-4',     page: 'about', label: 'Lưới hình ảnh · Ảnh 4',              default: 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1400' },
     { slot: 'about-cta',        page: 'about', label: 'Kêu gọi cuối trang — ảnh nền',       default: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
     // Ban lãnh đạo & Đội ngũ photos are managed in the dedicated Staff module.
+
+    // ── PROJECT (project.html) ─────────────────────────────────────────────
+    { slot: 'project-hero',     page: 'project', label: 'Hero — ảnh nền đầu trang',          default: '/images/sanbayphanthiet.jpg' },
 ];
 const SLOT_MAP = new Map(SLOTS.map(s => [s.slot, s]));
 

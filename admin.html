@@ -402,6 +402,7 @@
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
             <button class="chip active" data-group="photopage" data-val="home"    onclick="switchPhotoPage('home', this)">Home</button>
             <button class="chip"        data-group="photopage" data-val="about"   onclick="switchPhotoPage('about', this)">About</button>
+            <button class="chip"        data-group="photopage" data-val="project" onclick="switchPhotoPage('project', this)">Projects</button>
             <button class="chip"        data-group="photopage" data-val="careers" onclick="switchPhotoPage('careers', this)">Careers</button>
         </div>
         <div style="background:white;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5;">
@@ -1143,8 +1144,8 @@ async function resetText(slot) {
 // Each managed photo on a public page is a "slot". The server stores admin
 // overrides in MySQL; the box shows the override if present, else the default.
 let _photoPage = 'home';
-const PHOTO_PAGE_FILE = { home: 'index.html', about: 'about.html', careers: 'careers.html' };
-const PHOTO_PAGE_NAME = { home: 'Home', about: 'About', careers: 'Careers' };
+const PHOTO_PAGE_FILE = { home: 'index.html', about: 'about.html', project: 'project.html', careers: 'careers.html' };
+const PHOTO_PAGE_NAME = { home: 'Home', about: 'About', project: 'Projects', careers: 'Careers' };
 
 function switchPhotoPage(page, btn) {
     _photoPage = page;

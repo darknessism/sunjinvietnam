@@ -176,6 +176,11 @@
            paint until text-overrides.js applies overrides + language, so the
            hardcoded default never flashes before the final text. */
         html.sj-txt-pending [data-tkey] { opacity: 0 !important; }
+        /* Managed photos (admin-overridable): keep hidden until the final image
+           source is decided and loaded, so the hardcoded fallback never flashes
+           before the uploaded override. */
+        img[data-img-slot] { transition: opacity 0.45s ease; }
+        img[data-img-slot]:not(.sj-ready) { opacity: 0 !important; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-dark">
@@ -274,7 +279,7 @@
     <!-- 1. Hero -->
     <section class="relative min-h-screen flex flex-col justify-end pb-20 md:pb-28 px-6 md:px-12 lg:px-16 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="/images/sanbayphanthiet.jpg"
+            <img data-img-slot="project-hero" src="/images/sanbayphanthiet.jpg"
                  alt="Architecture" class="w-full h-full object-cover opacity-35">
             <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/55 to-dark/25"></div>
         </div>
@@ -606,5 +611,46 @@
     <script src="i18n.js" defer></script>
     <script src="text-overrides.js" defer></script>
     <script src="search.js" defer></script>
+
+    <!-- ── Managed photos: swap in any admin-uploaded overrides ────────────── -->
+    <script>
+        (function loadPhotoOverrides(){
+            var page = 'project';
+            var imgs = document.querySelectorAll('img[data-img-slot]');
+            // Reveal an image only after its FINAL source (override or default)
+            // has loaded — prevents the hardcoded fallback flashing first.
+            function reveal(img){ img.classList.add('sj-ready'); }
+            function revealWhenLoaded(img){
+                if (img.complete && img.naturalWidth) return reveal(img);
+                img.addEventListener('load',  function(){ reveal(img); }, { once: true });
+                img.addEventListener('error', function(){ reveal(img); }, { once: true });
+            }
+            // Safety net: never leave photos hidden if the API hangs.
+            setTimeout(function(){ imgs.forEach(reveal); }, 4000);
+            Promise.all([
+                fetch('/api/page-images/overrides?page=' + page).then(r => r.ok ? r.json() : {}),
+                fetch('/api/page-images/links?page=' + page).then(r => r.ok ? r.json() : {})
+            ]).then(function (res) {
+                var map = res[0] || {}, links = res[1] || {};
+                imgs.forEach(function (img) {
+                    var slot = img.dataset.imgSlot;
+                    if (map[slot]) img.src = '/api/page-images/raw/' + slot + '?v=' + map[slot];
+                    revealWhenLoaded(img);
+                    var link = links[slot];
+                    if (link) {
+                        var a = img.closest('a');
+                        if (a) { a.href = link; a.target = '_blank'; a.rel = 'noopener'; }
+                        else {
+                            a = document.createElement('a');
+                            a.href = link; a.target = '_blank'; a.rel = 'noopener';
+                            a.style.display = 'contents'; a.style.cursor = 'pointer';
+                            img.parentNode.insertBefore(a, img); a.appendChild(img);
+                        }
+                        img.style.cursor = 'pointer';
+                    }
+                });
+            }).catch(function () { imgs.forEach(revealWhenLoaded); }); // keep defaults if the API is unavailable
+        })();
+    </script>
 </body>
 </html>
