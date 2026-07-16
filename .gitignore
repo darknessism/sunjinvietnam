@@ -10,6 +10,9 @@ node_modules/
 *.log
 npm-debug.log*
 
+# Database backups (multi-GB dumps, keep local only)
+backups/
+
 # OS / editor
 .DS_Store
 Thumbs.db
