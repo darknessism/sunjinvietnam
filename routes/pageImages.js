@@ -100,6 +100,9 @@ const SLOTS = [
 
     // ── PROJECT (project.html) ─────────────────────────────────────────────
     { slot: 'project-hero',     page: 'project', label: 'Hero — ảnh nền đầu trang',          default: '/images/sanbayphanthiet.jpg' },
+
+    // ── BLOG (blog.html) ───────────────────────────────────────────────────
+    { slot: 'blog-hero',        page: 'blog', label: 'Hero — ảnh nền đầu trang',              default: '/images/teamwork.jpg' },
 ];
 const SLOT_MAP = new Map(SLOTS.map(s => [s.slot, s]));
 
