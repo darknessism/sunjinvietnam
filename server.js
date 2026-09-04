@@ -10,6 +10,34 @@ const path    = require('path');
 const app = express();
 app.use(express.json({ limit: '5mb' }));
 
+// The static root is the project root, which also contains the server's own
+// source. Block the server-side paths before serve-static can hand them out:
+// without this, /db/schema.sql, /package.json and /routes/*.js are all public.
+// (.env is already withheld by serve-static's default dotfile handling.)
+const PRIVATE_DIRS  = ['db', 'routes', 'middleware', 'storage', 'node_modules', 'backups'];
+const PRIVATE_FILES = ['server.js', 'package.json', 'package-lock.json'];
+const PRIVATE_EXTS  = ['.sql', '.md', '.csv'];
+
+app.use((req, res, next) => {
+    // decodeURIComponent so an encoded separator can't slip past the checks;
+    // a malformed escape sequence is itself reason enough to refuse.
+    let p;
+    try { p = decodeURIComponent(req.path).toLowerCase(); }
+    catch { return res.status(400).end(); }
+
+    // A backslash can act as a separator on some stacks; refuse rather than reason about it.
+    if (p.indexOf(String.fromCharCode(92)) !== -1) return res.status(404).end();
+
+    const seg = p.split('/').filter(Boolean);
+    // Dotfiles (.env, .git/...): serve-static already withholds these, but the
+    // SPA catch-all below would answer 200 with index.html. 404 is the honest answer.
+    if (seg.some(x => x.startsWith('.')))              return res.status(404).end();
+    if (seg.length && PRIVATE_DIRS.includes(seg[0]))   return res.status(404).end();
+    if (seg.length === 1 && PRIVATE_FILES.includes(seg[0])) return res.status(404).end();
+    if (PRIVATE_EXTS.some(e => p.endsWith(e)))         return res.status(404).end();
+    next();
+});
+
 // Serve all static HTML/CSS/JS/images from the project root
 app.use(express.static(path.join(__dirname)));
 

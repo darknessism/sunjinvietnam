@@ -1,5 +1,7 @@
-/* Dump the entire project database (schema + data, blobs included) to a local
- * .sql file that can be replayed to rebuild the DB from scratch.
+/* Dump the entire project database (schema + data) to a local .sql file that
+ * can be replayed to rebuild the DB from scratch. Uploaded images and video are
+ * NOT included -- those live on the Railway Volume at /data and must be backed
+ * up separately.
  *
  *   node db/backup.js                          -> backups/sunjin-backup-<stamp>.sql
  *   node db/backup.js --resume backups/f.sql   -> continue an interrupted dump
@@ -20,9 +22,12 @@ const path     = require('path');
 const readline = require('readline');
 const pool     = require('./connection');
 
-// Blob-heavy tables get one row per INSERT (a banner clip can be ~28 MB -> a
-// ~55 MB hex literal, which must stay under max_allowed_packet on restore).
-const BLOB_TABLES = new Set(['media', 'banner_clips', 'page_images']);
+// Tables needing one row per INSERT because a single row can approach
+// max_allowed_packet. Empty since uploaded media moved onto the Railway Volume
+// (see storage/files.js): media/page_images/banner_clips now hold only a path,
+// so they dump as fast as any other table. NOTE: this file therefore no longer
+// captures images or video at all — /data needs its own backup.
+const BLOB_TABLES = new Set();
 const ROWS_PER_INSERT = 100;   // for regular tables
 const BATCH_FETCH     = 200;   // rows fetched per keyset query (1 for blob tables)
 
