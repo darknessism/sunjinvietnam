@@ -30,7 +30,10 @@ const cfg = buildConfig();
 const pool = mysql.createPool({
     ...cfg,
     waitForConnections: true,
-    connectionLimit:    10,
+    // The site's queries are small and infrequent (all media is served from the
+    // volume, not the database), so a large pool just holds idle threads open --
+    // each one carrying its own sort/join/read buffers on the MySQL side.
+    connectionLimit:    4,
     timezone: '+00:00',
 });
 
