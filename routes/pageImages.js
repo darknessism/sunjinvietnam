@@ -145,7 +145,11 @@ const upload = multer({
     limits:  { fileSize: 8 * 1024 * 1024 }, // 8 MB
     fileFilter: (req, file, cb) => {
         if (ALLOWED_MIME.has(file.mimetype)) return cb(null, true);
-        cb(new Error('Unsupported file type. Use JPG, PNG, WEBP, GIF or AVIF.'));
+        // Carry a 4xx so the global handler reports it to the user instead of
+        // swallowing it as an internal error.
+        const err = new Error('Unsupported file type. Use JPG, PNG, WEBP, GIF or AVIF.');
+        err.status = 400;
+        cb(err);
     },
 });
 

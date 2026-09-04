@@ -14,10 +14,27 @@ const USE_BREVO   = !!process.env.BREVO_API_KEY;
 const MAIL_FROM   = process.env.MAIL_FROM || process.env.SMTP_USER;
 const MAIL_FROM_NAME = process.env.MAIL_FROM_NAME || 'SUNJIN Careers';
 
-// Accept a single CV/portfolio file, kept in memory, max 20 MB
+// Accept a single CV/portfolio file, kept in memory, max 20 MB.
+// Whatever is uploaded here is forwarded to HR as an email attachment, so the
+// type must be restricted: without this the endpoint relays arbitrary files
+// (executables, archives) straight into the inbox.
+const CV_MIME = new Set([
+    'application/pdf',
+    'application/msword',                                                       // .doc
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',  // .docx
+]);
+const CV_EXT = /\.(pdf|doc|docx)$/i;
+
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits:  { fileSize: 20 * 1024 * 1024 },
+    limits:  { fileSize: 20 * 1024 * 1024, files: 1 },
+    fileFilter: (req, file, cb) => {
+        // Check both: browsers disagree on the MIME they report for .doc/.docx.
+        if (CV_MIME.has(file.mimetype) && CV_EXT.test(file.originalname || '')) return cb(null, true);
+        const err = new Error('CV must be a PDF, DOC or DOCX file.');
+        err.status = 400;
+        cb(err);
+    },
 });
 
 // Reusable mail transporter (Gmail SMTP via app password).

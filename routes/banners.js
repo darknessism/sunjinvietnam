@@ -68,7 +68,11 @@ const upload = multer({
     limits:  { fileSize: 50 * 1024 * 1024 }, // 50 MB
     fileFilter: (req, file, cb) => {
         if (ALLOWED_MIME.has(file.mimetype)) return cb(null, true);
-        cb(new Error('Unsupported video type. Use MP4, WEBM, OGG or MOV.'));
+        // Carry a 4xx so the global handler reports it to the user instead of
+        // swallowing it as an internal error.
+        const err = new Error('Unsupported video type. Use MP4, WEBM, OGG or MOV.');
+        err.status = 400;
+        cb(err);
     },
 });
 
