@@ -48,6 +48,27 @@ staff.initStaff().catch(e => console.error('staff init failed:', e.message));
 // Ensure the blog "featured" flag column exists
 require('./routes/blog').initBlog().catch(e => console.error('blog init failed:', e.message));
 
+// One-shot blob -> volume migration. Set MIGRATE_BLOBS=1 on the Railway service
+// to run it at boot (the Volume is only mounted inside the container, so the
+// copy has to happen there), then remove the variable once it reports done.
+// MIGRATE_BLOBS=1 copies bytes to the volume and leaves the blobs in place as a
+// safety net; MIGRATE_BLOBS=purge copies and then clears the copied blobs.
+if (process.env.MIGRATE_BLOBS) {
+    const purge = process.env.MIGRATE_BLOBS === 'purge';
+    require('./db/migrateBlobsToDisk').copyAll({ purge })
+        .then(() => console.log('✅ blob -> volume migration pass complete'))
+        .catch(e => console.error('blob migration failed:', e.message));
+}
+
+// One-shot image recompression pass (WebP at display size). Set
+// OPTIMIZE_IMAGES=1 on the Railway service to run it at boot, after the blob
+// migration has finished, then remove the variable.
+if (process.env.OPTIMIZE_IMAGES === '1') {
+    require('./db/optimizeImages').optimizeAll()
+        .then(() => console.log('image optimisation pass complete'))
+        .catch(e => console.error('image optimisation failed:', e.message));
+}
+
 // API routes
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/admin',       require('./routes/admin'));

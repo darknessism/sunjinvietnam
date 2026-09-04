@@ -13,6 +13,9 @@ npm-debug.log*
 # Database backups (multi-GB dumps, keep local only)
 backups/
 
+# Local stand-in for the Railway Volume (uploaded media)
+.data/
+
 # OS / editor
 .DS_Store
 Thumbs.db
