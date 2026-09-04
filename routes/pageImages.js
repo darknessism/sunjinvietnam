@@ -1,6 +1,8 @@
 const express     = require('express');
 const multer      = require('multer');
 const pool        = require('../db/connection');
+const files       = require('../storage/files');
+const { optimize } = require('../storage/optimize');
 const requireAuth = require('../middleware/auth');
 const router      = express.Router();
 
@@ -115,11 +117,15 @@ async function initPageImages() {
         page       VARCHAR(32)  NOT NULL,
         mime       VARCHAR(80)  NULL,
         data       LONGBLOB     NULL,
+        path       VARCHAR(255) NULL,
+        optimized_at DATETIME   NULL,
         link       TEXT         NULL,
         updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`);
-    // Migrate older installs (mime/data were NOT NULL; link column absent).
+    // Migrate older installs (mime/data were NOT NULL; link/path columns absent).
     await ensureColumn('page_images', 'link', 'ALTER TABLE page_images ADD COLUMN link TEXT NULL');
+    await ensureColumn('page_images', 'path', 'ALTER TABLE page_images ADD COLUMN path VARCHAR(255) NULL');
+    await ensureColumn('page_images', 'optimized_at', 'ALTER TABLE page_images ADD COLUMN optimized_at DATETIME NULL');
     await pool.query('ALTER TABLE page_images MODIFY mime VARCHAR(80) NULL').catch(() => {});
     await pool.query('ALTER TABLE page_images MODIFY data LONGBLOB NULL').catch(() => {});
 }
@@ -178,13 +184,17 @@ router.get('/links', async (req, res, next) => {
 router.get('/raw/:slot', async (req, res, next) => {
     try {
         if (!SLOT_MAP.has(req.params.slot)) return res.status(404).end();
-        const [[row]] = await pool.query('SELECT mime, data FROM page_images WHERE slot = ?', [req.params.slot]);
-        if (!row) return res.status(404).end();
-        res.set('Content-Type', row.mime);
+        const [[row]] = await pool.query('SELECT mime, path FROM page_images WHERE slot = ?', [req.params.slot]);
+        if (!row || !row.mime) return res.status(404).end();
         // Safe to cache hard: the page requests this URL with a ?v=<updated_at>
         // cache-buster, so a new upload yields a new URL.
+        if (row.path) return files.send(res, row.path, row.mime, next);
+        // Not yet migrated to the volume — fall back to the legacy blob.
+        const [[blob]] = await pool.query('SELECT data FROM page_images WHERE slot = ?', [req.params.slot]);
+        if (!blob || !blob.data) return res.status(404).end();
+        res.set('Content-Type', row.mime);
         res.set('Cache-Control', 'public, max-age=31536000, immutable');
-        res.send(row.data);
+        res.send(blob.data);
     } catch (e) { next(e); }
 });
 
@@ -218,11 +228,19 @@ router.post('/admin/:slot', requireAuth, upload.single('image'), async (req, res
         const slot = SLOT_MAP.get(req.params.slot);
         if (!slot) return res.status(404).json({ error: 'Unknown image slot.' });
         if (!req.file) return res.status(400).json({ error: 'No image file received.' });
+        // Replacing a slot: drop the file the old row pointed at, if any.
+        const [[prev]] = await pool.query('SELECT path FROM page_images WHERE slot = ?', [slot.slot]);
+        const opt  = await optimize(req.file.buffer, req.file.mimetype);
+        const mime = opt ? opt.mime   : req.file.mimetype;
+        const buf  = opt ? opt.buffer : req.file.buffer;
+        const rel  = files.save('page-images', slot.slot, mime, buf);
         await pool.query(
-            `INSERT INTO page_images (slot, page, mime, data) VALUES (?, ?, ?, ?)
-             ON DUPLICATE KEY UPDATE mime = VALUES(mime), data = VALUES(data)`,
-            [slot.slot, slot.page, req.file.mimetype, req.file.buffer]
+            `INSERT INTO page_images (slot, page, mime, data, path, optimized_at) VALUES (?, ?, ?, NULL, ?, ?)
+             ON DUPLICATE KEY UPDATE mime = VALUES(mime), data = NULL, path = VALUES(path),
+                                     optimized_at = VALUES(optimized_at)`,
+            [slot.slot, slot.page, mime, rel, opt ? new Date() : null]
         );
+        if (prev && prev.path && prev.path !== rel) files.remove(prev.path);
         const [[row]] = await pool.query('SELECT updated_at FROM page_images WHERE slot = ?', [slot.slot]);
         res.json({ ok: true, slot: slot.slot, version: ver(row.updated_at) });
     } catch (e) { next(e); }
@@ -233,7 +251,9 @@ router.delete('/admin/:slot', requireAuth, async (req, res, next) => {
     try {
         if (!SLOT_MAP.has(req.params.slot)) return res.status(404).json({ error: 'Unknown image slot.' });
         // Clear the image; drop the row only if there's no link left on it.
-        await pool.query('UPDATE page_images SET mime = NULL, data = NULL WHERE slot = ?', [req.params.slot]);
+        const [[prev]] = await pool.query('SELECT path FROM page_images WHERE slot = ?', [req.params.slot]);
+        await pool.query('UPDATE page_images SET mime = NULL, data = NULL, path = NULL, optimized_at = NULL WHERE slot = ?', [req.params.slot]);
+        if (prev && prev.path) files.remove(prev.path);
         await pool.query("DELETE FROM page_images WHERE slot = ? AND (link IS NULL OR link = '')", [req.params.slot]);
         res.json({ ok: true });
     } catch (e) { next(e); }

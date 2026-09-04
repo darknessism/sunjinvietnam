@@ -5,7 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "migrate:blobs": "node db/migrateBlobsToDisk.js",
+    "migrate:blobs:purge": "node db/migrateBlobsToDisk.js --purge",
+    "migrate:blobs:verify": "node db/migrateBlobsToDisk.js --verify",
+    "db:drop-blob-columns": "node db/dropBlobColumns.js",
+    "images:optimize": "node db/optimizeImages.js",
+    "images:optimize:apply": "node db/optimizeImages.js --yes"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.1.1",
     "mysql2": "^3.10.0",
-    "nodemailer": "^9.0.0"
+    "nodemailer": "^9.0.0",
+    "sharp": "^0.35.4"
   }
 }

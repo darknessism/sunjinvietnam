@@ -1,6 +1,7 @@
 const express     = require('express');
 const multer      = require('multer');
 const pool        = require('../db/connection');
+const files       = require('../storage/files');
 const requireAuth = require('../middleware/auth');
 const router      = express.Router();
 
@@ -40,11 +41,13 @@ async function initBanners() {
         url        TEXT         NULL,
         mime       VARCHAR(80)  NULL,
         data       LONGBLOB     NULL,
+        path       VARCHAR(255) NULL,
         updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`);
-    // Migrate older installs (url was NOT NULL; mime/data columns absent).
+    // Migrate older installs (url was NOT NULL; mime/data/path columns absent).
     await ensureColumn('banner_clips', 'mime', 'ALTER TABLE banner_clips ADD COLUMN mime VARCHAR(80) NULL');
     await ensureColumn('banner_clips', 'data', 'ALTER TABLE banner_clips ADD COLUMN data LONGBLOB NULL');
+    await ensureColumn('banner_clips', 'path', 'ALTER TABLE banner_clips ADD COLUMN path VARCHAR(255) NULL');
     await pool.query('ALTER TABLE banner_clips MODIFY url TEXT NULL').catch(() => {});
 }
 
@@ -57,8 +60,8 @@ async function ensureColumn(table, col, alterSql) {
     if (!row.c) await pool.query(alterSql);
 }
 
-// Uploaded clips are stored in MySQL; keep them small. Larger videos should be
-// hosted elsewhere and referenced by URL instead.
+// Uploaded clips are stored on the mounted Railway Volume (see storage/files.js).
+// Very large videos are still better hosted on a CDN and referenced by URL.
 const ALLOWED_MIME = new Set(['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime']);
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -91,14 +94,18 @@ router.get('/overrides', async (req, res, next) => {
 router.get('/raw/:slot', async (req, res, next) => {
     try {
         if (!SLOT_MAP.has(req.params.slot)) return res.status(404).end();
-        const [[row]] = await pool.query('SELECT mime, data FROM banner_clips WHERE slot = ?', [req.params.slot]);
-        if (!row || !row.data) return res.status(404).end();
-        res.set('Content-Type', row.mime || 'video/mp4');
-        res.set('Accept-Ranges', 'bytes');
+        const [[row]] = await pool.query('SELECT mime, path FROM banner_clips WHERE slot = ?', [req.params.slot]);
+        if (!row || !row.mime) return res.status(404).end();
         // Safe to cache hard: the page requests this URL with a ?v=<updated_at>
-        // cache-buster, so a new upload yields a new URL.
+        // cache-buster, so a new upload yields a new URL. Serving from disk also
+        // gives real HTTP Range support, so seeking doesn't refetch the clip.
+        if (row.path) return files.send(res, row.path, row.mime || 'video/mp4', next);
+        // Not yet migrated to the volume — fall back to the legacy blob.
+        const [[blob]] = await pool.query('SELECT data FROM banner_clips WHERE slot = ?', [req.params.slot]);
+        if (!blob || !blob.data) return res.status(404).end();
+        res.set('Content-Type', row.mime || 'video/mp4');
         res.set('Cache-Control', 'public, max-age=31536000, immutable');
-        res.send(row.data);
+        res.send(blob.data);
     } catch (e) { next(e); }
 });
 
@@ -135,8 +142,10 @@ router.put('/admin/:slot', requireAuth, async (req, res, next) => {
         const slot = SLOT_MAP.get(req.params.slot);
         if (!slot) return res.status(404).json({ error: 'Unknown banner slot.' });
         const url = String((req.body && req.body.url) || '').trim();
+        const [[prev]] = await pool.query('SELECT path FROM banner_clips WHERE slot = ?', [slot.slot]);
         if (!url) {
             await pool.query('DELETE FROM banner_clips WHERE slot = ?', [slot.slot]);
+            if (prev && prev.path) files.remove(prev.path);
             return res.json({ ok: true, reset: true });
         }
         if (!/^https?:\/\//i.test(url)) {
@@ -144,10 +153,11 @@ router.put('/admin/:slot', requireAuth, async (req, res, next) => {
         }
         // Setting a URL clears any previously uploaded binary for the slot.
         await pool.query(
-            `INSERT INTO banner_clips (slot, page, url, mime, data) VALUES (?, ?, ?, NULL, NULL)
-             ON DUPLICATE KEY UPDATE url = VALUES(url), mime = NULL, data = NULL`,
+            `INSERT INTO banner_clips (slot, page, url, mime, data, path) VALUES (?, ?, ?, NULL, NULL, NULL)
+             ON DUPLICATE KEY UPDATE url = VALUES(url), mime = NULL, data = NULL, path = NULL`,
             [slot.slot, slot.page, url]
         );
+        if (prev && prev.path) files.remove(prev.path);
         res.json({ ok: true });
     } catch (e) { next(e); }
 });
@@ -159,11 +169,14 @@ router.post('/admin/:slot/upload', requireAuth, upload.single('video'), async (r
         if (!slot) return res.status(404).json({ error: 'Unknown banner slot.' });
         if (!req.file) return res.status(400).json({ error: 'No video file received.' });
         // Storing a file clears any previously set URL for the slot.
+        const [[prev]] = await pool.query('SELECT path FROM banner_clips WHERE slot = ?', [slot.slot]);
+        const rel = files.save('banner-clips', slot.slot, req.file.mimetype, req.file.buffer);
         await pool.query(
-            `INSERT INTO banner_clips (slot, page, url, mime, data) VALUES (?, ?, NULL, ?, ?)
-             ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = VALUES(data)`,
-            [slot.slot, slot.page, req.file.mimetype, req.file.buffer]
+            `INSERT INTO banner_clips (slot, page, url, mime, data, path) VALUES (?, ?, NULL, ?, NULL, ?)
+             ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = NULL, path = VALUES(path)`,
+            [slot.slot, slot.page, req.file.mimetype, rel]
         );
+        if (prev && prev.path && prev.path !== rel) files.remove(prev.path);
         const [[row]] = await pool.query('SELECT updated_at FROM banner_clips WHERE slot = ?', [slot.slot]);
         res.json({ ok: true, slot: slot.slot, version: ver(row.updated_at) });
     } catch (e) { next(e); }
@@ -173,7 +186,9 @@ router.post('/admin/:slot/upload', requireAuth, upload.single('video'), async (r
 router.delete('/admin/:slot', requireAuth, async (req, res, next) => {
     try {
         if (!SLOT_MAP.has(req.params.slot)) return res.status(404).json({ error: 'Unknown banner slot.' });
+        const [[prev]] = await pool.query('SELECT path FROM banner_clips WHERE slot = ?', [req.params.slot]);
         await pool.query('DELETE FROM banner_clips WHERE slot = ?', [req.params.slot]);
+        if (prev && prev.path) files.remove(prev.path);
         res.json({ ok: true });
     } catch (e) { next(e); }
 });
