@@ -1511,24 +1511,8 @@
         })();
     </script>
 
-    <!-- ── Managed banner clips: swap in any admin-set video overrides ─────── -->
-    <script>
-        (function loadBannerClips(){
-            fetch('/api/banner-clips/overrides?page=about')
-                .then(r => r.ok ? r.json() : {})
-                .then(map => {
-                    document.querySelectorAll('video[data-clip-slot]').forEach(v => {
-                        const url = map[v.dataset.clipSlot];
-                        if (!url) return;
-                        v.src = url;
-                        v.load();
-                        const p = v.play();
-                        if (p && p.catch) p.catch(() => {});
-                    });
-                })
-                .catch(() => {}); // page keeps its default clips if the API is unavailable
-        })();
-    </script>
+    <!-- ── Managed banner clips: lazy-load any admin-set video overrides ──── -->
+    <script src="banner-clips.js" data-page="about" defer></script>
 
     <!-- ── Awards: rendered from blog posts in the "awards" category ─────── -->
     <script>

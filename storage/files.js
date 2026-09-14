@@ -79,7 +79,10 @@ function send(res, relPath, mime, next) {
     let abs;
     try { abs = absolute(relPath); } catch (e) { return next(e); }
     res.type(mime || path.extname(abs));
-    res.sendFile(abs, { maxAge: '1y', immutable: true, dotfiles: 'deny' }, err => {
+    // Serve relative to DATA_DIR so the dotfiles check only looks at the stored
+    // key, not at the mount path: the local fallback lives under ./.data, which
+    // an absolute-path sendFile would otherwise refuse with 403.
+    res.sendFile(path.relative(DATA_DIR, abs), { root: DATA_DIR, maxAge: '1y', immutable: true, dotfiles: 'deny' }, err => {
         if (!err) return;
         if (err.code === 'ENOENT') return res.status(404).end();
         // The client hanging up mid-stream is normal for video, not an error.
