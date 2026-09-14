@@ -177,7 +177,8 @@ router.post('/admin/:slot/upload', requireAuth, upload.single('video'), async (r
         const rel = files.save('banner-clips', slot.slot, req.file.mimetype, req.file.buffer);
         await pool.query(
             `INSERT INTO banner_clips (slot, page, url, mime, data, path) VALUES (?, ?, NULL, ?, NULL, ?)
-             ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = NULL, path = VALUES(path)`,
+             ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = NULL, path = VALUES(path),
+                                     updated_at = CURRENT_TIMESTAMP`,
             [slot.slot, slot.page, req.file.mimetype, rel]
         );
         if (prev && prev.path && prev.path !== rel) files.remove(prev.path);

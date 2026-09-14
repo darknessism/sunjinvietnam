@@ -1,0 +1,7 @@
+# Keep `railway up` from shipping local-only data (the CLI otherwise uploads
+# the whole working directory). Mirrors .gitignore.
+backups/
+.data/
+node_modules/
+.env
+.env.*

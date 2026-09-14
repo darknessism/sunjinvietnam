@@ -241,7 +241,8 @@ router.post('/admin/:slot', requireAuth, upload.single('image'), async (req, res
         await pool.query(
             `INSERT INTO page_images (slot, page, mime, data, path, optimized_at) VALUES (?, ?, ?, NULL, ?, ?)
              ON DUPLICATE KEY UPDATE mime = VALUES(mime), data = NULL, path = VALUES(path),
-                                     optimized_at = VALUES(optimized_at)`,
+                                     optimized_at = VALUES(optimized_at),
+                                     updated_at = CURRENT_TIMESTAMP`,
             [slot.slot, slot.page, mime, rel, opt ? new Date() : null]
         );
         if (prev && prev.path && prev.path !== rel) files.remove(prev.path);
