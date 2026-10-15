@@ -174,13 +174,17 @@ router.post('/admin/:slot/upload', requireAuth, upload.single('video'), async (r
         if (!req.file) return res.status(400).json({ error: 'No video file received.' });
         // Storing a file clears any previously set URL for the slot.
         const [[prev]] = await pool.query('SELECT path FROM banner_clips WHERE slot = ?', [slot.slot]);
-        const rel = files.save('banner-clips', slot.slot, req.file.mimetype, req.file.buffer);
-        await pool.query(
-            `INSERT INTO banner_clips (slot, page, url, mime, data, path) VALUES (?, ?, NULL, ?, NULL, ?)
-             ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = NULL, path = VALUES(path),
-                                     updated_at = CURRENT_TIMESTAMP`,
-            [slot.slot, slot.page, req.file.mimetype, rel]
-        );
+        // Fresh name per upload so a failed DB write can't leave new bytes
+        // behind an old ?v= version (see the same note in pageImages.js).
+        const rel = files.save('banner-clips', slot.slot + '-' + Date.now(), req.file.mimetype, req.file.buffer);
+        try {
+            await pool.query(
+                `INSERT INTO banner_clips (slot, page, url, mime, data, path) VALUES (?, ?, NULL, ?, NULL, ?)
+                 ON DUPLICATE KEY UPDATE url = NULL, mime = VALUES(mime), data = NULL, path = VALUES(path),
+                                         updated_at = CURRENT_TIMESTAMP`,
+                [slot.slot, slot.page, req.file.mimetype, rel]
+            );
+        } catch (e) { files.remove(rel); throw e; }
         if (prev && prev.path && prev.path !== rel) files.remove(prev.path);
         const [[row]] = await pool.query('SELECT updated_at FROM banner_clips WHERE slot = ?', [slot.slot]);
         res.json({ ok: true, slot: slot.slot, version: ver(row.updated_at) });

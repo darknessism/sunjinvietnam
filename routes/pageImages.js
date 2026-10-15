@@ -237,14 +237,19 @@ router.post('/admin/:slot', requireAuth, upload.single('image'), async (req, res
         const opt  = await optimize(req.file.buffer, req.file.mimetype);
         const mime = opt ? opt.mime   : req.file.mimetype;
         const buf  = opt ? opt.buffer : req.file.buffer;
-        const rel  = files.save('page-images', slot.slot, mime, buf);
-        await pool.query(
-            `INSERT INTO page_images (slot, page, mime, data, path, optimized_at) VALUES (?, ?, ?, NULL, ?, ?)
-             ON DUPLICATE KEY UPDATE mime = VALUES(mime), data = NULL, path = VALUES(path),
-                                     optimized_at = VALUES(optimized_at),
-                                     updated_at = CURRENT_TIMESTAMP`,
-            [slot.slot, slot.page, mime, rel, opt ? new Date() : null]
-        );
+        // Write under a fresh name rather than over the live file: if the DB
+        // update below fails, the old row still points at the old bytes, so the
+        // ?v= cache-buster and the served image can never drift apart.
+        const rel  = files.save('page-images', slot.slot + '-' + Date.now(), mime, buf);
+        try {
+            await pool.query(
+                `INSERT INTO page_images (slot, page, mime, data, path, optimized_at) VALUES (?, ?, ?, NULL, ?, ?)
+                 ON DUPLICATE KEY UPDATE mime = VALUES(mime), data = NULL, path = VALUES(path),
+                                         optimized_at = VALUES(optimized_at),
+                                         updated_at = CURRENT_TIMESTAMP`,
+                [slot.slot, slot.page, mime, rel, opt ? new Date() : null]
+            );
+        } catch (e) { files.remove(rel); throw e; }
         if (prev && prev.path && prev.path !== rel) files.remove(prev.path);
         const [[row]] = await pool.query('SELECT updated_at FROM page_images WHERE slot = ?', [slot.slot]);
         res.json({ ok: true, slot: slot.slot, version: ver(row.updated_at) });
